@@ -8,13 +8,23 @@ if (!isset($_SESSION['login'])) {
 
 include '../../config/database.php';
 
-$inventaris = mysqli_query($conn, "
-SELECT id, kode_aset, nama_hardware
+$id = $_GET['id'];
+
+$inventaris = mysqli_query($conn,"
+SELECT id,kode_aset,nama_hardware
 FROM inventaris
 ORDER BY nama_hardware ASC
 ");
 
-if(isset($_POST['simpan'])){
+$query = mysqli_query($conn,"
+SELECT *
+FROM maintenance
+WHERE id='$id'
+");
+
+$data = mysqli_fetch_assoc($query);
+
+if(isset($_POST['update'])){
 
     $inventaris_id   = $_POST['inventaris_id'];
     $tanggal_lapor   = $_POST['tanggal_lapor'];
@@ -22,33 +32,39 @@ if(isset($_POST['simpan'])){
     $keparahan       = $_POST['keparahan'];
     $teknisi         = $_POST['teknisi'];
     $tindakan        = $_POST['tindakan'];
+    $status          = $_POST['status'];
+    $tanggal_selesai = $_POST['tanggal_selesai'];
 
     mysqli_query($conn,"
-    INSERT INTO maintenance(
-        inventaris_id,
-        tanggal_lapor,
-        kerusakan,
-        keparahan,
-        teknisi,
-        tindakan,
-        status
-    )
-    VALUES(
-        '$inventaris_id',
-        '$tanggal_lapor',
-        '$kerusakan',
-        '$keparahan',
-        '$teknisi',
-        '$tindakan',
-        'Menunggu'
-    )
+    UPDATE maintenance SET
+        inventaris_id='$inventaris_id',
+        tanggal_lapor='$tanggal_lapor',
+        kerusakan='$kerusakan',
+        keparahan='$keparahan',
+        teknisi='$teknisi',
+        tindakan='$tindakan',
+        status='$status',
+        tanggal_selesai='$tanggal_selesai'
+    WHERE id='$id'
     ");
 
-    mysqli_query($conn,"
-    UPDATE inventaris
-    SET status='Maintenance'
-    WHERE id='$inventaris_id'
-    ");
+    if($status=="Selesai"){
+
+        mysqli_query($conn,"
+        UPDATE inventaris
+        SET status='Tersedia'
+        WHERE id='$inventaris_id'
+        ");
+
+    }else{
+
+        mysqli_query($conn,"
+        UPDATE inventaris
+        SET status='Maintenance'
+        WHERE id='$inventaris_id'
+        ");
+
+    }
 
     header("Location:index.php");
     exit;
@@ -63,7 +79,7 @@ if(isset($_POST['simpan'])){
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tambah Maintenance</title>
+<title>Edit Maintenance</title>
 
 <link rel="stylesheet" href="../../assets/css/style.css">
 <link rel="stylesheet" href="../../assets/css/sidebar.css">
@@ -88,9 +104,9 @@ if(isset($_POST['simpan'])){
 
 <div>
 
-<h2>Tambah Maintenance</h2>
+<h2>Edit Maintenance</h2>
 
-<p>Laporkan kerusakan perangkat TI DISPUSIPDA</p>
+<p>Perbarui data maintenance perangkat TI DISPUSIPDA</p>
 
 </div>
 
@@ -128,11 +144,11 @@ if(isset($_POST['simpan'])){
 
 <select name="inventaris_id" required>
 
-<option value="">-- Pilih Perangkat --</option>
-
 <?php while($i=mysqli_fetch_assoc($inventaris)){ ?>
 
-<option value="<?= $i['id']; ?>">
+<option
+value="<?= $i['id']; ?>"
+<?= ($i['id']==$data['inventaris_id'])?'selected':''; ?>>
 
 <?= $i['kode_aset']; ?> - <?= $i['nama_hardware']; ?>
 
@@ -152,7 +168,7 @@ if(isset($_POST['simpan'])){
 <input
 type="date"
 name="tanggal_lapor"
-value="<?= date('Y-m-d'); ?>"
+value="<?= $data['tanggal_lapor']; ?>"
 required>
 
 </div>
@@ -164,8 +180,7 @@ required>
 
 <textarea
 name="kerusakan"
-required
-placeholder="Masukkan deskripsi kerusakan..."></textarea>
+required><?= $data['kerusakan']; ?></textarea>
 
 </div>
 
@@ -176,9 +191,11 @@ placeholder="Masukkan deskripsi kerusakan..."></textarea>
 
 <select name="keparahan">
 
-<option value="Rendah">Rendah</option>
-<option value="Sedang" selected>Sedang</option>
-<option value="Tinggi">Tinggi</option>
+<option value="Rendah" <?= $data['keparahan']=="Rendah"?"selected":""; ?>>Rendah</option>
+
+<option value="Sedang" <?= $data['keparahan']=="Sedang"?"selected":""; ?>>Sedang</option>
+
+<option value="Tinggi" <?= $data['keparahan']=="Tinggi"?"selected":""; ?>>Tinggi</option>
 
 </select>
 
@@ -192,7 +209,7 @@ placeholder="Masukkan deskripsi kerusakan..."></textarea>
 <input
 type="text"
 name="teknisi"
-placeholder="Nama Teknisi">
+value="<?= $data['teknisi']; ?>">
 
 </div>
 
@@ -202,8 +219,36 @@ placeholder="Nama Teknisi">
 <label>Tindakan</label>
 
 <textarea
-name="tindakan"
-placeholder="Tindakan awal (opsional)..."></textarea>
+name="tindakan"><?= $data['tindakan']; ?></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Status</label>
+
+<select name="status">
+
+<option value="Menunggu" <?= $data['status']=="Menunggu"?"selected":""; ?>>Menunggu</option>
+
+<option value="Dalam Perbaikan" <?= $data['status']=="Dalam Perbaikan"?"selected":""; ?>>Dalam Perbaikan</option>
+
+<option value="Selesai" <?= $data['status']=="Selesai"?"selected":""; ?>>Selesai</option>
+
+</select>
+
+</div>
+
+
+<div class="form-group">
+
+<label>Tanggal Selesai</label>
+
+<input
+type="date"
+name="tanggal_selesai"
+value="<?= $data['tanggal_selesai']; ?>">
 
 </div>
 
@@ -212,12 +257,12 @@ placeholder="Tindakan awal (opsional)..."></textarea>
 
 <button
 type="submit"
-name="simpan"
+name="update"
 class="btn-simpan">
 
 <i class="fa-solid fa-floppy-disk"></i>
 
-Simpan
+Update
 
 </button>
 
