@@ -4,7 +4,6 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include '../../config/database.php';
-include 'header.php';
 
 // Ambil data inventaris
 $stmt = $pdo->query("SELECT * FROM inventaris_ti_dispusipda ORDER BY id ASC");
@@ -14,117 +13,293 @@ $assets = $stmt->fetchAll();
 $success = isset($_GET['success']) ? $_GET['success'] : '';
 ?>
 
-<!-- Load Custom CSS untuk Inventaris -->
-<link href="assets/css/inventaris.css" rel="stylesheet" />
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DISPUSIPDA - Data Inventaris</title>
 
-<div class="inventaris-page">
-    <div class="container-fluid px-4 py-4">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
 
-        <!-- HEADER -->
-        <div class="inventaris-header">
-            <div>
-                <h4>📦 Data Inventaris</h4>
-                <p class="subtitle">Daftar seluruh aset perangkat TI DISPUSIPDA Provinsi Jawa Barat</p>
-            </div>
-            <button class="btn-tambah-inventaris" data-bs-toggle="modal" data-bs-target="#modalTambah">
-                <i class="bi bi-plus-circle"></i> Tambah Inventaris Baru
-            </button>
-        </div>
+    <!-- Custom CSS -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/inventaris.css" rel="stylesheet" />
 
-        <!-- NOTIFIKASI SUKSES -->
-        <?php if ($success == '1'): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i> Data berhasil disimpan!
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        <?php endif; ?>
+    <style>
+        /* SIDEBAR STYLE (dipindah dari header.php) */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            padding: 0;
+            box-shadow: inset -1px 0 0 rgba(0,0,0,0.1);
+            background: #0c2461 !important;
+            width: 240px;
+        }
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 2px 12px;
+        }
+        .sidebar .nav-link:hover {
+            background: #1a3a8a;
+            color: #fff;
+        }
+        .sidebar .nav-link.active {
+            background: #1a3a8a;
+            color: #fff;
+        }
+        .sidebar .nav-link i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+        .sidebar-brand {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            padding: 20px 20px 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-brand small {
+            display: block;
+            font-size: 11px;
+            font-weight: 400;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
 
-        <!-- FILTER BAR -->
-        <div class="filter-bar">
-            <div class="search-wrapper">
-                <span class="search-icon"><i class="bi bi-search"></i></span>
-                <input type="text" id="searchInput" placeholder="Cari kode aset atau nama perangkat…" />
-            </div>
-            <select id="filterKategori">
-                <option value="">Semua Kategori</option>
-                <?php foreach (['Laptop', 'Desktop', 'Printer', 'Networking', 'Server', 'UPS', 'Monitor', 'Lainnya'] as $kat): ?>
-                    <option value="<?= $kat ?>"><?= $kat ?></option>
-                <?php endforeach; ?>
-            </select>
-            <select id="filterStatus">
-                <option value="">Semua Status</option>
-                <option value="Tersedia">Tersedia</option>
-                <option value="Dipinjam">Dipinjam</option>
-                <option value="Maintenance">Maintenance</option>
-            </select>
-        </div>
+        /* MAIN CONTENT OFFSET */
+        .main-content {
+            margin-left: 240px;
+            padding: 20px 28px 40px;
+            min-height: 100vh;
+            background: #f8fafc;
+        }
 
-        <!-- TABLE CARD -->
-        <div class="table-card">
-            <div class="table-responsive">
-                <table class="table-inventaris" id="inventarisTable">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Kode Aset</th>
-                            <th>Nama Hardware</th>
-                            <th>Kategori</th>
-                            <th>Spesifikasi</th>
-                            <th>Lokasi</th>
-                            <th>Tahun</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $no = 1; foreach ($assets as $asset): ?>
-                        <tr>
-                            <td><?= $no++ ?></td>
-                            <td><span class="kode-aset"><?= htmlspecialchars($asset['kode_aset']) ?></span></td>
-                            <td class="nama-hardware"><?= htmlspecialchars($asset['nama_hardware']) ?></td>
-                            <td><span class="badge-kategori"><?= htmlspecialchars($asset['kategori']) ?></span></td>
-                            <td class="spesifikasi"><?= htmlspecialchars($asset['spesifikasi']) ?></td>
-                            <td><?= htmlspecialchars($asset['lokasi']) ?></td>
-                            <td><?= $asset['tahun'] ?></td>
-                            <td>
-                                <?php
-                                $statusMap = [
-                                    'Tersedia'   => 'status-tersedia',
-                                    'Dipinjam'   => 'status-dipinjam',
-                                    'Maintenance' => 'status-maintenance'
-                                ];
-                                $statusClass = $statusMap[$asset['status']] ?? 'status-default';
-                                ?>
-                                <span class="status-badge <?= $statusClass ?>">
-                                    <span class="dot"></span> <?= $asset['status'] ?>
-                                </span>
-                            </td>
-                            <td>
-                                <button class="btn-action primary" title="Detail"><i class="bi bi-eye"></i></button>
-                                <button class="btn-action danger" title="Hapus" onclick="confirmDelete(<?= $asset['id'] ?>)"><i class="bi bi-trash"></i></button>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+        /* USER PROFILE DI SIDEBAR */
+        .sidebar-user {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin-top: 20px;
+        }
+        .sidebar-user .name {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .sidebar-user .email {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        .sidebar-user .logout {
+            color: #f87171;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .sidebar-user .logout:hover {
+            color: #fca5a5;
+        }
 
-            <!-- TABLE FOOTER -->
-            <div class="table-footer">
-                <span class="info">Menampilkan <strong><?= count($assets) ?></strong> data aset</span>
-                <div class="pagination-custom">
-                    <button class="page-btn" disabled>← Prev</button>
-                    <button class="page-btn active">1</button>
-                    <button class="page-btn">2</button>
-                    <button class="page-btn">Next →</button>
+        /* RESPONSIVE SIDEBAR */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                min-height: 60px;
+            }
+            .sidebar .nav {
+                flex-direction: row;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+            .sidebar .nav-link {
+                white-space: nowrap;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 16px;
+            }
+            .sidebar-brand {
+                text-align: center;
+            }
+            .sidebar-user {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid p-0">
+    <div class="row g-0">
+
+        <!-- ============================================ -->
+        <!-- SIDEBAR (MANDIRI, TIDAK PAKAI header.php)    -->
+        <!-- ============================================ -->
+        <nav class="sidebar d-md-block">
+            <div class="position-sticky">
+                <div class="sidebar-brand">
+                    DISPUSIPDA
+                    <small>Provinsi Jawa Barat</small>
+                </div>
+                <ul class="nav flex-column mt-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="inventaris.php">
+                            <i class="bi bi-box"></i> Inventaris
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-wrench"></i> Maintenance
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-arrow-left-right"></i> Peminjaman
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="bi bi-file-earmark-text"></i> Laporan
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- User Profile di Sidebar -->
+                <div class="sidebar-user">
+                    <div class="name"><i class="bi bi-person-circle me-2"></i>Admin TI</div>
+                    <div class="email">admin@dispusipda.jabarprov</div>
+                    <a href="#" class="logout"><i class="bi bi-box-arrow-right me-1"></i> Keluar Sistem</a>
                 </div>
             </div>
-        </div>
+        </nav>
 
+        <!-- ============================================ -->
+        <!-- MAIN CONTENT                                  -->
+        <!-- ============================================ -->
+        <main class="main-content">
+
+            <!-- HEADER HALAMAN -->
+            <div class="inventaris-header">
+                <div>
+                    <h4>📦 Data Inventaris</h4>
+                    <p class="subtitle">Daftar seluruh aset perangkat TI DISPUSIPDA Provinsi Jawa Barat</p>
+                </div>
+                <button class="btn-tambah-inventaris" data-bs-toggle="modal" data-bs-target="#modalTambah">
+                    <i class="bi bi-plus-circle"></i> Tambah Inventaris Baru
+                </button>
+            </div>
+
+            <!-- NOTIFIKASI SUKSES -->
+            <?php if ($success == '1'): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i> Data berhasil disimpan!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
+
+            <!-- FILTER BAR -->
+            <div class="filter-bar">
+                <div class="search-wrapper">
+                    <span class="search-icon"><i class="bi bi-search"></i></span>
+                    <input type="text" id="searchInput" placeholder="Cari kode aset atau nama perangkat…" />
+                </div>
+                <select id="filterKategori">
+                    <option value="">Semua Kategori</option>
+                    <?php foreach (['Laptop', 'Desktop', 'Printer', 'Networking', 'Server', 'UPS', 'Monitor', 'Lainnya'] as $kat): ?>
+                        <option value="<?= $kat ?>"><?= $kat ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <select id="filterStatus">
+                    <option value="">Semua Status</option>
+                    <option value="Tersedia">Tersedia</option>
+                    <option value="Dipinjam">Dipinjam</option>
+                    <option value="Maintenance">Maintenance</option>
+                </select>
+            </div>
+
+            <!-- TABLE CARD -->
+            <div class="table-card">
+                <div class="table-responsive">
+                    <table class="table-inventaris" id="inventarisTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Kode Aset</th>
+                                <th>Nama Hardware</th>
+                                <th>Kategori</th>
+                                <th>Spesifikasi</th>
+                                <th>Lokasi</th>
+                                <th>Tahun</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $no = 1; foreach ($assets as $asset): ?>
+                            <tr>
+                                <td><?= $no++ ?></td>
+                                <td><span class="kode-aset"><?= htmlspecialchars($asset['kode_aset']) ?></span></td>
+                                <td class="nama-hardware"><?= htmlspecialchars($asset['nama_hardware']) ?></td>
+                                <td><span class="badge-kategori"><?= htmlspecialchars($asset['kategori']) ?></span></td>
+                                <td class="spesifikasi"><?= htmlspecialchars($asset['spesifikasi']) ?></td>
+                                <td><?= htmlspecialchars($asset['lokasi']) ?></td>
+                                <td><?= $asset['tahun'] ?></td>
+                                <td>
+                                    <?php
+                                    $statusMap = [
+                                        'Tersedia'   => 'status-tersedia',
+                                        'Dipinjam'   => 'status-dipinjam',
+                                        'Maintenance' => 'status-maintenance'
+                                    ];
+                                    $statusClass = $statusMap[$asset['status']] ?? 'status-default';
+                                    ?>
+                                    <span class="status-badge <?= $statusClass ?>">
+                                        <span class="dot"></span> <?= $asset['status'] ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn-action primary" title="Detail"><i class="bi bi-eye"></i></button>
+                                    <button class="btn-action danger" title="Hapus" onclick="confirmDelete(<?= $asset['id'] ?>)"><i class="bi bi-trash"></i></button>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- TABLE FOOTER -->
+                <div class="table-footer">
+                    <span class="info">Menampilkan <strong><?= count($assets) ?></strong> data aset</span>
+                    <div class="pagination-custom">
+                        <button class="page-btn" disabled>← Prev</button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">Next →</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
     </div>
 </div>
 
-<!-- MODAL TAMBAH -->
+<!-- ============================================ -->
+<!-- MODAL TAMBAH                                 -->
+<!-- ============================================ -->
 <div class="modal fade modal-inventaris" id="modalTambah" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -177,7 +352,9 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
     </div>
 </div>
 
-<!-- MODAL HAPUS -->
+<!-- ============================================ -->
+<!-- MODAL HAPUS                                  -->
+<!-- ============================================ -->
 <div class="modal fade modal-inventaris" id="modalHapus" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content text-center">
@@ -195,6 +372,10 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
     </div>
 </div>
 
+<!-- ============================================ -->
+<!-- SCRIPTS                                      -->
+<!-- ============================================ -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // Filter & Search
 document.addEventListener('DOMContentLoaded', function() {
@@ -236,4 +417,5 @@ function confirmDelete(id) {
 }
 </script>
 
-<?php include 'footer.php'; ?>
+</body>
+</html>
