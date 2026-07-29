@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 include '../../config/database.php';
 
 // Ambil data inventaris
-$query = mysqli_query($conn, "SELECT * FROM inventaris_ti_dispusipda ORDER BY id ASC");
+$query = mysqli_query($conn, "SELECT * FROM inventaris ORDER BY id ASC");
 $assets = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
 // Cek apakah ada notifikasi sukses
