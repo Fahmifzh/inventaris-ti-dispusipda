@@ -6,8 +6,8 @@ error_reporting(E_ALL);
 include '../../config/database.php';
 
 // Ambil data inventaris
-$stmt = $pdo->query("SELECT * FROM inventaris_ti_dispusipda ORDER BY id ASC");
-$assets = $stmt->fetchAll();
+$query = mysqli_query($conn, "SELECT * FROM inventaris_ti_dispusipda ORDER BY id ASC");
+$assets = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
 // Cek apakah ada notifikasi sukses
 $success = isset($_GET['success']) ? $_GET['success'] : '';
