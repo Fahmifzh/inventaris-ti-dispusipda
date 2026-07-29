@@ -3,144 +3,221 @@
    DISPUSIPDA Provinsi Jawa Barat
    ======================================== */
 
-/* ---------- PAGE CONTAINER ---------- */
-.inventaris-page {
-    background: #f8fafc;
-    min-height: 100vh;
-    padding: 0;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f1f5f9;
+    color: #1e293b;
 }
 
-/* ---------- PAGE HEADER ---------- */
+/* ---------- PAGE CONTAINER & MAIN LAYOUT ---------- */
+.inventaris-page {
+    background: #f1f5f9;
+    min-height: 100vh;
+    padding: 32px 40px;
+}
+
+/* ---------- HEADER SECTION ---------- */
 .inventaris-header {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 20px 28px;
-    margin-bottom: 24px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-    border: 1px solid #eef2f6;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
+    margin-bottom: 24px;
 }
 
-.inventaris-header h4 {
-    font-size: 20px;
+.inventaris-header .header-title h3 {
+    font-size: 24px;
     font-weight: 700;
     color: #0c2461;
-    margin: 0;
+    margin: 0 0 4px 0;
     letter-spacing: -0.3px;
 }
 
-.inventaris-header .subtitle {
-    font-size: 13px;
+.inventaris-header .header-title .subtitle {
+    font-size: 14px;
     color: #64748b;
-    margin: 2px 0 0 0;
+    margin: 0;
     font-weight: 400;
 }
 
-/* ---------- BUTTON TAMBAH ---------- */
+/* Actions Kanan (Button + Bell + Profile) */
+.inventaris-header .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ---------- BUTTON TAMBAH INVENTARIS ---------- */
 .btn-tambah-inventaris {
-    background: #059669;
-    color: #ffffff;
+    background: #00a86b;
+    color: #ffffff !important;
     border: none;
-    padding: 10px 22px;
-    border-radius: 12px;
+    padding: 10px 20px;
+    border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
     cursor: pointer;
     text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0, 168, 107, 0.15);
 }
 
 .btn-tambah-inventaris:hover {
-    background: #047857;
-    color: #ffffff;
+    background: #008f5b;
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.35);
+    box-shadow: 0 4px 8px rgba(0, 168, 107, 0.25);
 }
 
-.btn-tambah-inventaris:active {
-    transform: scale(0.97);
-}
-
-.btn-tambah-inventaris i {
+/* Bell Notification Icon Button */
+.btn-icon-bell {
+    width: 42px;
+    height: 42px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
     font-size: 18px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-icon-bell:hover {
+    background: #f8fafc;
+    color: #0c2461;
+}
+
+.btn-icon-bell .badge-dot {
+    position: absolute;
+    top: 10px;
+    right: 11px;
+    width: 7px;
+    height: 7px;
+    background-color: #ef4444;
+    border-radius: 50%;
+}
+
+/* User Profile Badge Kanan Atas */
+.user-profile-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 4px 14px 4px 6px;
+    border-radius: 30px;
+}
+
+.user-profile-badge .avatar-icon {
+    width: 32px;
+    height: 32px;
+    background: #0c2461;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.user-profile-badge .user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.user-profile-badge .user-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0c2461;
+}
+
+.user-profile-badge .user-role {
+    font-size: 10px;
+    color: #94a3b8;
+    letter-spacing: 0.3px;
 }
 
 /* ---------- FILTER BAR ---------- */
 .filter-bar {
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     gap: 12px;
     margin-bottom: 24px;
 }
 
 .filter-bar .search-wrapper {
-    flex: 1 1 280px;
+    flex: 1;
+    max-width: 420px;
     position: relative;
 }
 
 .filter-bar .search-wrapper input {
     width: 100%;
-    padding: 10px 16px 10px 44px;
+    padding: 10px 16px 10px 42px;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 14px;
+    border-radius: 25px;
+    font-size: 13.5px;
     background: #ffffff;
+    color: #334155;
     transition: all 0.2s ease;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.filter-bar .search-wrapper input::placeholder {
+    color: #94a3b8;
 }
 
 .filter-bar .search-wrapper input:focus {
     outline: none;
-    border-color: #1a3a8a;
-    box-shadow: 0 0 0 4px rgba(26, 58, 138, 0.08);
+    border-color: #0c2461;
+    box-shadow: 0 0 0 3px rgba(12, 36, 97, 0.08);
 }
 
 .filter-bar .search-wrapper .search-icon {
     position: absolute;
-    left: 14px;
+    left: 16px;
     top: 50%;
     transform: translateY(-50%);
     color: #94a3b8;
-    font-size: 18px;
+    font-size: 16px;
+    pointer-events: none;
 }
 
 .filter-bar select {
-    padding: 10px 16px;
+    padding: 10px 36px 10px 16px;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 14px;
+    border-radius: 25px;
+    font-size: 13.5px;
     background: #ffffff;
-    color: #1e293b;
-    min-width: 160px;
-    transition: all 0.2s ease;
+    color: #334155;
+    min-width: 150px;
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 14px center;
-    padding-right: 40px;
+    transition: all 0.2s ease;
 }
 
 .filter-bar select:focus {
     outline: none;
-    border-color: #1a3a8a;
-    box-shadow: 0 0 0 4px rgba(26, 58, 138, 0.08);
+    border-color: #0c2461;
+    box-shadow: 0 0 0 3px rgba(12, 36, 97, 0.08);
 }
 
-/* ---------- TABLE CARD ---------- */
+/* ---------- TABLE CARD CONTAINER ---------- */
 .table-card {
     background: #ffffff;
     border-radius: 16px;
-    border: 1px solid #eef2f6;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
     overflow: hidden;
 }
 
@@ -148,21 +225,21 @@
 .table-inventaris {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
+    font-size: 13.5px;
 }
 
 .table-inventaris thead {
     background: #f8fafc;
-    border-bottom: 1px solid #eef2f6;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .table-inventaris thead th {
-    padding: 14px 18px;
+    padding: 16px 20px;
     text-align: left;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     color: #94a3b8;
     white-space: nowrap;
 }
@@ -181,243 +258,117 @@
 }
 
 .table-inventaris tbody td {
-    padding: 14px 18px;
+    padding: 16px 20px;
     vertical-align: middle;
-    color: #1e293b;
+    color: #475569;
 }
 
-/* Kode Aset */
+/* Kolom Nomor & Kode Aset */
+.table-inventaris td.col-no {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
 .table-inventaris .kode-aset {
-    font-family: 'Courier New', monospace;
+    font-family: inherit;
     font-weight: 700;
     font-size: 13px;
-    color: #1a3a8a;
-    letter-spacing: 0.3px;
+    color: #0b3b8c;
+    letter-spacing: 0.2px;
 }
 
 /* Nama Hardware */
 .table-inventaris .nama-hardware {
     font-weight: 600;
     color: #0f172a;
-    font-size: 14px;
+    font-size: 13.5px;
+    max-width: 220px;
+    line-height: 1.4;
 }
 
-/* Kategori Badge */
-.table-inventaris .badge-kategori {
-    background: #f1f5f9;
-    color: #475569;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 500;
-    display: inline-block;
-}
-
-/* Spesifikasi (truncate) */
-.table-inventaris .spesifikasi {
-    max-width: 200px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+/* Kategori */
+.table-inventaris .kategori-text {
     color: #64748b;
     font-size: 13px;
 }
 
-/* ---------- STATUS BADGE ---------- */
+/* Spesifikasi & Lokasi */
+.table-inventaris .spesifikasi,
+.table-inventaris .lokasi {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.table-inventaris .tahun {
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* ---------- STATUS BADGES ---------- */
 .status-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 5px 14px;
+    padding: 4px 14px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.2px;
 }
 
 .status-badge .dot {
-    width: 7px;
-    height: 7px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     display: inline-block;
 }
 
+/* Status: Tersedia */
 .status-tersedia {
-    background: #d1fae5;
-    color: #065f46;
+    background: #dcfce7;
+    color: #15803d;
 }
 .status-tersedia .dot {
-    background: #059669;
+    background: #16a34a;
 }
 
+/* Status: Dipinjam */
 .status-dipinjam {
-    background: #fef3c7;
-    color: #92400e;
+    background: #e0f2fe;
+    color: #0369a1;
 }
 .status-dipinjam .dot {
+    background: #0284c7;
+}
+
+/* Status: Maintenance */
+.status-maintenance {
+    background: #fef3c7;
+    color: #b45309;
+}
+.status-maintenance .dot {
     background: #d97706;
 }
 
-.status-maintenance {
-    background: #fee2e2;
-    color: #991b1b;
-}
-.status-maintenance .dot {
-    background: #dc2626;
-}
-
-.status-default {
-    background: #f1f5f9;
-    color: #475569;
-}
-.status-default .dot {
-    background: #94a3b8;
-}
-
 /* ---------- ACTION BUTTONS ---------- */
-.btn-action {
+.btn-action-icon {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    border: none;
-    border-radius: 8px;
-    background: transparent;
-    color: #94a3b8;
-    transition: all 0.15s ease;
-    cursor: pointer;
-}
-
-.btn-action:hover {
-    background: #f1f5f9;
-    color: #1e293b;
-}
-
-.btn-action.danger:hover {
-    background: #fee2e2;
-    color: #dc2626;
-}
-
-.btn-action.primary:hover {
-    background: #dbeafe;
-    color: #1a3a8a;
-}
-
-/* ---------- TABLE FOOTER ---------- */
-.table-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px;
-    background: #fafcfc;
-    border-top: 1px solid #eef2f6;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.table-footer .info {
-    font-size: 13px;
-    color: #94a3b8;
-}
-
-.table-footer .info strong {
-    color: #1e293b;
-    font-weight: 600;
-}
-
-/* ---------- PAGINATION ---------- */
-.pagination-custom {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.pagination-custom .page-btn {
-    padding: 5px 12px;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 13px;
-    color: #64748b;
-    background: #ffffff;
     cursor: pointer;
     transition: all 0.15s ease;
+    font-size: 15px;
 }
 
-.pagination-custom .page-btn:hover {
+.btn-action-icon:hover {
     background: #f1f5f9;
-    border-color: #cbd5e1;
-}
-
-.pagination-custom .page-btn.active {
-    background: #1a3a8a;
-    border-color: #1a3a8a;
-    color: #ffffff;
-    font-weight: 600;
-}
-
-.pagination-custom .page-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* ---------- MODAL STYLING ---------- */
-.modal-inventaris .modal-content {
-    border-radius: 16px;
-    border: none;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-}
-
-.modal-inventaris .modal-header {
-    border-bottom: 1px solid #f1f5f9;
-    padding: 20px 28px 16px;
-}
-
-.modal-inventaris .modal-header h5 {
-    font-weight: 700;
     color: #0c2461;
-    font-size: 17px;
-}
-
-.modal-inventaris .modal-header small {
-    color: #94a3b8;
-    font-size: 12px;
-    display: block;
-    margin-top: 2px;
-}
-
-.modal-inventaris .modal-body {
-    padding: 24px 28px;
-}
-
-.modal-inventaris .modal-footer {
-    border-top: 1px solid #f1f5f9;
-    padding: 16px 28px 24px;
-}
-
-/* Form dalam modal */
-.modal-inventaris .form-label {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #94a3b8;
-    margin-bottom: 4px;
-}
-
-.modal-inventaris .form-control,
-.modal-inventaris .form-select {
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 14px;
-    transition: all 0.2s ease;
-}
-
-.modal-inventaris .form-control:focus,
-.modal-inventaris .form-select:focus {
-    border-color: #1a3a8a;
-    box-shadow: 0 0 0 4px rgba(26, 58, 138, 0.08);
 }
 
 /* ---------- RESPONSIVE ---------- */
@@ -425,64 +376,17 @@
     .inventaris-header {
         flex-direction: column;
         align-items: flex-start;
+        gap: 16px;
     }
-    .inventaris-header .btn-tambah-inventaris {
+    .inventaris-header .header-actions {
         width: 100%;
-        justify-content: center;
+        justify-content: flex-start;
     }
     .filter-bar {
         flex-direction: column;
+        align-items: stretch;
     }
     .filter-bar .search-wrapper {
-        flex: 1 1 100%;
-    }
-    .filter-bar select {
-        width: 100%;
-        min-width: unset;
-    }
-    .table-inventaris .spesifikasi {
-        max-width: 120px;
-    }
-}
-
-@media (max-width: 768px) {
-    .table-inventaris thead th,
-    .table-inventaris tbody td {
-        padding: 10px 12px;
-        font-size: 12px;
-    }
-    .table-inventaris .kode-aset {
-        font-size: 11px;
-    }
-    .table-inventaris .nama-hardware {
-        font-size: 12px;
-    }
-    .table-inventaris .status-badge {
-        font-size: 10px;
-        padding: 3px 10px;
-    }
-    .table-footer {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .table-footer .pagination-custom {
-        align-self: flex-end;
-    }
-}
-
-@media (max-width: 576px) {
-    .inventaris-header {
-        padding: 16px;
-    }
-    .inventaris-header h4 {
-        font-size: 17px;
-    }
-    .modal-inventaris .modal-body {
-        padding: 16px;
-    }
-    .modal-inventaris .modal-header,
-    .modal-inventaris .modal-footer {
-        padding-left: 16px;
-        padding-right: 16px;
+        max-width: 100%;
     }
 }

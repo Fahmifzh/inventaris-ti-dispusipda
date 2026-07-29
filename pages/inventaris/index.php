@@ -3,11 +3,17 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include '../../config/database.php';
+// Load file koneksi PDO
+require_once '../../config/database.php';
 
-// Ambil data inventaris
-$query = mysqli_query($conn, "SELECT * FROM inventaris ORDER BY id ASC");
-$assets = mysqli_fetch_all($query, MYSQLI_ASSOC);
+try {
+    // Ambil data inventaris menggunakan PDO
+    $stmt = $pdo->query("SELECT * FROM inventaris ORDER BY id ASC");
+    $assets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    // Penanganan error query
+    die("Gagal mengambil data inventaris: " . $e->getMessage());
+}
 
 // Cek apakah ada notifikasi sukses
 $success = isset($_GET['success']) ? $_GET['success'] : '';
@@ -24,7 +30,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
 
-    <!-- Custom CSS (Diberi path relatif ../../) -->
+    <!-- Custom CSS -->
     <link href="../../assets/css/style.css" rel="stylesheet" />
     <link href="../../assets/css/inventaris.css" rel="stylesheet" />
 
@@ -214,7 +220,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
             </div>
 
             <!-- NOTIFIKASI SUKSES -->
-            <?php if ($success == '1'): ?>
+            <?php if ($success === '1'): ?>
                 <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
                     <i class="bi bi-check-circle-fill me-2"></i> Data berhasil disimpan!
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -233,7 +239,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                     <select id="filterKategori" class="form-select bg-white">
                         <option value="">Semua Kategori</option>
                         <?php foreach (['Laptop', 'Desktop', 'Printer', 'Networking', 'Server', 'UPS', 'Monitor', 'Lainnya'] as $kat): ?>
-                            <option value="<?= $kat ?>"><?= $kat ?></option>
+                            <option value="<?= htmlspecialchars($kat) ?>"><?= htmlspecialchars($kat) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -273,25 +279,26 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                                 <?php $no = 1; foreach ($assets as $asset): ?>
                                 <tr>
                                     <td class="ps-4 text-secondary"><?= $no++ ?></td>
-                                    <td><span class="fw-bold text-primary"><?= htmlspecialchars($asset['kode_aset']) ?></span></td>
-                                    <td class="fw-semibold text-dark"><?= htmlspecialchars($asset['nama_hardware']) ?></td>
-                                    <td><span class="badge bg-light text-dark border"><?= htmlspecialchars($asset['kategori']) ?></span></td>
-                                    <td class="text-secondary small" style="max-width: 200px;"><?= htmlspecialchars($asset['spesifikasi']) ?></td>
-                                    <td class="text-secondary small"><?= htmlspecialchars($asset['lokasi']) ?></td>
-                                    <td class="text-secondary small"><?= $asset['tahun'] ?></td>
+                                    <td><span class="fw-bold text-primary"><?= htmlspecialchars($asset['kode_aset'] ?? '') ?></span></td>
+                                    <td class="fw-semibold text-dark"><?= htmlspecialchars($asset['nama_hardware'] ?? '') ?></td>
+                                    <td><span class="badge bg-light text-dark border"><?= htmlspecialchars($asset['kategori'] ?? '') ?></span></td>
+                                    <td class="text-secondary small" style="max-width: 200px;"><?= htmlspecialchars($asset['spesifikasi'] ?? '-') ?></td>
+                                    <td class="text-secondary small"><?= htmlspecialchars($asset['lokasi'] ?? '-') ?></td>
+                                    <td class="text-secondary small"><?= htmlspecialchars((string)($asset['tahun'] ?? '')) ?></td>
                                     <td>
                                         <?php
+                                        $status = $asset['status'] ?? 'Tersedia';
                                         $statusClass = 'bg-success-subtle text-success';
-                                        if ($asset['status'] == 'Dipinjam') $statusClass = 'bg-primary-subtle text-primary';
-                                        if ($asset['status'] == 'Maintenance') $statusClass = 'bg-warning-subtle text-warning';
+                                        if ($status === 'Dipinjam') $statusClass = 'bg-primary-subtle text-primary';
+                                        if ($status === 'Maintenance') $statusClass = 'bg-warning-subtle text-warning';
                                         ?>
                                         <span class="badge rounded-pill <?= $statusClass ?> px-3 py-2 fw-medium">
-                                            • <?= htmlspecialchars($asset['status']) ?>
+                                            • <?= htmlspecialchars($status) ?>
                                         </span>
                                     </td>
                                     <td class="text-center pe-4">
                                         <button class="btn btn-sm btn-light border text-secondary me-1" title="Detail"><i class="bi bi-eye"></i></button>
-                                        <button class="btn btn-sm btn-light border text-danger" title="Hapus" onclick="confirmDelete(<?= $asset['id'] ?>)"><i class="bi bi-trash"></i></button>
+                                        <button class="btn btn-sm btn-light border text-danger" title="Hapus" onclick="confirmDelete(<?= (int)$asset['id'] ?>)"><i class="bi bi-trash"></i></button>
                                     </td>
                                 </tr>
                                 <?php endforeach; ?>
@@ -340,7 +347,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                             <label class="form-label small fw-bold">Kategori</label>
                             <select name="kategori" class="form-select" required>
                                 <?php foreach (['Laptop', 'Desktop', 'Printer', 'Networking', 'Server', 'UPS', 'Monitor', 'Lainnya'] as $kat): ?>
-                                    <option value="<?= $kat ?>"><?= $kat ?></option>
+                                    <option value="<?= htmlspecialchars($kat) ?>"><?= htmlspecialchars($kat) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -358,7 +365,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                         </div>
                         <div class="col-6">
                             <label class="form-label small fw-bold">Tahun</label>
-                            <input type="number" name="tahun" class="form-control" value="2025" />
+                            <input type="number" name="tahun" class="form-control" value="2026" />
                         </div>
                     </div>
                 </div>
@@ -392,7 +399,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
 <!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// Filter & Search
+// Filter & Search Table
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchInput');
     const filterKategori = document.getElementById('filterKategori');
@@ -400,9 +407,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const rows = document.querySelectorAll('#inventarisTable tbody tr');
 
     function filterTable() {
-        const search = searchInput.value.toLowerCase();
-        const kategori = filterKategori.value;
-        const status = filterStatus.value;
+        const search = searchInput ? searchInput.value.toLowerCase() : '';
+        const kategori = filterKategori ? filterKategori.value : '';
+        const status = filterStatus ? filterStatus.value : '';
 
         rows.forEach(row => {
             const cells = row.querySelectorAll('td');
@@ -421,9 +428,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    searchInput?.addEventListener('keyup', filterTable);
-    filterKategori?.addEventListener('change', filterTable);
-    filterStatus?.addEventListener('change', filterTable);
+    if (searchInput) searchInput.addEventListener('keyup', filterTable);
+    if (filterKategori) filterKategori.addEventListener('change', filterTable);
+    if (filterStatus) filterStatus.addEventListener('change', filterTable);
 });
 
 // Confirm Delete
