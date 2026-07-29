@@ -69,6 +69,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 />
 
 <style>
+    .main-content {
+    margin-left: 260px;
+    padding: 30px;
+    width: calc(100% - 260px);
+    box-sizing: border-box;
+}
+
 .peminjaman-header {
     display: flex;
     justify-content: space-between;
