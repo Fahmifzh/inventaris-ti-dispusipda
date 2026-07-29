@@ -1,0 +1,234 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+}
+
+.main-content{
+    margin-left:250px;
+    padding:25px;
+    min-height:100vh;
+}
+
+/* ================= HEADER ================= */
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.page-header h1{
+    font-size:32px;
+    color:#1f2937;
+    font-weight:700;
+}
+
+.page-header p{
+    margin-top:5px;
+    color:#94a3b8;
+    font-size:14px;
+    line-height:22px;
+}
+
+/* ================= BUTTON ================= */
+
+.btn-tambah{
+    background:#f59e0b;
+    color:#fff;
+    text-decoration:none;
+    padding:14px 24px;
+    border-radius:12px;
+    font-weight:600;
+    transition:.3s;
+    box-shadow:0 10px 25px rgba(245,158,11,.25);
+}
+
+.btn-tambah:hover{
+    background:#ea9808;
+}
+
+/* ================= TABLE ================= */
+
+.table-card{
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(0,0,0,.06);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#fafafa;
+}
+
+th{
+    padding:18px;
+    text-align:left;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    color:#94a3b8;
+    border-bottom:1px solid #edf2f7;
+}
+
+td{
+    padding:18px;
+    font-size:14px;
+    color:#374151;
+    border-bottom:1px solid #f1f5f9;
+    vertical-align:middle;
+}
+
+tbody tr:hover{
+    background:#f8fbff;
+}
+
+small{
+    display:block;
+    margin-top:5px;
+    color:#94a3b8;
+}
+
+/* ================= BUTTON TABLE ================= */
+
+.btn-detail{
+    display:inline-block;
+    background:#2563eb;
+    color:#fff;
+    text-decoration:none;
+    padding:8px 14px;
+    border-radius:8px;
+    font-size:13px;
+    margin-right:5px;
+}
+
+.btn-detail:hover{
+    background:#1d4ed8;
+}
+
+.btn-edit{
+    display:inline-block;
+    background:#f59e0b;
+    color:#fff;
+    text-decoration:none;
+    padding:8px 14px;
+    border-radius:8px;
+    font-size:13px;
+}
+
+.btn-edit:hover{
+    background:#d97706;
+}
+
+/* ================= BADGE ================= */
+
+.badge-menunggu{
+    background:#FEF3C7;
+    color:#B45309;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.badge-proses{
+    background:#DBEAFE;
+    color:#2563EB;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.badge-selesai{
+    background:#DCFCE7;
+    color:#15803D;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+/* ================= FORM ================= */
+
+.form-card{
+    background:#fff;
+    max-width:900px;
+    margin:auto;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,.06);
+}
+
+.form-card h2{
+    margin-bottom:25px;
+    color:#1f2937;
+}
+
+label{
+    display:block;
+    margin-top:18px;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px 15px;
+    border:1px solid #dbe2ea;
+    border-radius:10px;
+    outline:none;
+    transition:.3s;
+    font-size:14px;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#2563eb;
+}
+
+textarea{
+    resize:none;
+}
+
+.btn-group{
+    display:flex;
+    gap:10px;
+    margin-top:25px;
+}
+
+.btn-simpan{
+    background:#2563eb;
+    color:#fff;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn-simpan:hover{
+    background:#1d4ed8;
+}
+
+.btn-batal{
+    background:#e5e7eb;
+    color:#374151;
+    text-decoration:none;
+    padding:12px 20px;
+    border-radius:10px;
+}
