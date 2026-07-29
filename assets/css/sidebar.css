@@ -1,0 +1,224 @@
+/* ==========================
+SIDEBAR
+========================== */
+
+.sidebar{
+
+    position:fixed;
+
+    left:0;
+    top:0;
+
+    width:260px;
+
+    height:100vh;
+
+    background:#163c87;
+
+    color:#fff;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+}
+
+/* ==========================
+LOGO
+========================== */
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:25px;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.logo img{
+
+    width:45px;
+
+}
+
+.logo h3{
+
+    font-size:18px;
+
+    margin-bottom:3px;
+
+}
+
+.logo small{
+
+    color:#bcd2ff;
+
+}
+
+/* ==========================
+MENU
+========================== */
+
+.menu-title{
+
+    color:#9cb6eb;
+
+    font-size:12px;
+
+    margin:20px 25px 8px;
+
+    letter-spacing:1px;
+
+}
+
+.menu{
+
+    list-style:none;
+
+    padding:0 15px;
+
+}
+
+.menu li{
+
+    margin-bottom:8px;
+
+}
+
+.menu li a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    text-decoration:none;
+
+    color:#d8e4ff;
+
+    padding:13px 16px;
+
+    border-radius:12px;
+
+    transition:.25s;
+
+    font-size:15px;
+
+}
+
+.menu li a:hover{
+
+    background:rgba(255,255,255,.1);
+
+}
+
+.menu li.active a{
+
+    background:#fff;
+
+    color:#163c87;
+
+    font-weight:600;
+
+}
+
+.menu li i{
+
+    width:20px;
+
+    text-align:center;
+
+}
+
+/* ==========================
+FOOTER
+========================== */
+
+.sidebar-footer{
+
+    padding:20px;
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+}
+
+.user{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-bottom:18px;
+
+}
+
+.avatar{
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:50%;
+
+    background:#2b5db8;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:18px;
+
+}
+
+.user h4{
+
+    font-size:14px;
+
+}
+
+.user span{
+
+    font-size:12px;
+
+    color:#bcd2ff;
+
+}
+
+.logout{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    transition:.25s;
+
+}
+
+.logout:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
