@@ -8,19 +8,12 @@ if (!isset($_SESSION['login'])) {
 
 include '../../config/database.php';
 
-// =====================================================================
-// ⚠️ ASUMSI STRUKTUR TABEL "peminjaman" — BELUM DIKONFIRMASI DARI SQL ASLI
-//   peminjaman: id, nama_pegawai, divisi, id_inventaris,
-//               tgl_pinjam, est_kembali, tgl_kembali, status
-//   inventaris (sudah ada): id, kode_aset, nama_perangkat, status
-// Kalau nama kolom asli beda, kirim CREATE TABLE dari file .sql-nya.
-// =====================================================================
 
 $result = mysqli_query($conn, "
-    SELECT p.*, i.kode_aset, i.nama_perangkat
+    SELECT p.*, i.kode_aset, i.nama_hardware
     FROM peminjaman p
-    JOIN inventaris i ON p.id_inventaris = i.id
-    ORDER BY p.tgl_pinjam DESC
+    JOIN inventaris i ON p.inventaris_id = i.id
+    ORDER BY p.tanggal_pinjam DESC
 ");
 $daftar_peminjaman = [];
 if ($result) {
@@ -31,10 +24,10 @@ if ($result) {
 $total_transaksi = count($daftar_peminjaman);
 
 $result_aset = mysqli_query($conn, "
-    SELECT id, kode_aset, nama_perangkat
+    SELECT id, kode_aset, nama_hardware
     FROM inventaris
     WHERE status = 'Aktif'
-    ORDER BY nama_perangkat
+    ORDER BY nama_hardware
 ");
 $aset_tersedia = [];
 if ($result_aset) {
@@ -84,7 +77,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
 <?php include '../../includes/sidebar.php'; ?>
 
-<div class="main-content">
+<div class="main-content peminjaman-content">
 
     <div class="peminjaman-header">
         <div>
@@ -127,9 +120,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
                         <tr>
                             <td class="cell-nama"><?= htmlspecialchars($row['nama_pegawai']) ?></td>
                             <td><?= htmlspecialchars($row['divisi']) ?></td>
-                            <td><?= htmlspecialchars($row['nama_perangkat']) ?></td>
+                            <td><?= htmlspecialchars($row['nama_hardware']) ?></td>
                             <td><span class="badge-kode"><?= htmlspecialchars($row['kode_aset']) ?></span></td>
-                            <td><?= formatTglID($row['tgl_pinjam']) ?></td>
+                            <td><?= formatTglID($row['tanggal_pinjam']) ?></td>
                             <td><?= formatTglID($row['est_kembali']) ?></td>
                             <td>
                                 <?php if ($row['status'] === 'Dipinjam'): ?>
@@ -181,12 +174,12 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
             </div>
 
             <div class="form-group">
-                <label for="id_inventaris">Perangkat (hanya yang berstatus Aktif)</label>
-                <select name="id_inventaris" id="id_inventaris" required>
+                <label for="inventaris_id">Perangkat (hanya yang berstatus Aktif)</label>
+                <select name="inventaris_id" id="inventaris_id" required>
                     <option value="" disabled selected>Pilih perangkat</option>
                     <?php foreach ($aset_tersedia as $a): ?>
                         <option value="<?= (int)$a['id'] ?>">
-                            <?= htmlspecialchars($a['kode_aset']) ?> — <?= htmlspecialchars($a['nama_perangkat']) ?>
+                            <?= htmlspecialchars($a['kode_aset']) ?> — <?= htmlspecialchars($a['nama_hardware']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -194,8 +187,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="tgl_pinjam">Tanggal Pinjam</label>
-                    <input type="date" name="tgl_pinjam" id="tgl_pinjam" value="<?= date('Y-m-d') ?>" required>
+                    <label for="tanggal_pinjam">Tanggal Pinjam</label>
+                    <input type="date" name="tanggal_pinjam" id="tanggal_pinjam" value="<?= date('Y-m-d') ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="est_kembali">Estimasi Kembali</label>
