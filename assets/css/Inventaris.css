@@ -1,183 +1,110 @@
-/* ========================================
+/* ==========================
    INVENTARIS PAGE - CUSTOM STYLES
    DISPUSIPDA Provinsi Jawa Barat
-   ======================================== */
+   ========================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
 
 body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background-color: #f1f5f9;
-    color: #1e293b;
+    background: #f5f7fb;
 }
 
-/* ---------- PAGE CONTAINER & MAIN LAYOUT ---------- */
-.inventaris-page {
-    background: #f1f5f9;
-    min-height: 100vh;
-    padding: 32px 40px;
+/* ==========================
+   MAIN CONTENT OFFSET
+   ========================== */
+.main-content {
+    margin-left: 260px;
+    padding: 30px;
 }
 
-/* ---------- HEADER SECTION ---------- */
+/* ==========================
+   TOPBAR / HEADER
+   ========================== */
 .inventaris-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin-bottom: 24px;
+    align-items: center;
+    margin-bottom: 30px;
+    background: #fff;
+    padding: 22px 28px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
 }
 
-.inventaris-header .header-title h3 {
+.inventaris-header h4 {
+    color: #1e3a8a;
     font-size: 24px;
     font-weight: 700;
-    color: #0c2461;
-    margin: 0 0 4px 0;
-    letter-spacing: -0.3px;
 }
 
-.inventaris-header .header-title .subtitle {
+.inventaris-header .subtitle {
+    color: #777;
     font-size: 14px;
-    color: #64748b;
-    margin: 0;
-    font-weight: 400;
+    margin-top: 4px;
 }
 
-/* Actions Kanan (Button + Bell + Profile) */
-.inventaris-header .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* ---------- BUTTON TAMBAH INVENTARIS ---------- */
+/* ---------- BUTTON TAMBAH ---------- */
 .btn-tambah-inventaris {
-    background: #00a86b;
-    color: #ffffff !important;
+    background: #059669;
+    color: #fff;
     border: none;
-    padding: 10px 20px;
-    border-radius: 10px;
+    padding: 12px 24px;
+    border-radius: 12px;
     font-size: 14px;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: all 0.2s ease;
+    transition: 0.3s;
     cursor: pointer;
-    text-decoration: none;
-    box-shadow: 0 2px 4px rgba(0, 168, 107, 0.15);
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25);
 }
 
 .btn-tambah-inventaris:hover {
-    background: #008f5b;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 168, 107, 0.25);
+    background: #047857;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(5, 150, 105, 0.35);
 }
 
-/* Bell Notification Icon Button */
-.btn-icon-bell {
-    width: 42px;
-    height: 42px;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #64748b;
+.btn-tambah-inventaris i {
     font-size: 18px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.2s ease;
 }
 
-.btn-icon-bell:hover {
-    background: #f8fafc;
-    color: #0c2461;
-}
-
-.btn-icon-bell .badge-dot {
-    position: absolute;
-    top: 10px;
-    right: 11px;
-    width: 7px;
-    height: 7px;
-    background-color: #ef4444;
-    border-radius: 50%;
-}
-
-/* User Profile Badge Kanan Atas */
-.user-profile-badge {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    padding: 4px 14px 4px 6px;
-    border-radius: 30px;
-}
-
-.user-profile-badge .avatar-icon {
-    width: 32px;
-    height: 32px;
-    background: #0c2461;
-    color: #ffffff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-}
-
-.user-profile-badge .user-info {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.2;
-}
-
-.user-profile-badge .user-name {
-    font-size: 13px;
-    font-weight: 700;
-    color: #0c2461;
-}
-
-.user-profile-badge .user-role {
-    font-size: 10px;
-    color: #94a3b8;
-    letter-spacing: 0.3px;
-}
-
-/* ---------- FILTER BAR ---------- */
+/* ==========================
+   FILTER BAR
+   ========================== */
 .filter-bar {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 28px;
 }
 
 .filter-bar .search-wrapper {
-    flex: 1;
-    max-width: 420px;
+    flex: 1 1 300px;
     position: relative;
 }
 
 .filter-bar .search-wrapper input {
     width: 100%;
-    padding: 10px 16px 10px 42px;
+    padding: 12px 16px 12px 48px;
     border: 1px solid #e2e8f0;
-    border-radius: 25px;
-    font-size: 13.5px;
-    background: #ffffff;
-    color: #334155;
-    transition: all 0.2s ease;
-}
-
-.filter-bar .search-wrapper input::placeholder {
-    color: #94a3b8;
+    border-radius: 14px;
+    font-size: 14px;
+    background: #fff;
+    transition: 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .filter-bar .search-wrapper input:focus {
     outline: none;
-    border-color: #0c2461;
-    box-shadow: 0 0 0 3px rgba(12, 36, 97, 0.08);
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.1);
 }
 
 .filter-bar .search-wrapper .search-icon {
@@ -186,51 +113,55 @@ body {
     top: 50%;
     transform: translateY(-50%);
     color: #94a3b8;
-    font-size: 16px;
-    pointer-events: none;
+    font-size: 18px;
 }
 
 .filter-bar select {
-    padding: 10px 36px 10px 16px;
+    padding: 12px 18px;
     border: 1px solid #e2e8f0;
-    border-radius: 25px;
-    font-size: 13.5px;
-    background: #ffffff;
-    color: #334155;
-    min-width: 150px;
+    border-radius: 14px;
+    font-size: 14px;
+    background: #fff;
+    color: #1e293b;
+    min-width: 170px;
+    transition: 0.3s;
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 14px center;
-    transition: all 0.2s ease;
+    background-position: right 16px center;
+    padding-right: 44px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .filter-bar select:focus {
     outline: none;
-    border-color: #0c2461;
-    box-shadow: 0 0 0 3px rgba(12, 36, 97, 0.08);
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.1);
 }
 
-/* ---------- TABLE CARD CONTAINER ---------- */
+/* ==========================
+   TABLE CARD
+   ========================== */
 .table-card {
-    background: #ffffff;
-    border-radius: 16px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
     overflow: hidden;
 }
 
-/* ---------- TABLE STYLING ---------- */
+/* ==========================
+   TABLE STYLING
+   ========================== */
 .table-inventaris {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13.5px;
+    font-size: 14px;
 }
 
 .table-inventaris thead {
     background: #f8fafc;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #eef2f6;
 }
 
 .table-inventaris thead th {
@@ -239,14 +170,14 @@ body {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     color: #94a3b8;
     white-space: nowrap;
 }
 
 .table-inventaris tbody tr {
     border-bottom: 1px solid #f1f5f9;
-    transition: background 0.15s ease;
+    transition: 0.2s;
 }
 
 .table-inventaris tbody tr:last-child {
@@ -260,133 +191,351 @@ body {
 .table-inventaris tbody td {
     padding: 16px 20px;
     vertical-align: middle;
-    color: #475569;
+    color: #1e293b;
 }
 
-/* Kolom Nomor & Kode Aset */
-.table-inventaris td.col-no {
-    color: #94a3b8;
-    font-size: 13px;
-}
-
-.table-inventaris .kode-aset {
-    font-family: inherit;
+/* ---------- KODE ASET ---------- */
+.kode-aset {
+    font-family: 'Courier New', monospace;
     font-weight: 700;
     font-size: 13px;
-    color: #0b3b8c;
-    letter-spacing: 0.2px;
+    color: #1e3a8a;
+    letter-spacing: 0.3px;
 }
 
-/* Nama Hardware */
-.table-inventaris .nama-hardware {
+/* ---------- NAMA HARDWARE ---------- */
+.nama-hardware {
     font-weight: 600;
     color: #0f172a;
-    font-size: 13.5px;
-    max-width: 220px;
-    line-height: 1.4;
+    font-size: 14px;
 }
 
-/* Kategori */
-.table-inventaris .kategori-text {
-    color: #64748b;
-    font-size: 13px;
-}
-
-/* Spesifikasi & Lokasi */
-.table-inventaris .spesifikasi,
-.table-inventaris .lokasi {
-    color: #64748b;
-    font-size: 13px;
-    line-height: 1.4;
-}
-
-.table-inventaris .tahun {
-    color: #64748b;
-    font-size: 13px;
-}
-
-/* ---------- STATUS BADGES ---------- */
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+/* ---------- KATEGORI BADGE ---------- */
+.badge-kategori {
+    background: #f1f5f9;
+    color: #475569;
     padding: 4px 14px;
     border-radius: 20px;
     font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+/* ---------- SPESIFIKASI (TRUNCATE) ---------- */
+.spesifikasi {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* ==========================
+   STATUS BADGE
+   ========================== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 16px;
+    border-radius: 20px;
+    font-size: 12px;
     font-weight: 600;
+    letter-spacing: 0.2px;
 }
 
 .status-badge .dot {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     display: inline-block;
 }
 
-/* Status: Tersedia */
 .status-tersedia {
-    background: #dcfce7;
-    color: #15803d;
+    background: #d1fae5;
+    color: #065f46;
 }
 .status-tersedia .dot {
-    background: #16a34a;
+    background: #059669;
 }
 
-/* Status: Dipinjam */
 .status-dipinjam {
-    background: #e0f2fe;
-    color: #0369a1;
+    background: #fef3c7;
+    color: #92400e;
 }
 .status-dipinjam .dot {
-    background: #0284c7;
-}
-
-/* Status: Maintenance */
-.status-maintenance {
-    background: #fef3c7;
-    color: #b45309;
-}
-.status-maintenance .dot {
     background: #d97706;
 }
 
-/* ---------- ACTION BUTTONS ---------- */
-.btn-action-icon {
-    background: transparent;
-    border: none;
-    color: #94a3b8;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+.status-maintenance {
+    background: #fee2e2;
+    color: #991b1b;
+}
+.status-maintenance .dot {
+    background: #dc2626;
+}
+
+.status-default {
+    background: #f1f5f9;
+    color: #475569;
+}
+.status-default .dot {
+    background: #94a3b8;
+}
+
+/* ==========================
+   ACTION BUTTONS
+   ========================== */
+.btn-action {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: #94a3b8;
+    transition: 0.2s;
     cursor: pointer;
-    transition: all 0.15s ease;
-    font-size: 15px;
 }
 
-.btn-action-icon:hover {
+.btn-action:hover {
     background: #f1f5f9;
-    color: #0c2461;
+    color: #1e293b;
 }
 
-/* ---------- RESPONSIVE ---------- */
+.btn-action.danger:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.btn-action.primary:hover {
+    background: #dbeafe;
+    color: #1e3a8a;
+}
+
+/* ==========================
+   TABLE FOOTER
+   ========================== */
+.table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    background: #fafcfc;
+    border-top: 1px solid #eef2f6;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.table-footer .info {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.table-footer .info strong {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+/* ==========================
+   PAGINATION
+   ========================== */
+.pagination-custom {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pagination-custom .page-btn {
+    padding: 6px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #64748b;
+    background: #fff;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.pagination-custom .page-btn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.pagination-custom .page-btn.active {
+    background: #1e3a8a;
+    border-color: #1e3a8a;
+    color: #fff;
+    font-weight: 600;
+}
+
+.pagination-custom .page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ==========================
+   MODAL STYLING
+   ========================== */
+.modal-inventaris .modal-content {
+    border-radius: 18px;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.modal-inventaris .modal-header {
+    border-bottom: 1px solid #f1f5f9;
+    padding: 22px 30px 18px;
+}
+
+.modal-inventaris .modal-header h5 {
+    font-weight: 700;
+    color: #1e3a8a;
+    font-size: 18px;
+}
+
+.modal-inventaris .modal-header small {
+    color: #94a3b8;
+    font-size: 13px;
+    display: block;
+    margin-top: 2px;
+}
+
+.modal-inventaris .modal-body {
+    padding: 26px 30px;
+}
+
+.modal-inventaris .modal-footer {
+    border-top: 1px solid #f1f5f9;
+    padding: 18px 30px 24px;
+}
+
+/* Form dalam modal */
+.modal-inventaris .form-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #94a3b8;
+    margin-bottom: 5px;
+}
+
+.modal-inventaris .form-control,
+.modal-inventaris .form-select {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 11px 16px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.modal-inventaris .form-control:focus,
+.modal-inventaris .form-select:focus {
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.08);
+}
+
+/* ==========================
+   RESPONSIVE
+   ========================== */
+@media (max-width: 1200px) {
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+}
+
 @media (max-width: 992px) {
     .inventaris-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 16px;
     }
-    .inventaris-header .header-actions {
+    .btn-tambah-inventaris {
         width: 100%;
-        justify-content: flex-start;
+        justify-content: center;
     }
     .filter-bar {
         flex-direction: column;
-        align-items: stretch;
     }
     .filter-bar .search-wrapper {
-        max-width: 100%;
+        flex: 1 1 100%;
+    }
+    .filter-bar select {
+        width: 100%;
+        min-width: unset;
+    }
+    .spesifikasi {
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 768px) {
+    .inventaris-header {
+        padding: 18px 20px;
+    }
+    .inventaris-header h4 {
+        font-size: 20px;
+    }
+    .table-inventaris thead th,
+    .table-inventaris tbody td {
+        padding: 12px 14px;
+        font-size: 12px;
+    }
+    .kode-aset {
+        font-size: 11px;
+    }
+    .nama-hardware {
+        font-size: 12px;
+    }
+    .status-badge {
+        font-size: 10px;
+        padding: 3px 10px;
+    }
+    .badge-kategori {
+        font-size: 10px;
+        padding: 2px 10px;
+    }
+    .table-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .table-footer .pagination-custom {
+        align-self: flex-end;
+    }
+    .modal-inventaris .modal-body {
+        padding: 18px;
+    }
+    .modal-inventaris .modal-header,
+    .modal-inventaris .modal-footer {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+}
+
+@media (max-width: 576px) {
+    .inventaris-header {
+        padding: 14px 16px;
+        border-radius: 14px;
+    }
+    .inventaris-header h4 {
+        font-size: 17px;
+    }
+    .table-inventaris thead th,
+    .table-inventaris tbody td {
+        padding: 10px 10px;
+        font-size: 11px;
+    }
+    .btn-action {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+    }
+    .pagination-custom .page-btn {
+        padding: 4px 10px;
+        font-size: 11px;
     }
 }
