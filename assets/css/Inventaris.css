@@ -1,397 +1,482 @@
 /* ==========================
-   INVENTARIS PAGE - ELEMEN KHUSUS
-   (Hanya tambahan untuk inventaris, tidak menduplikasi dashboard.css)
-========================== */
+   INVENTARIS PAGE - STYLE
+   DISPUSIPDA Provinsi Jawa Barat
+   ========================== */
 
-/* TABLE CARD */
-.table-card{
-    background:#fff;
-    border-radius:18px;
-    box-shadow:0 8px 25px rgba(0,0,0,.07);
-    overflow:hidden;
-}
-
-.table-card .table-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:18px 24px;
-    border-bottom:1px solid #eee;
+/* ---------- MAIN CONTENT ---------- */
+.main-content {
+    margin-left: 260px;
+    padding: 30px;
+    width: calc(100% - 260px);
+    box-sizing: border-box;
 }
 
-.table-card .table-header h5{
-    font-weight:600;
-    color:#1e3a8a;
-    font-size:16px;
-    margin:0;
+.inventaris-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
-.table-card .table-header .badge-count{
-    background:#e8f1ff;
-    color:#2563eb;
-    padding:4px 14px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:600;
+.inventaris-header h2 {
+    margin: 0 0 4px;
+    color: #1c1c2b;
+    font-size: 22px;
+    font-weight: 700;
 }
 
-/* TABLE */
-.table-inventaris{
-    width:100%;
-    border-collapse:collapse;
-    font-size:14px;
+.inventaris-header p {
+    margin: 0;
+    color: #8a8fa3;
+    font-size: 13.5px;
 }
 
-.table-inventaris thead{
-    background:#f8fafc;
+/* ---------- STATISTIK CARD ---------- */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
 }
 
-.table-inventaris thead th{
-    padding:14px 20px;
-    text-align:left;
-    font-size:11px;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:0.05em;
-    color:#94a3b8;
-    border-bottom:1px solid #eef2f6;
+.stat-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 3px rgba(20, 25, 60, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
 
-.table-inventaris tbody tr{
-    border-bottom:1px solid #f1f5f9;
-    transition:0.2s;
+.stat-card .icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
 }
 
-.table-inventaris tbody tr:hover{
-    background:#f8fafc;
+.stat-card .icon.blue {
+    background: #e8f0fe;
+    color: #2b3f9e;
+}
+.stat-card .icon.green {
+    background: #e7f7ee;
+    color: #1f9d55;
+}
+.stat-card .icon.yellow {
+    background: #fef3e2;
+    color: #d98b1f;
+}
+.stat-card .icon.red {
+    background: #fdecec;
+    color: #d64545;
 }
 
-.table-inventaris tbody td{
-    padding:14px 20px;
-    vertical-align:middle;
-    color:#1e293b;
+.stat-card .info h4 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1c1c2b;
 }
 
-.kode-aset{
-    font-family:'Courier New',monospace;
-    font-weight:700;
-    font-size:13px;
-    color:#1e3a8a;
+.stat-card .info span {
+    font-size: 12px;
+    color: #8a8fa3;
 }
 
-.nama-hardware{
-    font-weight:600;
-    color:#0f172a;
+/* ---------- BUTTON TAMBAH ---------- */
+.btn-tambah-inventaris {
+    background: #16215c;
+    color: #fff;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.badge-kategori{
-    background:#f1f5f9;
-    color:#475569;
-    padding:4px 14px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:500;
-    display:inline-block;
+.btn-tambah-inventaris:hover {
+    background: #1c2a72;
 }
 
-.spesifikasi{
-    max-width:200px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    color:#64748b;
-    font-size:13px;
+/* ---------- FILTER BAR ---------- */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
-/* STATUS BADGE */
-.status-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    padding:5px 16px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:600;
+.filter-bar .search-wrapper {
+    flex: 1 1 240px;
+    position: relative;
 }
 
-.status-badge .dot{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    display:inline-block;
+.filter-bar .search-wrapper input {
+    width: 100%;
+    padding: 10px 14px 10px 40px;
+    border: 1px solid #edeef3;
+    border-radius: 8px;
+    font-size: 13.5px;
+    background: #fff;
+    color: #1c1c2b;
+    transition: 0.2s;
 }
 
-.status-tersedia{
-    background:#d1fae5;
-    color:#065f46;
-}
-.status-tersedia .dot{
-    background:#059669;
+.filter-bar .search-wrapper input:focus {
+    outline: none;
+    border-color: #2b3f9e;
 }
 
-.status-dipinjam{
-    background:#fef3c7;
-    color:#92400e;
-}
-.status-dipinjam .dot{
-    background:#d97706;
-}
-
-.status-maintenance{
-    background:#fee2e2;
-    color:#991b1b;
-}
-.status-maintenance .dot{
-    background:#dc2626;
+.filter-bar .search-wrapper .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8a8fa3;
+    font-size: 14px;
 }
 
-.status-default{
-    background:#f1f5f9;
-    color:#475569;
-}
-.status-default .dot{
-    background:#94a3b8;
-}
-
-/* ACTION BUTTONS */
-.btn-action{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:34px;
-    height:34px;
-    border:none;
-    border-radius:8px;
-    background:transparent;
-    color:#94a3b8;
-    transition:0.2s;
-    cursor:pointer;
+.filter-bar select {
+    padding: 10px 14px;
+    border: 1px solid #edeef3;
+    border-radius: 8px;
+    font-size: 13.5px;
+    background: #fff;
+    color: #1c1c2b;
+    min-width: 140px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a8fa3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
 }
 
-.btn-action:hover{
-    background:#f1f5f9;
-    color:#1e293b;
+.filter-bar select:focus {
+    outline: none;
+    border-color: #2b3f9e;
 }
 
-.btn-action.danger:hover{
-    background:#fee2e2;
-    color:#dc2626;
+/* ---------- ALERT ---------- */
+.alert-box {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    margin-bottom: 18px;
 }
 
-.btn-action.primary:hover{
-    background:#dbeafe;
-    color:#1e3a8a;
+.alert-success {
+    background: #e7f7ee;
+    color: #1f9d55;
 }
 
-/* BUTTON TAMBAH */
-.btn-tambah-inventaris{
-    background:#059669;
-    color:#fff;
-    border:none;
-    padding:10px 22px;
-    border-radius:12px;
-    font-size:14px;
-    font-weight:600;
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    transition:0.3s;
-    cursor:pointer;
-    box-shadow:0 4px 14px rgba(5,150,105,0.25);
+/* ---------- TABLE CARD ---------- */
+.card-inventaris {
+    background: #fff;
+    border-radius: 14px;
+    padding: 8px 0 0;
+    box-shadow: 0 1px 3px rgba(20, 25, 60, 0.05);
+    overflow-x: auto;
 }
 
-.btn-tambah-inventaris:hover{
-    background:#047857;
-    transform:translateY(-2px);
-    box-shadow:0 8px 20px rgba(5,150,105,0.35);
+.table-inventaris {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 860px;
 }
 
-/* FILTER BAR */
-.filter-bar{
-    display:flex;
-    flex-wrap:wrap;
-    gap:14px;
-    margin-bottom:24px;
+.table-inventaris thead th {
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #8a8fa3;
+    font-weight: 600;
+    padding: 14px 20px;
+    border-bottom: 1px solid #edeef3;
 }
 
-.filter-bar .search-wrapper{
-    flex:1 1 300px;
-    position:relative;
+.table-inventaris tbody td {
+    padding: 16px 20px;
+    font-size: 13.5px;
+    border-bottom: 1px solid #edeef3;
+    color: #1c1c2b;
 }
 
-.filter-bar .search-wrapper input{
-    width:100%;
-    padding:12px 16px 12px 48px;
-    border:1px solid #e2e8f0;
-    border-radius:14px;
-    font-size:14px;
-    background:#fff;
-    transition:0.3s;
-    box-shadow:0 2px 8px rgba(0,0,0,0.04);
+.table-inventaris tbody tr:last-child td {
+    border-bottom: none;
 }
 
-.filter-bar .search-wrapper input:focus{
-    outline:none;
-    border-color:#1e3a8a;
-    box-shadow:0 0 0 4px rgba(30,58,138,0.1);
+.table-inventaris tbody tr:hover {
+    background: #fafbfe;
 }
 
-.filter-bar .search-wrapper .search-icon{
-    position:absolute;
-    left:16px;
-    top:50%;
-    transform:translateY(-50%);
-    color:#94a3b8;
-    font-size:18px;
+/* ---------- CELL STYLING ---------- */
+.cell-kode {
+    font-weight: 700;
+    color: #2b3f9e;
+    font-size: 13px;
 }
 
-.filter-bar select{
-    padding:12px 18px;
-    border:1px solid #e2e8f0;
-    border-radius:14px;
-    font-size:14px;
-    background:#fff;
-    color:#1e293b;
-    min-width:160px;
-    transition:0.3s;
-    cursor:pointer;
-    appearance:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-    background-repeat:no-repeat;
-    background-position:right 16px center;
-    padding-right:44px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.04);
+.cell-nama {
+    font-weight: 600;
 }
 
-.filter-bar select:focus{
-    outline:none;
-    border-color:#1e3a8a;
-    box-shadow:0 0 0 4px rgba(30,58,138,0.1);
+.badge-kategori {
+    background: #eef0fb;
+    color: #2b3f9e;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 6px;
+    display: inline-block;
 }
 
-/* TABLE FOOTER & PAGINATION */
-.table-footer{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:14px 24px;
-    background:#fafcfc;
-    border-top:1px solid #eef2f6;
-    flex-wrap:wrap;
-    gap:10px;
+.spesifikasi-text {
+    color: #8a8fa3;
+    font-size: 12.5px;
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
 }
 
-.table-footer .info{
-    font-size:13px;
-    color:#94a3b8;
+/* ---------- STATUS BADGE ---------- */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
 }
 
-.table-footer .info strong{
-    color:#1e293b;
+.status-badge i {
+    font-size: 7px;
 }
 
-.pagination-custom{
-    display:flex;
-    align-items:center;
-    gap:6px;
+.status-tersedia {
+    background: #e7f7ee;
+    color: #1f9d55;
 }
 
-.pagination-custom .page-btn{
-    padding:6px 14px;
-    border:1px solid #e2e8f0;
-    border-radius:10px;
-    font-size:13px;
-    color:#64748b;
-    background:#fff;
-    cursor:pointer;
-    transition:0.2s;
+.status-dipinjam {
+    background: #fef3e2;
+    color: #d98b1f;
 }
 
-.pagination-custom .page-btn:hover{
-    background:#f1f5f9;
-    border-color:#cbd5e1;
+.status-maintenance {
+    background: #fdecec;
+    color: #d64545;
 }
 
-.pagination-custom .page-btn.active{
-    background:#1e3a8a;
-    border-color:#1e3a8a;
-    color:#fff;
-    font-weight:600;
+/* ---------- ACTION BUTTONS ---------- */
+.btn-action {
+    background: transparent;
+    border: none;
+    padding: 6px 10px;
+    font-size: 14px;
+    color: #8a8fa3;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.2s;
 }
 
-.pagination-custom .page-btn:disabled{
-    opacity:0.5;
-    cursor:not-allowed;
+.btn-action:hover {
+    background: #f1f2f6;
+    color: #1c1c2b;
 }
 
-/* MODAL */
-.modal-inventaris .modal-content{
-    border-radius:18px;
-    border:none;
-    box-shadow:0 20px 60px rgba(0,0,0,0.15);
+.btn-action.danger:hover {
+    background: #fdecec;
+    color: #d64545;
 }
 
-.modal-inventaris .modal-header{
-    border-bottom:1px solid #f1f5f9;
-    padding:20px 28px;
+/* ---------- TABLE FOOTER ---------- */
+.empty-state {
+    text-align: center;
+    color: #8a8fa3;
+    padding: 40px 20px !important;
 }
 
-.modal-inventaris .modal-header h5{
-    font-weight:700;
-    color:#1e3a8a;
+.table-footer-info {
+    padding: 14px 20px;
+    font-size: 12.5px;
+    color: #8a8fa3;
 }
 
-.modal-inventaris .modal-body{
-    padding:24px 28px;
+/* ---------- MODAL ---------- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 20, 45, 0.45);
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
 }
 
-.modal-inventaris .modal-footer{
-    border-top:1px solid #f1f5f9;
-    padding:16px 28px 24px;
+.modal-overlay.is-open {
+    display: flex;
 }
 
-.modal-inventaris .form-label{
-    font-size:11px;
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:0.05em;
-    color:#94a3b8;
-    margin-bottom:4px;
+.modal-box {
+    background: #fff;
+    width: 420px;
+    max-width: 92vw;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 20px 50px rgba(15, 20, 45, 0.25);
 }
 
-.modal-inventaris .form-control,
-.modal-inventaris .form-select{
-    border:1px solid #e2e8f0;
-    border-radius:12px;
-    padding:10px 16px;
-    font-size:14px;
-    transition:0.3s;
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
 }
 
-.modal-inventaris .form-control:focus,
-.modal-inventaris .form-select:focus{
-    border-color:#1e3a8a;
-    box-shadow:0 0 0 4px rgba(30,58,138,0.08);
+.modal-header h3 {
+    margin: 0;
+    font-size: 17px;
+    color: #16215c;
 }
 
-/* RESPONSIVE UNTUK INVENTARIS */
-@media(max-width:768px){
-    .table-inventaris thead th,
-    .table-inventaris tbody td{
-        padding:10px 14px;
-        font-size:12px;
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 22px;
+    line-height: 1;
+    color: #8a8fa3;
+    cursor: pointer;
+}
+
+.modal-form .form-group {
+    margin-bottom: 16px;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.modal-form label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #1c1c2b;
+    margin-bottom: 6px;
+}
+
+.modal-form input,
+.modal-form select,
+.modal-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #edeef3;
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: #1c1c2b;
+    background: #fff;
+    transition: 0.2s;
+}
+
+.modal-form input:focus,
+.modal-form select:focus,
+.modal-form textarea:focus {
+    outline: none;
+    border-color: #2b3f9e;
+}
+
+.modal-form textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.btn-batal {
+    background: #fff;
+    color: #1c1c2b;
+    border: 1px solid #edeef3;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-batal:hover {
+    background: #f8f9fc;
+}
+
+.btn-simpan {
+    background: #16215c;
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-simpan:hover {
+    background: #1c2a72;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+        width: 100%;
     }
-
-    .spesifikasi{
-        max-width:100px;
+    .inventaris-header {
+        flex-direction: column;
+        align-items: stretch;
     }
-
-    .table-footer{
-        flex-direction:column;
-        align-items:flex-start;
+    .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
+    .filter-bar {
+        flex-direction: column;
+    }
+    .filter-bar .search-wrapper {
+        flex: 1 1 100%;
+    }
+    .filter-bar select {
+        width: 100%;
+    }
+    .form-row {
+        flex-direction: column;
+    }
+}
 
-    .table-footer .pagination-custom{
-        align-self:flex-end;
+@media (max-width: 480px) {
+    .stat-grid {
+        grid-template-columns: 1fr;
     }
 }
