@@ -41,7 +41,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-    <!-- Custom CSS -->
+    <!-- Custom CSS - HANYA SATU FILE UNTUK KONSISTENSI -->
     <link href="../../assets/css/dashboard.css" rel="stylesheet" />
     <link href="../../assets/css/inventaris.css" rel="stylesheet" />
 </head>
@@ -63,7 +63,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
 
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a class="nav-link" href="dashboard.php">
+            <a class="nav-link" href="../dashboard/index.php">
                 <i class="bi bi-grid-fill"></i> Dashboard
             </a>
         </li>
