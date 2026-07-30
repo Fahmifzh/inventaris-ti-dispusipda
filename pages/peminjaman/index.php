@@ -8,12 +8,19 @@ if (!isset($_SESSION['login'])) {
 
 include '../../config/database.php';
 
+// =====================================================================
+// ⚠️ ASUMSI STRUKTUR TABEL "peminjaman" — BELUM DIKONFIRMASI DARI SQL ASLI
+//   peminjaman: id, nama_pegawai, divisi, id_inventaris,
+//               tgl_pinjam, est_kembali, tgl_kembali, status
+//   inventaris (sudah ada): id, kode_aset, nama_perangkat, status
+// Kalau nama kolom asli beda, kirim CREATE TABLE dari file .sql-nya.
+// =====================================================================
 
 $result = mysqli_query($conn, "
-    SELECT p.*, i.kode_aset, i.nama_hardware
+    SELECT p.*, i.kode_aset, i.nama_perangkat
     FROM peminjaman p
-    JOIN inventaris i ON p.inventaris_id = i.id
-    ORDER BY p.tanggal_pinjam DESC
+    JOIN inventaris i ON p.id_inventaris = i.id
+    ORDER BY p.tgl_pinjam DESC
 ");
 $daftar_peminjaman = [];
 if ($result) {
@@ -24,10 +31,10 @@ if ($result) {
 $total_transaksi = count($daftar_peminjaman);
 
 $result_aset = mysqli_query($conn, "
-    SELECT id, kode_aset, nama_hardware
+    SELECT id, kode_aset, nama_perangkat
     FROM inventaris
-    WHERE status = 'Tersedia'
-    ORDER BY nama_hardware
+    WHERE status = 'Aktif'
+    ORDER BY nama_perangkat
 ");
 $aset_tersedia = [];
 if ($result_aset) {
@@ -68,165 +75,8 @@ rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 />
 
-<style>
-    .main-content {
-    margin-left: 260px;
-    padding: 30px;
-    width: calc(100% - 260px);
-    box-sizing: border-box;
-}
+<link rel="stylesheet" href="../../assets/css/peminjaman.css">
 
-.peminjaman-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 24px;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-.peminjaman-header h2 { margin: 0 0 4px; }
-.peminjaman-header p { margin: 0; color: #8a8fa3; font-size: 13.5px; }
-
-.btn-tambah-peminjaman {
-    background: #16215c;
-    color: #fff;
-    border: none;
-    padding: 11px 20px;
-    border-radius: 8px;
-    font-size: 13.5px;
-    font-weight: 600;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-.btn-tambah-peminjaman:hover { background: #1c2a72; }
-
-.alert-box { padding: 12px 16px; border-radius: 8px; font-size: 13.5px; margin-bottom: 18px; }
-.alert-success { background: #e7f7ee; color: #1f9d55; }
-.alert-error { background: #fdecec; color: #d64545; }
-
-.card-peminjaman {
-    background: #fff;
-    border-radius: 14px;
-    padding: 8px 0 0;
-    box-shadow: 0 1px 3px rgba(20, 25, 60, 0.05);
-    overflow-x: auto;
-}
-
-.table-peminjaman { width: 100%; border-collapse: collapse; min-width: 860px; }
-.table-peminjaman thead th {
-    text-align: left;
-    font-size: 11px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #8a8fa3;
-    font-weight: 600;
-    padding: 14px 20px;
-    border-bottom: 1px solid #edeef3;
-}
-.table-peminjaman tbody td {
-    padding: 16px 20px;
-    font-size: 13.5px;
-    border-bottom: 1px solid #edeef3;
-    color: #1c1c2b;
-}
-.table-peminjaman tbody tr:last-child td { border-bottom: none; }
-.table-peminjaman tbody tr:hover { background: #fafbfe; }
-
-.cell-nama { font-weight: 600; }
-.badge-kode {
-    background: #eef0fb;
-    color: #2b3f9e;
-    font-size: 11.5px;
-    font-weight: 700;
-    padding: 3px 9px;
-    border-radius: 6px;
-}
-
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12.5px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 20px;
-}
-.status-badge i { font-size: 7px; }
-.status-dipinjam { background: #fef3e2; color: #d98b1f; }
-.status-dikembalikan { background: #e7f7ee; color: #1f9d55; }
-
-.btn-kembalikan {
-    background: #fff;
-    border: 1px solid #1f9d55;
-    color: #1f9d55;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 7px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-.btn-kembalikan:hover { background: #e7f7ee; }
-.text-selesai { color: #8a8fa3; font-size: 12.5px; }
-.empty-state { text-align: center; color: #8a8fa3; padding: 40px 20px !important; }
-.table-footer-info { padding: 14px 20px; font-size: 12.5px; color: #8a8fa3; }
-
-.modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 20, 45, 0.45);
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-}
-.modal-overlay.is-open { display: flex; }
-.modal-box {
-    background: #fff;
-    width: 420px;
-    max-width: 92vw;
-    border-radius: 14px;
-    padding: 24px;
-    box-shadow: 0 20px 50px rgba(15, 20, 45, 0.25);
-}
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-.modal-header h3 { margin: 0; font-size: 17px; color: #16215c; }
-.modal-close { background: none; border: none; font-size: 22px; line-height: 1; color: #8a8fa3; cursor: pointer; }
-.modal-form .form-group { margin-bottom: 16px; }
-.form-row { display: flex; gap: 12px; }
-.form-row .form-group { flex: 1; }
-.modal-form label { display: block; font-size: 12.5px; font-weight: 600; color: #1c1c2b; margin-bottom: 6px; }
-.modal-form input, .modal-form select {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #edeef3;
-    border-radius: 8px;
-    font-size: 13.5px;
-    color: #1c1c2b;
-    background: #fff;
-}
-.modal-form input:focus, .modal-form select:focus { outline: none; border-color: #2b3f9e; }
-.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
-.btn-batal {
-    background: #fff;
-    color: #1c1c2b;
-    border: 1px solid #edeef3;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-size: 13.5px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-@media (max-width: 768px) {
-    .peminjaman-header { flex-direction: column; align-items: stretch; }
-    .form-row { flex-direction: column; }
-}
-</style>
 
 </head>
 
@@ -275,11 +125,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
                 <?php else: ?>
                     <?php foreach ($daftar_peminjaman as $row): ?>
                         <tr>
-                            <td class="cell-nama"><?= htmlspecialchars($row['nama_peminjaman']) ?></td>
+                            <td class="cell-nama"><?= htmlspecialchars($row['nama_pegawai']) ?></td>
                             <td><?= htmlspecialchars($row['divisi']) ?></td>
-                            <td><?= htmlspecialchars($row['nama_hardware']) ?></td>
+                            <td><?= htmlspecialchars($row['nama_perangkat']) ?></td>
                             <td><span class="badge-kode"><?= htmlspecialchars($row['kode_aset']) ?></span></td>
-                            <td><?= formatTglID($row['tanggal_pinjam']) ?></td>
+                            <td><?= formatTglID($row['tgl_pinjam']) ?></td>
                             <td><?= formatTglID($row['est_kembali']) ?></td>
                             <td>
                                 <?php if ($row['status'] === 'Dipinjam'): ?>
@@ -290,7 +140,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
                             </td>
                             <td>
                                 <?php if ($row['status'] === 'Dipinjam'): ?>
-                                    <form action="proses_pengembalian.php" method="POST" style="display:inline;"
+                                    <form action="proses_kembalikan.php" method="POST" style="display:inline;"
                                           onsubmit="return confirm('Konfirmasi pengembalian perangkat ini?');">
                                         <input type="hidden" name="id_peminjaman" value="<?= (int)$row['id'] ?>">
                                         <button type="submit" class="btn-kembalikan">
@@ -331,12 +181,12 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
             </div>
 
             <div class="form-group">
-                <label for="inventaris_id">Perangkat (hanya yang berstatus Tersedia)</label>
-                <select name="inventaris_id" id="inventaris_id" required>
+                <label for="id_inventaris">Perangkat (hanya yang berstatus Aktif)</label>
+                <select name="id_inventaris" id="id_inventaris" required>
                     <option value="" disabled selected>Pilih perangkat</option>
                     <?php foreach ($aset_tersedia as $a): ?>
                         <option value="<?= (int)$a['id'] ?>">
-                            <?= htmlspecialchars($a['kode_aset']) ?> — <?= htmlspecialchars($a['nama_hardware']) ?>
+                            <?= htmlspecialchars($a['kode_aset']) ?> — <?= htmlspecialchars($a['nama_perangkat']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -345,7 +195,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
             <div class="form-row">
                 <div class="form-group">
                     <label for="tgl_pinjam">Tanggal Pinjam</label>
-                    <input type="date" name="tanggal_pinjam" id="tanggal_pinjam" value="<?= date('Y-m-d') ?>" required>
+                    <input type="date" name="tgl_pinjam" id="tgl_pinjam" value="<?= date('Y-m-d') ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="est_kembali">Estimasi Kembali</label>

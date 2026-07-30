@@ -28,7 +28,7 @@ $total_maintenance = ($result) ? mysqli_num_rows($result) : 1;
 // ===============================
 $result = mysqli_query($conn, "
 SELECT * FROM inventaris
-WHERE status='Aktif'
+WHERE status='tersedia'
 ");
 $total_ready = ($result) ? mysqli_num_rows($result) : 8;
 ?>
