@@ -41,206 +41,161 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-    <!-- Custom CSS - HANYA SATU FILE UNTUK KONSISTENSI -->
+    <!-- Custom CSS -->
     <link href="../../assets/css/dashboard.css" rel="stylesheet" />
     <link href="../../assets/css/inventaris.css" rel="stylesheet" />
+    <link href="../../assets/css/sidebar.css" rel="stylesheet" />
 </head>
 <body>
 
-<!-- ========================== -->
-<!-- SIDEBAR                    -->
-<!-- ========================== -->
-<aside class="sidebar">
-    <div class="sidebar-brand">
-        <i class="bi bi-shield-check"></i>
-        <div>
-            DISPUSIPDA
-            <small>Provinsi Jawa Barat</small>
-        </div>
-    </div>
+<div class="container-fluid p-0">
+    <div class="row g-0">
 
-    <div class="menu-label">MENU UTAMA</div>
+        <!-- ========================== -->
+        <!-- SIDEBAR - DIPANGGIL DARI includes/ -->
+        <!-- ========================== -->
+        <?php include __DIR__ . '/../../includes/sidebar.php'; ?>
 
-    <ul class="nav flex-column">
-        <li class="nav-item">
-            <a class="nav-link" href="../dashboard/index.php">
-                <i class="bi bi-grid-fill"></i> Dashboard
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="index.php">
-                <i class="bi bi-box-seam-fill"></i> Inventaris
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="../maintenance/index.php">
-                <i class="bi bi-wrench-adjustable"></i> Maintenance
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="../peminjaman/index.php">
-                <i class="bi bi-arrow-left-right"></i> Peminjaman
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="../laporan/index.php">
-                <i class="bi bi-bar-chart-line-fill"></i> Laporan
-            </a>
-        </li>
-    </ul>
+        <!-- ========================== -->
+        <!-- MAIN CONTENT               -->
+        <!-- ========================== -->
+        <main class="main-content">
 
-    <div class="sidebar-user">
-        <div class="user-info">
-            <i class="bi bi-person-circle"></i>
-            <div>
-                <span class="name">Admin TI</span>
-                <span class="email">admin@dispusipda.jabarprov</span>
-            </div>
-        </div>
-        <a href="../../logout.php" class="logout">
-            <i class="bi bi-box-arrow-right"></i> Keluar Sistem
-        </a>
-    </div>
-</aside>
-
-<!-- ========================== -->
-<!-- MAIN CONTENT               -->
-<!-- ========================== -->
-<main class="main-content">
-
-    <!-- TOPBAR -->
-    <div class="topbar">
-        <div>
-            <h2>📦 Data Inventaris</h2>
-            <p>Daftar seluruh aset perangkat TI DISPUSIPDA Provinsi Jawa Barat</p>
-        </div>
-        <div class="top-right">
-            <div class="notification">
-                <i class="bi bi-bell"></i>
-            </div>
-            <div class="profile">
-                <div class="profile-photo">A</div>
+            <!-- TOPBAR -->
+            <div class="topbar">
                 <div>
-                    <h4>Admin TI</h4>
-                    <span>Administrator</span>
+                    <h2>📦 Data Inventaris</h2>
+                    <p>Daftar seluruh aset perangkat TI DISPUSIPDA Provinsi Jawa Barat</p>
+                </div>
+                <div class="top-right">
+                    <div class="notification">
+                        <i class="bi bi-bell"></i>
+                    </div>
+                    <div class="profile">
+                        <div class="profile-photo">A</div>
+                        <div>
+                            <h4>Admin TI</h4>
+                            <span>Administrator</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- NOTIFIKASI SUKSES -->
-    <?php if ($success === '1'): ?>
-        <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
-            <i class="bi bi-check-circle-fill me-2"></i> Data berhasil disimpan!
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    <?php endif; ?>
+            <!-- NOTIFIKASI SUKSES -->
+            <?php if ($success === '1'): ?>
+                <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i> Data berhasil disimpan!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
 
-    <!-- TOMBOL TAMBAH -->
-    <div class="d-flex justify-content-end mb-3">
-        <button class="btn-tambah-inventaris" data-bs-toggle="modal" data-bs-target="#modalTambah">
-            <i class="bi bi-plus-circle"></i> Tambah Inventaris Baru
-        </button>
-    </div>
-
-    <!-- FILTER BAR -->
-    <div class="filter-bar">
-        <div class="search-wrapper">
-            <span class="search-icon"><i class="bi bi-search"></i></span>
-            <input type="text" id="searchInput" placeholder="Cari kode aset atau nama perangkat…" />
-        </div>
-        <select id="filterKategori">
-            <option value="">Semua Kategori</option>
-            <?php foreach (['Laptop', 'Desktop', 'Printer', 'Networking', 'Server', 'UPS', 'Monitor', 'Lainnya'] as $kat): ?>
-                <option value="<?= htmlspecialchars($kat) ?>"><?= htmlspecialchars($kat) ?></option>
-            <?php endforeach; ?>
-        </select>
-        <select id="filterStatus">
-            <option value="">Semua Status</option>
-            <option value="Tersedia">Tersedia</option>
-            <option value="Dipinjam">Dipinjam</option>
-            <option value="Maintenance">Maintenance</option>
-        </select>
-    </div>
-
-    <!-- TABLE CARD -->
-    <div class="table-card">
-        <div class="table-header">
-            <h5><i class="bi bi-list-ul me-2"></i>Daftar Aset</h5>
-            <span class="badge-count"><?= count($assets) ?> Data</span>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table-inventaris" id="inventarisTable">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Kode Aset</th>
-                        <th>Nama Hardware</th>
-                        <th>Kategori</th>
-                        <th>Spesifikasi</th>
-                        <th>Lokasi</th>
-                        <th>Tahun</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($assets)): ?>
-                        <tr>
-                            <td colspan="9" class="text-center py-5 text-muted">
-                                <i class="bi bi-inbox fs-2 d-block mb-2"></i>
-                                Belum ada data inventaris.
-                            </td>
-                        </tr>
-                    <?php else: ?>
-                        <?php $no = 1; foreach ($assets as $asset): ?>
-                        <tr>
-                            <td><?= $no++ ?></td>
-                            <td><span class="kode-aset"><?= htmlspecialchars($asset['kode_aset'] ?? '') ?></span></td>
-                            <td class="nama-hardware"><?= htmlspecialchars($asset['nama_hardware'] ?? '') ?></td>
-                            <td><span class="badge-kategori"><?= htmlspecialchars($asset['kategori'] ?? '') ?></span></td>
-                            <td class="spesifikasi"><?= htmlspecialchars($asset['spesifikasi'] ?? '-') ?></td>
-                            <td><?= htmlspecialchars($asset['lokasi'] ?? '-') ?></td>
-                            <td><?= htmlspecialchars((string)($asset['tahun'] ?? '')) ?></td>
-                            <td>
-                                <?php
-                                $status = $asset['status'] ?? 'Tersedia';
-                                $statusMap = [
-                                    'Tersedia'   => 'status-tersedia',
-                                    'Dipinjam'   => 'status-dipinjam',
-                                    'Maintenance' => 'status-maintenance'
-                                ];
-                                $statusClass = $statusMap[$status] ?? 'status-default';
-                                ?>
-                                <span class="status-badge <?= $statusClass ?>">
-                                    <span class="dot"></span> <?= htmlspecialchars($status) ?>
-                                </span>
-                            </td>
-                            <td>
-                                <button class="btn-action primary" title="Detail"><i class="bi bi-eye"></i></button>
-                                <button class="btn-action danger" title="Hapus" onclick="confirmDelete(<?= (int)$asset['id'] ?>)"><i class="bi bi-trash"></i></button>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- TABLE FOOTER -->
-        <div class="table-footer">
-            <span class="info">Menampilkan <strong><?= count($assets) ?></strong> data aset</span>
-            <div class="pagination-custom">
-                <button class="page-btn" disabled>← Prev</button>
-                <button class="page-btn active">1</button>
-                <button class="page-btn">2</button>
-                <button class="page-btn">Next →</button>
+            <!-- TOMBOL TAMBAH -->
+            <div class="d-flex justify-content-end mb-3">
+                <button class="btn-tambah-inventaris" data-bs-toggle="modal" data-bs-target="#modalTambah">
+                    <i class="bi bi-plus-circle"></i> Tambah Inventaris Baru
+                </button>
             </div>
-        </div>
-    </div>
 
-</main>
+            <!-- FILTER BAR -->
+            <div class="filter-bar">
+                <div class="search-wrapper">
+                    <span class="search-icon"><i class="bi bi-search"></i></span>
+                    <input type="text" id="searchInput" placeholder="Cari kode aset atau nama perangkat…" />
+                </div>
+                <select id="filterKategori">
+                    <option value="">Semua Kategori</option>
+                    <?php foreach (['Laptop', 'Desktop', 'Printer', 'Networking', 'Server', 'UPS', 'Monitor', 'Lainnya'] as $kat): ?>
+                        <option value="<?= htmlspecialchars($kat) ?>"><?= htmlspecialchars($kat) ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <select id="filterStatus">
+                    <option value="">Semua Status</option>
+                    <option value="Tersedia">Tersedia</option>
+                    <option value="Dipinjam">Dipinjam</option>
+                    <option value="Maintenance">Maintenance</option>
+                </select>
+            </div>
+
+            <!-- TABLE CARD -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h5><i class="bi bi-list-ul me-2"></i>Daftar Aset</h5>
+                    <span class="badge-count"><?= count($assets) ?> Data</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table-inventaris" id="inventarisTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Kode Aset</th>
+                                <th>Nama Hardware</th>
+                                <th>Kategori</th>
+                                <th>Spesifikasi</th>
+                                <th>Lokasi</th>
+                                <th>Tahun</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($assets)): ?>
+                                <tr>
+                                    <td colspan="9" class="text-center py-5 text-muted">
+                                        <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                                        Belum ada data inventaris.
+                                    </td>
+                                </tr>
+                            <?php else: ?>
+                                <?php $no = 1; foreach ($assets as $asset): ?>
+                                <tr>
+                                    <td><?= $no++ ?></td>
+                                    <td><span class="kode-aset"><?= htmlspecialchars($asset['kode_aset'] ?? '') ?></span></td>
+                                    <td class="nama-hardware"><?= htmlspecialchars($asset['nama_hardware'] ?? '') ?></td>
+                                    <td><span class="badge-kategori"><?= htmlspecialchars($asset['kategori'] ?? '') ?></span></td>
+                                    <td class="spesifikasi"><?= htmlspecialchars($asset['spesifikasi'] ?? '-') ?></td>
+                                    <td><?= htmlspecialchars($asset['lokasi'] ?? '-') ?></td>
+                                    <td><?= htmlspecialchars((string)($asset['tahun'] ?? '')) ?></td>
+                                    <td>
+                                        <?php
+                                        $status = $asset['status'] ?? 'Tersedia';
+                                        $statusMap = [
+                                            'Tersedia'   => 'status-tersedia',
+                                            'Dipinjam'   => 'status-dipinjam',
+                                            'Maintenance' => 'status-maintenance'
+                                        ];
+                                        $statusClass = $statusMap[$status] ?? 'status-default';
+                                        ?>
+                                        <span class="status-badge <?= $statusClass ?>">
+                                            <span class="dot"></span> <?= htmlspecialchars($status) ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button class="btn-action primary" title="Detail"><i class="bi bi-eye"></i></button>
+                                        <button class="btn-action danger" title="Hapus" onclick="confirmDelete(<?= (int)$asset['id'] ?>)"><i class="bi bi-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- TABLE FOOTER -->
+                <div class="table-footer">
+                    <span class="info">Menampilkan <strong><?= count($assets) ?></strong> data aset</span>
+                    <div class="pagination-custom">
+                        <button class="page-btn" disabled>← Prev</button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">Next →</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
 
 <!-- ========================== -->
 <!-- MODAL TAMBAH               -->
