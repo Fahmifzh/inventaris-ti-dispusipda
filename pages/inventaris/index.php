@@ -3,18 +3,31 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Load file koneksi PDO
-require_once '../config/database.php';
+// ============================================
+// LOAD KONEKSI DATABASE (MySQLi)
+// ============================================
+require_once __DIR__ . '/../../config/database.php';
 
-try {
-    // Ambil data inventaris menggunakan PDO
-    $stmt = $pdo->query("SELECT * FROM inventaris ORDER BY id ASC");
-    $assets = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Gagal mengambil data inventaris: " . $e->getMessage());
+// CEK KONEKSI
+if (!$conn) {
+    die("❌ Koneksi database gagal: " . mysqli_connect_error());
 }
 
-// Cek apakah ada notifikasi sukses
+// AMBIL DATA MENGGUNAKAN MySQLi
+$query = "SELECT * FROM inventaris ORDER BY id ASC";
+$result = mysqli_query($conn, $query);
+
+// CEK APAKAH QUERY BERHASIL
+if (!$result) {
+    die("❌ Gagal mengambil data: " . mysqli_error($conn));
+}
+
+// SIMPAN DATA KE ARRAY
+$assets = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $assets[] = $row;
+}
+
 $success = isset($_GET['success']) ? $_GET['success'] : '';
 ?>
 
@@ -81,16 +94,12 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
             color: #94a3b8;
             margin-top: 2px;
         }
-
-        /* MAIN CONTENT OFFSET */
         .main-content {
             margin-left: 240px;
             padding: 24px 32px 40px;
             min-height: 100vh;
             background: #f5f7fb;
         }
-
-        /* USER PROFILE DI SIDEBAR */
         .sidebar-user {
             padding: 16px 20px;
             border-top: 1px solid rgba(255,255,255,0.08);
@@ -113,8 +122,6 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
         .sidebar-user .logout:hover {
             color: #fca5a5;
         }
-
-        /* MENU UTAMA LABEL */
         .menu-label {
             font-size: 10px;
             font-weight: 700;
@@ -123,8 +130,6 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
             text-transform: uppercase;
             padding: 12px 20px 6px;
         }
-
-        /* RESPONSIVE */
         @media (max-width: 768px) {
             .sidebar {
                 position: relative;
@@ -159,7 +164,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
     <div class="row g-0">
 
         <!-- ============================================ -->
-        <!-- SIDEBAR (MANDIRI)                            -->
+        <!-- SIDEBAR                                      -->
         <!-- ============================================ -->
         <nav class="sidebar d-md-block">
             <div class="position-sticky">
@@ -170,9 +175,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                         <small>Provinsi Jawa Barat</small>
                     </div>
                 </div>
-
                 <div class="menu-label">MENU UTAMA</div>
-
                 <ul class="nav flex-column mt-1">
                     <li class="nav-item">
                         <a class="nav-link" href="../dashboard/index.php">
@@ -200,12 +203,12 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                         </a>
                     </li>
                 </ul>
-
-                <!-- User Profile -->
                 <div class="sidebar-user">
                     <div class="name"><i class="bi bi-person-circle me-2"></i>Admin TI</div>
                     <div class="email">admin@dispusipda.jabarprov</div>
-                    <a href="../../logout.php" class="logout mt-2 d-inline-block"><i class="bi bi-box-arrow-right me-1"></i> Keluar Sistem</a>
+                    <a href="../../logout.php" class="logout mt-2 d-inline-block">
+                        <i class="bi bi-box-arrow-right me-1"></i> Keluar Sistem
+                    </a>
                 </div>
             </div>
         </nav>
@@ -407,7 +410,6 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
 <!-- ============================================ -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// Filter & Search
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchInput');
     const filterKategori = document.getElementById('filterKategori');
@@ -441,7 +443,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (filterStatus) filterStatus.addEventListener('change', filterTable);
 });
 
-// Confirm Delete
 function confirmDelete(id) {
     document.getElementById('hapusId').value = id;
     const modal = new bootstrap.Modal(document.getElementById('modalHapus'));
