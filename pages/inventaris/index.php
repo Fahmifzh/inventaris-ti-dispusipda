@@ -4,7 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Load file koneksi PDO
-require_once '../../config/database.php';
+require_once '../config/database.php';
 
 try {
     // Ambil data inventaris menggunakan PDO
