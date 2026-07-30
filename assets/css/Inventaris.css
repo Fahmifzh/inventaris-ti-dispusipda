@@ -1,392 +1,482 @@
-/* ========================================
-   INVENTARIS PAGE - CUSTOM STYLES
+/* ==========================
+   INVENTARIS PAGE - STYLE
    DISPUSIPDA Provinsi Jawa Barat
-   ======================================== */
+   ========================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background-color: #f1f5f9;
-    color: #1e293b;
+/* ---------- MAIN CONTENT ---------- */
+.main-content {
+    margin-left: 260px;
+    padding: 30px;
+    width: calc(100% - 260px);
+    box-sizing: border-box;
 }
 
-/* ---------- PAGE CONTAINER & MAIN LAYOUT ---------- */
-.inventaris-page {
-    background: #f1f5f9;
-    min-height: 100vh;
-    padding: 32px 40px;
-}
-
-/* ---------- HEADER SECTION ---------- */
 .inventaris-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 24px;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
-.inventaris-header .header-title h3 {
-    font-size: 24px;
+.inventaris-header h2 {
+    margin: 0 0 4px;
+    color: #1c1c2b;
+    font-size: 22px;
     font-weight: 700;
-    color: #0c2461;
-    margin: 0 0 4px 0;
-    letter-spacing: -0.3px;
 }
 
-.inventaris-header .header-title .subtitle {
-    font-size: 14px;
-    color: #64748b;
+.inventaris-header p {
     margin: 0;
-    font-weight: 400;
+    color: #8a8fa3;
+    font-size: 13.5px;
 }
 
-/* Actions Kanan (Button + Bell + Profile) */
-.inventaris-header .header-actions {
+/* ---------- STATISTIK CARD ---------- */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 3px rgba(20, 25, 60, 0.05);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
 }
 
-/* ---------- BUTTON TAMBAH INVENTARIS ---------- */
-.btn-tambah-inventaris {
-    background: #00a86b;
-    color: #ffffff !important;
-    border: none;
-    padding: 10px 20px;
+.stat-card .icon {
+    width: 44px;
+    height: 44px;
     border-radius: 10px;
-    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.stat-card .icon.blue {
+    background: #e8f0fe;
+    color: #2b3f9e;
+}
+.stat-card .icon.green {
+    background: #e7f7ee;
+    color: #1f9d55;
+}
+.stat-card .icon.yellow {
+    background: #fef3e2;
+    color: #d98b1f;
+}
+.stat-card .icon.red {
+    background: #fdecec;
+    color: #d64545;
+}
+
+.stat-card .info h4 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1c1c2b;
+}
+
+.stat-card .info span {
+    font-size: 12px;
+    color: #8a8fa3;
+}
+
+/* ---------- BUTTON TAMBAH ---------- */
+.btn-tambah-inventaris {
+    background: #16215c;
+    color: #fff;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-size: 13.5px;
     font-weight: 600;
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    text-decoration: none;
-    box-shadow: 0 2px 4px rgba(0, 168, 107, 0.15);
 }
 
 .btn-tambah-inventaris:hover {
-    background: #008f5b;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 168, 107, 0.25);
-}
-
-/* Bell Notification Icon Button */
-.btn-icon-bell {
-    width: 42px;
-    height: 42px;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #64748b;
-    font-size: 18px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-icon-bell:hover {
-    background: #f8fafc;
-    color: #0c2461;
-}
-
-.btn-icon-bell .badge-dot {
-    position: absolute;
-    top: 10px;
-    right: 11px;
-    width: 7px;
-    height: 7px;
-    background-color: #ef4444;
-    border-radius: 50%;
-}
-
-/* User Profile Badge Kanan Atas */
-.user-profile-badge {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    padding: 4px 14px 4px 6px;
-    border-radius: 30px;
-}
-
-.user-profile-badge .avatar-icon {
-    width: 32px;
-    height: 32px;
-    background: #0c2461;
-    color: #ffffff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-}
-
-.user-profile-badge .user-info {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.2;
-}
-
-.user-profile-badge .user-name {
-    font-size: 13px;
-    font-weight: 700;
-    color: #0c2461;
-}
-
-.user-profile-badge .user-role {
-    font-size: 10px;
-    color: #94a3b8;
-    letter-spacing: 0.3px;
+    background: #1c2a72;
 }
 
 /* ---------- FILTER BAR ---------- */
 .filter-bar {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     gap: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 .filter-bar .search-wrapper {
-    flex: 1;
-    max-width: 420px;
+    flex: 1 1 240px;
     position: relative;
 }
 
 .filter-bar .search-wrapper input {
     width: 100%;
-    padding: 10px 16px 10px 42px;
-    border: 1px solid #e2e8f0;
-    border-radius: 25px;
+    padding: 10px 14px 10px 40px;
+    border: 1px solid #edeef3;
+    border-radius: 8px;
     font-size: 13.5px;
-    background: #ffffff;
-    color: #334155;
-    transition: all 0.2s ease;
-}
-
-.filter-bar .search-wrapper input::placeholder {
-    color: #94a3b8;
+    background: #fff;
+    color: #1c1c2b;
+    transition: 0.2s;
 }
 
 .filter-bar .search-wrapper input:focus {
     outline: none;
-    border-color: #0c2461;
-    box-shadow: 0 0 0 3px rgba(12, 36, 97, 0.08);
+    border-color: #2b3f9e;
 }
 
 .filter-bar .search-wrapper .search-icon {
     position: absolute;
-    left: 16px;
+    left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    color: #94a3b8;
-    font-size: 16px;
-    pointer-events: none;
+    color: #8a8fa3;
+    font-size: 14px;
 }
 
 .filter-bar select {
-    padding: 10px 36px 10px 16px;
-    border: 1px solid #e2e8f0;
-    border-radius: 25px;
+    padding: 10px 14px;
+    border: 1px solid #edeef3;
+    border-radius: 8px;
     font-size: 13.5px;
-    background: #ffffff;
-    color: #334155;
-    min-width: 150px;
+    background: #fff;
+    color: #1c1c2b;
+    min-width: 140px;
     cursor: pointer;
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238a8fa3'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 14px center;
-    transition: all 0.2s ease;
+    padding-right: 36px;
 }
 
 .filter-bar select:focus {
     outline: none;
-    border-color: #0c2461;
-    box-shadow: 0 0 0 3px rgba(12, 36, 97, 0.08);
+    border-color: #2b3f9e;
 }
 
-/* ---------- TABLE CARD CONTAINER ---------- */
-.table-card {
-    background: #ffffff;
-    border-radius: 16px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-    overflow: hidden;
+/* ---------- ALERT ---------- */
+.alert-box {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    margin-bottom: 18px;
 }
 
-/* ---------- TABLE STYLING ---------- */
+.alert-success {
+    background: #e7f7ee;
+    color: #1f9d55;
+}
+
+/* ---------- TABLE CARD ---------- */
+.card-inventaris {
+    background: #fff;
+    border-radius: 14px;
+    padding: 8px 0 0;
+    box-shadow: 0 1px 3px rgba(20, 25, 60, 0.05);
+    overflow-x: auto;
+}
+
 .table-inventaris {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13.5px;
-}
-
-.table-inventaris thead {
-    background: #f8fafc;
-    border-bottom: 1px solid #e2e8f0;
+    min-width: 860px;
 }
 
 .table-inventaris thead th {
-    padding: 16px 20px;
     text-align: left;
     font-size: 11px;
-    font-weight: 700;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #94a3b8;
-    white-space: nowrap;
-}
-
-.table-inventaris tbody tr {
-    border-bottom: 1px solid #f1f5f9;
-    transition: background 0.15s ease;
-}
-
-.table-inventaris tbody tr:last-child {
-    border-bottom: none;
-}
-
-.table-inventaris tbody tr:hover {
-    background: #f8fafc;
+    color: #8a8fa3;
+    font-weight: 600;
+    padding: 14px 20px;
+    border-bottom: 1px solid #edeef3;
 }
 
 .table-inventaris tbody td {
     padding: 16px 20px;
-    vertical-align: middle;
-    color: #475569;
-}
-
-/* Kolom Nomor & Kode Aset */
-.table-inventaris td.col-no {
-    color: #94a3b8;
-    font-size: 13px;
-}
-
-.table-inventaris .kode-aset {
-    font-family: inherit;
-    font-weight: 700;
-    font-size: 13px;
-    color: #0b3b8c;
-    letter-spacing: 0.2px;
-}
-
-/* Nama Hardware */
-.table-inventaris .nama-hardware {
-    font-weight: 600;
-    color: #0f172a;
     font-size: 13.5px;
-    max-width: 220px;
-    line-height: 1.4;
+    border-bottom: 1px solid #edeef3;
+    color: #1c1c2b;
 }
 
-/* Kategori */
-.table-inventaris .kategori-text {
-    color: #64748b;
+.table-inventaris tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table-inventaris tbody tr:hover {
+    background: #fafbfe;
+}
+
+/* ---------- CELL STYLING ---------- */
+.cell-kode {
+    font-weight: 700;
+    color: #2b3f9e;
     font-size: 13px;
 }
 
-/* Spesifikasi & Lokasi */
-.table-inventaris .spesifikasi,
-.table-inventaris .lokasi {
-    color: #64748b;
-    font-size: 13px;
-    line-height: 1.4;
+.cell-nama {
+    font-weight: 600;
 }
 
-.table-inventaris .tahun {
-    color: #64748b;
-    font-size: 13px;
+.badge-kategori {
+    background: #eef0fb;
+    color: #2b3f9e;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 6px;
+    display: inline-block;
 }
 
-/* ---------- STATUS BADGES ---------- */
+.spesifikasi-text {
+    color: #8a8fa3;
+    font-size: 12.5px;
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+
+/* ---------- STATUS BADGE ---------- */
 .status-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 12px;
+    font-size: 12.5px;
     font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
 }
 
-.status-badge .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    display: inline-block;
+.status-badge i {
+    font-size: 7px;
 }
 
-/* Status: Tersedia */
 .status-tersedia {
-    background: #dcfce7;
-    color: #15803d;
-}
-.status-tersedia .dot {
-    background: #16a34a;
+    background: #e7f7ee;
+    color: #1f9d55;
 }
 
-/* Status: Dipinjam */
 .status-dipinjam {
-    background: #e0f2fe;
-    color: #0369a1;
-}
-.status-dipinjam .dot {
-    background: #0284c7;
+    background: #fef3e2;
+    color: #d98b1f;
 }
 
-/* Status: Maintenance */
 .status-maintenance {
-    background: #fef3c7;
-    color: #b45309;
-}
-.status-maintenance .dot {
-    background: #d97706;
+    background: #fdecec;
+    color: #d64545;
 }
 
 /* ---------- ACTION BUTTONS ---------- */
-.btn-action-icon {
+.btn-action {
     background: transparent;
     border: none;
-    color: #94a3b8;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    padding: 6px 10px;
+    font-size: 14px;
+    color: #8a8fa3;
     cursor: pointer;
-    transition: all 0.15s ease;
-    font-size: 15px;
+    border-radius: 6px;
+    transition: 0.2s;
 }
 
-.btn-action-icon:hover {
-    background: #f1f5f9;
-    color: #0c2461;
+.btn-action:hover {
+    background: #f1f2f6;
+    color: #1c1c2b;
+}
+
+.btn-action.danger:hover {
+    background: #fdecec;
+    color: #d64545;
+}
+
+/* ---------- TABLE FOOTER ---------- */
+.empty-state {
+    text-align: center;
+    color: #8a8fa3;
+    padding: 40px 20px !important;
+}
+
+.table-footer-info {
+    padding: 14px 20px;
+    font-size: 12.5px;
+    color: #8a8fa3;
+}
+
+/* ---------- MODAL ---------- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 20, 45, 0.45);
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.modal-overlay.is-open {
+    display: flex;
+}
+
+.modal-box {
+    background: #fff;
+    width: 420px;
+    max-width: 92vw;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 20px 50px rgba(15, 20, 45, 0.25);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 17px;
+    color: #16215c;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 22px;
+    line-height: 1;
+    color: #8a8fa3;
+    cursor: pointer;
+}
+
+.modal-form .form-group {
+    margin-bottom: 16px;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.modal-form label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #1c1c2b;
+    margin-bottom: 6px;
+}
+
+.modal-form input,
+.modal-form select,
+.modal-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #edeef3;
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: #1c1c2b;
+    background: #fff;
+    transition: 0.2s;
+}
+
+.modal-form input:focus,
+.modal-form select:focus,
+.modal-form textarea:focus {
+    outline: none;
+    border-color: #2b3f9e;
+}
+
+.modal-form textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.btn-batal {
+    background: #fff;
+    color: #1c1c2b;
+    border: 1px solid #edeef3;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-batal:hover {
+    background: #f8f9fc;
+}
+
+.btn-simpan {
+    background: #16215c;
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-simpan:hover {
+    background: #1c2a72;
 }
 
 /* ---------- RESPONSIVE ---------- */
-@media (max-width: 992px) {
-    .inventaris-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-    }
-    .inventaris-header .header-actions {
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
         width: 100%;
-        justify-content: flex-start;
     }
-    .filter-bar {
+    .inventaris-header {
         flex-direction: column;
         align-items: stretch;
     }
+    .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .filter-bar {
+        flex-direction: column;
+    }
     .filter-bar .search-wrapper {
-        max-width: 100%;
+        flex: 1 1 100%;
+    }
+    .filter-bar select {
+        width: 100%;
+    }
+    .form-row {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .stat-grid {
+        grid-template-columns: 1fr;
     }
 }
