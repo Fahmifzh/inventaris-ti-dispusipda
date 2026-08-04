@@ -4,17 +4,14 @@
  * Gunakan: include 'includes/topbar.php';
  * 
  * Variabel yang tersedia:
- * - $page_title   : Judul halaman (contoh: "Dashboard")
+ * - $page_title   : Judul halaman
  * - $page_subtitle: Deskripsi halaman (opsional)
- * - $page_icon    : Icon halaman (opsional, default: "fa-solid fa-gauge-high")
+ * - $page_icon    : Icon halaman (opsional)
  */
 ?>
 
 <div class="topbar">
     <div class="topbar-left">
-        <div class="topbar-icon">
-            <i class="<?= $page_icon ?? 'fa-solid fa-gauge-high' ?>"></i>
-        </div>
         <div>
             <h2><?= htmlspecialchars($page_title ?? 'Dashboard') ?></h2>
             <?php if (isset($page_subtitle) && !empty($page_subtitle)): ?>
@@ -24,117 +21,87 @@
     </div>
 
     <div class="topbar-right">
-        <!-- Tombol Notifikasi -->
-        <button class="topbar-btn notif-btn" title="Notifikasi">
+        <div class="notification">
             <i class="fa-regular fa-bell"></i>
-            <span class="notif-badge">3</span>
-        </button>
-
-        <!-- Tombol Bantuan -->
-        <button class="topbar-btn" title="Bantuan">
-            <i class="fa-regular fa-circle-question"></i>
-        </button>
-
-        <!-- Profile -->
-        <div class="topbar-profile">
+        </div>
+        <div class="profile">
             <div class="profile-avatar">
-                <span><?= $userInitial ?? 'A' ?></span>
+                <?= $userInitial ?? 'A' ?>
             </div>
-            <div class="profile-info">
+            <div>
                 <h4><?= htmlspecialchars($userName ?? 'Administrator') ?></h4>
-                <span><?= htmlspecialchars($userRole ?? 'Admin DISPUSIPDA') ?></span>
+                <span><?= htmlspecialchars($userRole ?? 'Administrator') ?></span>
             </div>
-            <button class="profile-dropdown-btn">
-                <i class="fa-solid fa-chevron-down"></i>
-            </button>
         </div>
     </div>
 </div>
 
 <style>
     /* ==========================
-       TOPBAR STYLE
+       TOPBAR - SAMA PERSIS DENGAN DASHBOARD
     ========================== */
     .topbar {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 20px 30px;
-        background: #ffffff;
-        border-radius: 14px;
-        box-shadow: 0 1px 3px rgba(20, 25, 60, 0.05);
-        margin-bottom: 28px;
+        margin-bottom: 30px;
+        background: transparent;
+        padding: 0;
+        box-shadow: none;
         flex-wrap: wrap;
         gap: 16px;
     }
 
-    .topbar-left {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-    }
-
-    .topbar-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        background: #eef0fb;
-        color: #2b3f9e;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        flex-shrink: 0;
-    }
-
     .topbar-left h2 {
-        margin: 0;
-        font-size: 20px;
+        color: #1e3a8a;
+        font-size: 28px;
         font-weight: 700;
-        color: #1c1c2b;
-        line-height: 1.3;
+        margin: 0;
+        padding: 0;
     }
 
     .topbar-left p {
-        margin: 2px 0 0;
-        font-size: 13px;
-        color: #8a8fa3;
+        margin-top: 6px;
+        color: #777;
+        font-size: 14px;
+        padding: 0;
     }
 
-    /* ==========================
-       TOPBAR RIGHT
-    ========================== */
     .topbar-right {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 20px;
     }
 
-    .topbar-btn {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        border: none;
-        background: #f8f9fc;
-        color: #5a5f7a;
-        font-size: 18px;
-        cursor: pointer;
+    /* ===== NOTIFICATION ===== */
+    .notification {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
-        position: relative;
+        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
         transition: 0.2s;
+        position: relative;
     }
 
-    .topbar-btn:hover {
-        background: #eef0fb;
-        color: #2b3f9e;
+    .notification:hover {
+        background: #f8f9fc;
+        transform: scale(1.05);
     }
 
-    .notif-badge {
+    .notification i {
+        color: #555;
+        font-size: 20px;
+    }
+
+    .notification .badge {
         position: absolute;
-        top: -2px;
-        right: -2px;
+        top: -4px;
+        right: -4px;
         width: 18px;
         height: 18px;
         border-radius: 50%;
@@ -147,64 +114,37 @@
         justify-content: center;
     }
 
-    /* ==========================
-       PROFILE
-    ========================== */
-    .topbar-profile {
+    /* ===== PROFILE ===== */
+    .profile {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 4px 12px 4px 4px;
-        border-radius: 10px;
-        background: #f8f9fc;
-        cursor: pointer;
-        transition: 0.2s;
-        border: 1px solid transparent;
-    }
-
-    .topbar-profile:hover {
-        background: #eef0fb;
-        border-color: #e0e3ed;
+        gap: 15px;
     }
 
     .profile-avatar {
-        width: 38px;
-        height: 38px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
-        background: #2b3f9e;
+        background: #1e40af;
         color: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 15px;
+        font-size: 20px;
         font-weight: 600;
         flex-shrink: 0;
     }
 
-    .profile-info h4 {
+    .profile h4 {
+        color: #333;
+        font-size: 15px;
         margin: 0;
-        font-size: 13.5px;
-        font-weight: 600;
-        color: #1c1c2b;
-        line-height: 1.2;
+        padding: 0;
     }
 
-    .profile-info span {
-        font-size: 11.5px;
-        color: #8a8fa3;
-    }
-
-    .profile-dropdown-btn {
-        background: none;
-        border: none;
-        color: #8a8fa3;
-        font-size: 12px;
-        cursor: pointer;
-        padding: 4px;
-    }
-
-    .profile-dropdown-btn:hover {
-        color: #2b3f9e;
+    .profile span {
+        color: #888;
+        font-size: 13px;
     }
 
     /* ==========================
@@ -212,58 +152,45 @@
     ========================== */
     @media (max-width: 768px) {
         .topbar {
-            padding: 16px 18px;
             flex-direction: column;
-            align-items: stretch;
-        }
-
-        .topbar-left {
-            gap: 12px;
-        }
-
-        .topbar-icon {
-            width: 40px;
-            height: 40px;
-            font-size: 16px;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .topbar-left h2 {
-            font-size: 17px;
+            font-size: 22px;
+        }
+
+        .topbar-left p {
+            font-size: 13px;
         }
 
         .topbar-right {
-            justify-content: flex-end;
-            flex-wrap: wrap;
+            width: 100%;
+            justify-content: flex-start;
         }
 
-        .profile-info {
+        .profile h4,
+        .profile span {
             display: none;
-        }
-
-        .topbar-profile {
-            padding: 4px 6px 4px 4px;
         }
     }
 
     @media (max-width: 480px) {
-        .topbar {
-            padding: 14px;
-        }
-
         .topbar-left h2 {
-            font-size: 15px;
+            font-size: 18px;
         }
 
-        .topbar-btn {
-            width: 34px;
-            height: 34px;
-            font-size: 15px;
+        .notification {
+            width: 38px;
+            height: 38px;
         }
 
         .profile-avatar {
-            width: 32px;
-            height: 32px;
-            font-size: 12px;
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
         }
     }
 </style>
