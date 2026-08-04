@@ -6,6 +6,15 @@ if (!isset($_SESSION['login'])) {
     exit;
 }
 
+// ===== SET VARIABEL TOPBAR =====
+$page_title = "Data Inventaris";
+$page_subtitle = "Daftar seluruh aset perangkat TI DISPUSIPDA Provinsi Jawa Barat";
+$page_icon = "fa-solid fa-boxes-stacked";
+$userName = $_SESSION['nama'] ?? 'Administrator';
+$userRole = 'Admin DISPUSIPDA';
+$userInitial = strtoupper(substr($userName, 0, 1));
+// ================================
+
 include '../../config/database.php';
 
 // Ambil data inventaris
@@ -51,16 +60,8 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
 
 <div class="main-content">
 
-    <!-- HEADER -->
-    <div class="inventaris-header">
-        <div>
-            <h2>📦 Data Inventaris</h2>
-            <p>Daftar seluruh aset perangkat TI DISPUSIPDA Provinsi Jawa Barat</p>
-        </div>
-        <button type="button" class="btn-tambah-inventaris" onclick="document.getElementById('modalTambah').classList.add('is-open')">
-            <i class="fa-solid fa-plus"></i> Tambah Inventaris Baru
-        </button>
-    </div>
+    <!-- ===== TOPBAR ===== -->
+    <?php include '../../includes/topbar.php'; ?>
 
     <!-- NOTIFIKASI SUKSES -->
     <?php if ($success === '1'): ?>
