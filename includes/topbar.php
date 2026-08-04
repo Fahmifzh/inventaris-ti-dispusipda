@@ -27,6 +27,9 @@
             </button>
         <?php endif; ?>
 
+        <!-- GARIS PEMISAH -->
+        <span class="divider"></span>
+
         <div class="profile-wrap">
             <button class="avatar" onclick="document.getElementById('dropdownLogout').classList.toggle('show')">
                 <?= htmlspecialchars($userInitial ?? 'A') ?>
@@ -91,6 +94,16 @@
 }
 .btn-add:hover {
     background: #047857;
+}
+
+/* ===== GARIS PEMISAH ===== */
+.divider {
+    width: 1px;
+    height: 32px;
+    background: #d0d5e0;
+    display: inline-block;
+    flex-shrink: 0;
+    opacity: 0.6;
 }
 
 /* Avatar */
@@ -191,12 +204,15 @@
     }
     .topbar-right {
         flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    .divider {
+        height: 28px;
     }
 }
 </style>
 
 <script>
-// Tutup dropdown saat klik di luar
 document.addEventListener('click', function(e) {
     const dropdown = document.getElementById('dropdownLogout');
     if (!e.target.closest('.profile-wrap')) {
