@@ -9,9 +9,10 @@ if (!isset($_SESSION['login'])) {
 // ===== SET VARIABEL TOPBAR =====
 $page_title = "Data Inventaris";
 $page_subtitle = "Daftar seluruh aset perangkat TI DISPUSIPDA Provinsi Jawa Barat";
-$userName = $_SESSION['nama'] ?? 'Administrator';
-$userRole = 'Administrator';
-$userInitial = strtoupper(substr($userName, 0, 1));
+$show_add_button = true;
+$add_button_text = "Tambah Inventaris Baru";
+$add_button_icon = "fa-solid fa-plus";
+$add_button_target = "#modalTambah";
 // ================================
 
 include '../../config/database.php';
@@ -25,14 +26,6 @@ if ($result) {
     }
 }
 $total_aset = count($assets);
-
-// Hitung statistik
-$total_tersedia = $total_dipinjam = $total_maintenance = 0;
-foreach ($assets as $a) {
-    if ($a['status'] === 'Tersedia') $total_tersedia++;
-    elseif ($a['status'] === 'Dipinjam') $total_dipinjam++;
-    elseif ($a['status'] === 'Maintenance') $total_maintenance++;
-}
 
 $success = isset($_GET['success']) ? $_GET['success'] : '';
 ?>
@@ -62,51 +55,12 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
     <!-- ===== TOPBAR ===== -->
     <?php include '../../includes/topbar.php'; ?>
 
-    <!-- TOMBOL TAMBAH -->
-    <div class="btn-tambah-wrapper">
-        <button type="button" class="btn-tambah-inventaris" onclick="document.getElementById('modalTambah').classList.add('is-open')">
-            <i class="fa-solid fa-plus"></i> Tambah Inventaris Baru
-        </button>
-    </div>
-
     <!-- NOTIFIKASI SUKSES -->
     <?php if ($success === '1'): ?>
         <div class="alert-box alert-success">
             <i class="fa-solid fa-check-circle"></i> Data berhasil disimpan!
         </div>
     <?php endif; ?>
-
-    <!-- STATISTIK -->
-    <div class="stat-grid">
-        <div class="stat-card">
-            <div class="icon blue"><i class="fa-solid fa-computer"></i></div>
-            <div class="info">
-                <h4><?= $total_aset ?></h4>
-                <span>Total Aset</span>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="icon green"><i class="fa-solid fa-check-circle"></i></div>
-            <div class="info">
-                <h4><?= $total_tersedia ?></h4>
-                <span>Tersedia</span>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="icon yellow"><i class="fa-solid fa-hand"></i></div>
-            <div class="info">
-                <h4><?= $total_dipinjam ?></h4>
-                <span>Dipinjam</span>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="icon red"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-            <div class="info">
-                <h4><?= $total_maintenance ?></h4>
-                <span>Maintenance</span>
-            </div>
-        </div>
-    </div>
 
     <!-- FILTER BAR -->
     <div class="filter-bar">

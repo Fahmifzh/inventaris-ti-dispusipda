@@ -1,44 +1,39 @@
 <?php
 /**
  * TOPBAR - Reusable untuk semua halaman
- * Gunakan: include 'includes/topbar.php';
  * 
  * Variabel yang tersedia:
- * - $page_title   : Judul halaman
- * - $page_subtitle: Deskripsi halaman (opsional)
- * - $page_icon    : Icon halaman (opsional)
+ * - $page_title      : Judul halaman
+ * - $page_subtitle   : Deskripsi halaman (opsional)
+ * - $show_add_button : true/false - apakah tombol tambah ditampilkan
+ * - $add_button_text : Teks tombol tambah (default: "Tambah Data")
+ * - $add_button_icon : Icon tombol (default: "fa-solid fa-plus")
+ * - $add_button_target : ID modal target (default: "#modalTambah")
+ * - $add_button_class : Class tambahan untuk tombol (default: "btn-primary")
+ * - $add_button_onclick : Fungsi onclick tambahan
  */
 ?>
 
 <div class="topbar">
-    <div class="topbar-left">
-        <div>
-            <h2><?= htmlspecialchars($page_title ?? 'Dashboard') ?></h2>
-            <?php if (isset($page_subtitle) && !empty($page_subtitle)): ?>
-                <p><?= htmlspecialchars($page_subtitle) ?></p>
-            <?php endif; ?>
-        </div>
+    <div>
+        <h2><?= htmlspecialchars($page_title ?? 'Dashboard') ?></h2>
+        <?php if (isset($page_subtitle) && !empty($page_subtitle)): ?>
+            <p><?= htmlspecialchars($page_subtitle) ?></p>
+        <?php endif; ?>
     </div>
 
-    <div class="topbar-right">
-        <div class="notification">
-            <i class="fa-regular fa-bell"></i>
-        </div>
-        <div class="profile">
-            <div class="profile-avatar">
-                <?= $userInitial ?? 'A' ?>
-            </div>
-            <div>
-                <h4><?= htmlspecialchars($userName ?? 'Administrator') ?></h4>
-                <span><?= htmlspecialchars($userRole ?? 'Administrator') ?></span>
-            </div>
-        </div>
-    </div>
+    <?php if (isset($show_add_button) && $show_add_button === true): ?>
+        <button type="button" class="btn-tambah-topbar <?= $add_button_class ?? 'btn-primary' ?>" 
+                onclick="<?= $add_button_onclick ?? "document.querySelector('" . ($add_button_target ?? '#modalTambah') . "').classList.add('is-open')" ?>">
+            <i class="<?= $add_button_icon ?? 'fa-solid fa-plus' ?>"></i> 
+            <?= htmlspecialchars($add_button_text ?? 'Tambah Data') ?>
+        </button>
+    <?php endif; ?>
 </div>
 
 <style>
     /* ==========================
-       TOPBAR - SAMA PERSIS DENGAN DASHBOARD
+       TOPBAR - TANPA NOTIFIKASI & PROFILE
     ========================== */
     .topbar {
         display: flex;
@@ -52,7 +47,7 @@
         gap: 16px;
     }
 
-    .topbar-left h2 {
+    .topbar h2 {
         color: #1e3a8a;
         font-size: 28px;
         font-weight: 700;
@@ -60,91 +55,67 @@
         padding: 0;
     }
 
-    .topbar-left p {
+    .topbar p {
         margin-top: 6px;
         color: #777;
         font-size: 14px;
         padding: 0;
     }
 
-    .topbar-right {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    }
-
-    /* ===== NOTIFICATION ===== */
-    .notification {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        background: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
-        cursor: pointer;
-        transition: 0.2s;
-        position: relative;
-    }
-
-    .notification:hover {
-        background: #f8f9fc;
-        transform: scale(1.05);
-    }
-
-    .notification i {
-        color: #555;
-        font-size: 20px;
-    }
-
-    .notification .badge {
-        position: absolute;
-        top: -4px;
-        right: -4px;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: #d64545;
+    /* ===== TOMBOL TOPBAR ===== */
+    .btn-tambah-topbar {
+        background: #059669;
         color: #fff;
-        font-size: 10px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* ===== PROFILE ===== */
-    .profile {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .profile-avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: #1e40af;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
+        border: none;
+        padding: 10px 22px;
+        border-radius: 12px;
+        font-size: 14px;
         font-weight: 600;
-        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: 0.3s;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25);
+        white-space: nowrap;
     }
 
-    .profile h4 {
-        color: #333;
-        font-size: 15px;
-        margin: 0;
-        padding: 0;
+    .btn-tambah-topbar:hover {
+        background: #047857;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(5, 150, 105, 0.35);
     }
 
-    .profile span {
-        color: #888;
-        font-size: 13px;
+    .btn-tambah-topbar i {
+        font-size: 16px;
+    }
+
+    /* ===== VARIASI WARNA ===== */
+    .btn-tambah-topbar.btn-primary {
+        background: #16215c;
+        box-shadow: 0 4px 14px rgba(22, 33, 92, 0.25);
+    }
+    .btn-tambah-topbar.btn-primary:hover {
+        background: #1c2a72;
+        box-shadow: 0 8px 20px rgba(22, 33, 92, 0.35);
+    }
+
+    .btn-tambah-topbar.btn-danger {
+        background: #d64545;
+        box-shadow: 0 4px 14px rgba(214, 69, 69, 0.25);
+    }
+    .btn-tambah-topbar.btn-danger:hover {
+        background: #b33a3a;
+        box-shadow: 0 8px 20px rgba(214, 69, 69, 0.35);
+    }
+
+    .btn-tambah-topbar.btn-warning {
+        background: #d98b1f;
+        box-shadow: 0 4px 14px rgba(217, 139, 31, 0.25);
+    }
+    .btn-tambah-topbar.btn-warning:hover {
+        background: #b87518;
+        box-shadow: 0 8px 20px rgba(217, 139, 31, 0.35);
     }
 
     /* ==========================
@@ -153,44 +124,28 @@
     @media (max-width: 768px) {
         .topbar {
             flex-direction: column;
-            align-items: flex-start;
+            align-items: stretch;
             gap: 16px;
             margin-bottom: 20px;
         }
 
-        .topbar-left h2 {
+        .topbar h2 {
             font-size: 22px;
         }
 
-        .topbar-left p {
+        .topbar p {
             font-size: 13px;
         }
 
-        .topbar-right {
+        .btn-tambah-topbar {
             width: 100%;
-            justify-content: flex-start;
-        }
-
-        .profile h4,
-        .profile span {
-            display: none;
+            justify-content: center;
         }
     }
 
     @media (max-width: 480px) {
-        .topbar-left h2 {
+        .topbar h2 {
             font-size: 18px;
-        }
-
-        .notification {
-            width: 38px;
-            height: 38px;
-        }
-
-        .profile-avatar {
-            width: 40px;
-            height: 40px;
-            font-size: 16px;
         }
     }
 </style>
