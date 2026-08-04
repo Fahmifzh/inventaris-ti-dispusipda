@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <hr>
-                <a href="logout.php" class="btn-logout">
+                <a href="/inventaris-ti-dispusipda/logout.php" class="btn-logout">
                     <i class="fa-solid fa-right-from-bracket"></i> Logout
                 </a>
             </div>
