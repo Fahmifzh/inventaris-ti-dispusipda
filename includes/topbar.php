@@ -30,50 +30,6 @@
     </div>
 
     <div class="topbar-right">
-        <!-- Tombol Notifikasi -->
-        <button class="topbar-btn notif-btn" title="Notifikasi">
-            <i class="fa-regular fa-bell"></i>
-            <span class="notif-badge">3</span>
-        </button>
-
-        <!-- Profile Dropdown -->
-        <div class="profile-dropdown">
-            <button class="profile-btn" onclick="toggleDropdown()">
-                <div class="profile-avatar">
-                    <?= htmlspecialchars($userInitial ?? 'A') ?>
-                </div>
-                <div class="profile-info">
-                    <h4><?= htmlspecialchars($userName ?? 'Administrator') ?></h4>
-                    <span><?= htmlspecialchars($userRole ?? 'Admin DISPUSIPDA') ?></span>
-                </div>
-                <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
-            </button>
-
-            <!-- Dropdown Menu -->
-            <div class="dropdown-menu" id="profileDropdown">
-                <div class="dropdown-header">
-                    <div class="dropdown-avatar">
-                        <?= htmlspecialchars($userInitial ?? 'A') ?>
-                    </div>
-                    <div>
-                        <h4><?= htmlspecialchars($userName ?? 'Administrator') ?></h4>
-                        <span><?= htmlspecialchars($userRole ?? 'Admin DISPUSIPDA') ?></span>
-                    </div>
-                </div>
-                <div class="dropdown-divider"></div>
-                <a href="../profile.php" class="dropdown-item">
-                    <i class="fa-regular fa-user"></i> Profil Saya
-                </a>
-                <a href="../pengaturan.php" class="dropdown-item">
-                    <i class="fa-regular fa-gear"></i> Pengaturan
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="../logout.php" class="dropdown-item logout-item">
-                    <i class="fa-solid fa-right-from-bracket"></i> Keluar Sistem
-                </a>
-            </div>
-        </div>
-
         <!-- Tombol Tambah (opsional) -->
         <?php if (isset($show_add_button) && $show_add_button === true): ?>
             <button type="button" class="btn-tambah-topbar <?= $add_button_class ?? 'btn-primary' ?>" 
@@ -82,6 +38,16 @@
                 <?= htmlspecialchars($add_button_text ?? 'Tambah Data') ?>
             </button>
         <?php endif; ?>
+
+        <!-- Profile & Logout -->
+        <div class="profile-logout">
+            <div class="profile-info">
+                <span class="profile-name"><?= htmlspecialchars($userName ?? 'Administrator') ?></span>
+            </div>
+            <a href="../logout.php" class="logout-link">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+        </div>
     </div>
 </div>
 
@@ -119,219 +85,8 @@
     .topbar-right {
         display: flex;
         align-items: center;
-        gap: 12px;
-    }
-
-    /* ===== TOMBOL NOTIFIKASI ===== */
-    .topbar-btn {
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        border: none;
-        background: #fff;
-        color: #555;
-        font-size: 18px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        transition: 0.2s;
-    }
-
-    .topbar-btn:hover {
-        background: #f8f9fc;
-        transform: scale(1.05);
-    }
-
-    .topbar-btn .notif-badge {
-        position: absolute;
-        top: -4px;
-        right: -4px;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background: #d64545;
-        color: #fff;
-        font-size: 10px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* ===== PROFILE DROPDOWN ===== */
-    .profile-dropdown {
-        position: relative;
-        display: inline-block;
-    }
-
-    .profile-btn {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 6px 16px 6px 6px;
-        border: none;
-        border-radius: 10px;
-        background: #fff;
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        transition: 0.2s;
-    }
-
-    .profile-btn:hover {
-        background: #f8f9fc;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
-    }
-
-    .profile-btn .profile-avatar {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        background: #1e40af;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 15px;
-        font-weight: 600;
-        flex-shrink: 0;
-    }
-
-    .profile-btn .profile-info {
-        text-align: left;
-        line-height: 1.3;
-    }
-
-    .profile-btn .profile-info h4 {
-        margin: 0;
-        font-size: 14px;
-        font-weight: 600;
-        color: #1c1c2b;
-    }
-
-    .profile-btn .profile-info span {
-        font-size: 12px;
-        color: #8a8fa3;
-    }
-
-    .profile-btn .dropdown-arrow {
-        font-size: 12px;
-        color: #8a8fa3;
-        transition: 0.3s;
-        margin-left: 4px;
-    }
-
-    .profile-btn.active .dropdown-arrow {
-        transform: rotate(180deg);
-    }
-
-    /* ===== DROPDOWN MENU ===== */
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        right: 0;
-        top: calc(100% + 8px);
-        min-width: 240px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-        padding: 8px 0;
-        z-index: 1000;
-        animation: slideDown 0.2s ease;
-    }
-
-    .dropdown-menu.show {
-        display: block;
-    }
-
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-8px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .dropdown-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px 16px 10px;
-    }
-
-    .dropdown-header .dropdown-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: #1e40af;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        font-weight: 600;
-    }
-
-    .dropdown-header h4 {
-        margin: 0;
-        font-size: 14px;
-        font-weight: 600;
-        color: #1c1c2b;
-    }
-
-    .dropdown-header span {
-        font-size: 12px;
-        color: #8a8fa3;
-    }
-
-    .dropdown-divider {
-        height: 1px;
-        background: #edeef3;
-        margin: 6px 12px;
-    }
-
-    .dropdown-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 10px 16px;
-        color: #1c1c2b;
-        text-decoration: none;
-        font-size: 14px;
-        transition: 0.15s;
-        cursor: pointer;
-        border: none;
-        background: none;
-        width: 100%;
-        text-align: left;
-    }
-
-    .dropdown-item:hover {
-        background: #f8f9fc;
-    }
-
-    .dropdown-item i {
-        width: 18px;
-        text-align: center;
-        color: #8a8fa3;
-        font-size: 15px;
-    }
-
-    .dropdown-item.logout-item {
-        color: #d64545;
-    }
-
-    .dropdown-item.logout-item i {
-        color: #d64545;
-    }
-
-    .dropdown-item.logout-item:hover {
-        background: #fdecec;
+        gap: 16px;
+        flex-wrap: wrap;
     }
 
     /* ===== TOMBOL TAMBAH ===== */
@@ -366,6 +121,52 @@
         background: #1c2a72;
     }
 
+    /* ===== PROFILE & LOGOUT ===== */
+    .profile-logout {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 6px 16px 6px 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        transition: 0.2s;
+    }
+
+    .profile-logout:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+    }
+
+    .profile-info .profile-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1c1c2b;
+    }
+
+    .logout-link {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 8px;
+        color: #d64545;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: 0.2s;
+        border: 1px solid transparent;
+    }
+
+    .logout-link:hover {
+        background: #fdecec;
+        border-color: #fdecec;
+        color: #b33a3a;
+    }
+
+    .logout-link i {
+        font-size: 14px;
+    }
+
     /* ==========================
        RESPONSIVE
     ========================== */
@@ -390,22 +191,15 @@
             justify-content: flex-start;
         }
 
-        .profile-btn .profile-info {
-            display: none;
-        }
-
-        .profile-btn {
-            padding: 6px 10px 6px 6px;
-        }
-
         .btn-tambah-topbar {
             width: 100%;
             justify-content: center;
         }
 
-        .dropdown-menu {
-            right: -10px;
-            min-width: 200px;
+        .profile-logout {
+            width: 100%;
+            justify-content: space-between;
+            padding: 10px 16px;
         }
     }
 
@@ -414,40 +208,15 @@
             font-size: 18px;
         }
 
-        .topbar-btn {
-            width: 36px;
-            height: 36px;
-            font-size: 15px;
+        .profile-logout {
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .logout-link {
+            padding: 4px 10px;
+            font-size: 12px;
         }
     }
 </style>
-
-<script>
-    // Toggle dropdown profile
-    function toggleDropdown() {
-        const dropdown = document.getElementById('profileDropdown');
-        const btn = document.querySelector('.profile-btn');
-        dropdown.classList.toggle('show');
-        btn.classList.toggle('active');
-    }
-
-    // Tutup dropdown saat klik di luar
-    document.addEventListener('click', function(event) {
-        const dropdown = document.getElementById('profileDropdown');
-        const btn = document.querySelector('.profile-btn');
-        if (!event.target.closest('.profile-dropdown')) {
-            dropdown.classList.remove('show');
-            btn.classList.remove('active');
-        }
-    });
-
-    // Tutup dropdown dengan tombol Escape
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            const dropdown = document.getElementById('profileDropdown');
-            const btn = document.querySelector('.profile-btn');
-            dropdown.classList.remove('show');
-            btn.classList.remove('active');
-        }
-    });
-</script>
