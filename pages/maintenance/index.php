@@ -8,17 +8,20 @@ if (!isset($_SESSION['login'])) {
 
 include '../../config/database.php';
 
-$query = mysqli_query($conn,"
+$query = mysqli_query($conn, "
 SELECT
-m.*,
-i.kode_aset,
-i.nama_hardware,
-i.merk
+    m.*,
+    i.kode_aset,
+    i.nama_hardware,
+    i.merk
 FROM maintenance m
 LEFT JOIN inventaris i
 ON m.inventaris_id = i.id
 ORDER BY m.id DESC
 ");
+
+$page_title = "Maintenance TI";
+$page_subtitle = "Kelola laporan kerusakan dan perbaikan perangkat TI DISPUSIPDA";
 ?>
 
 <!DOCTYPE html>
@@ -26,199 +29,157 @@ ORDER BY m.id DESC
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Maintenance TI</title>
+    <title>Maintenance TI</title>
 
-<link rel="stylesheet" href="../../assets/css/style.css">
-<link rel="stylesheet" href="../../assets/css/sidebar.css">
-<link rel="stylesheet" href="../../assets/css/dashboard.css">
-<link rel="stylesheet" href="../../assets/css/Maintenance.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/sidebar.css">
+    <link rel="stylesheet" href="../../assets/css/topbar.css">
+<link rel="stylesheet" href="../../assets/css/maintenance.css?v=1.0">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
 
 </head>
 
 <body>
 
-<?php include '../../includes/sidebar.php'; ?>
+    <?php include '../../includes/sidebar.php'; ?>
 
-<div class="main-content">
+    <div class="main-content">
 
-<div class="topbar">
+        <?php include '../../includes/topbar.php'; ?>
 
-<div>
+        <div class="page-header">
 
-<h2>Maintenance TI</h2>
+            <div></div>
 
-<p>
-Kelola laporan kerusakan dan perbaikan perangkat TI DISPUSIPDA
-</p>
+            <a href="tambah.php" class="btn-tambah">
 
+                <i class="fa-solid fa-plus"></i>
+
+                Laporkan Kerusakan
+
+            </a>
+
+        </div>
+
+        <div class="table-card">
+    <div class="table-responsive">
+        <table>
 </div>
+                <thead>
 
-<div class="top-right">
+                    <tr>
 
-<div class="notification">
+                        <th>Kode Aset</th>
+                        <th>Perangkat</th>
+                        <th>Kerusakan</th>
+                        <th>Keparahan</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
 
-<i class="fa-regular fa-bell"></i>
+                    </tr>
 
-</div>
+                </thead>
 
-<div class="profile">
+                <tbody>
 
-<div class="profile-photo">
+                    <?php while($row = mysqli_fetch_assoc($query)){ ?>
 
-<i class="fa-solid fa-user"></i>
+                    <tr>
 
-</div>
+                        <td>
 
-<div>
+                            <strong><?= htmlspecialchars($row['kode_aset']); ?></strong>
 
-<h4><?= htmlspecialchars($_SESSION['nama']); ?></h4>
+                        </td>
 
-<span>Admin DISPUSIPDA</span>
+                        <td>
 
-</div>
+                            <?= htmlspecialchars($row['nama_hardware']); ?>
 
-</div>
+                            <br>
 
-</div>
+                            <small><?= htmlspecialchars($row['merk']); ?></small>
 
-</div>
+                        </td>
 
+                        <td>
 
-<div class="page-header">
+                            <?= htmlspecialchars($row['kerusakan']); ?>
 
-<div></div>
+                        </td>
 
-<a href="tambah.php" class="btn-tambah">
+                        <td>
 
-<i class="fa-solid fa-plus"></i>
+                            <?= htmlspecialchars($row['keparahan']); ?>
 
-Laporkan Kerusakan
+                        </td>
 
-</a>
+                        <td>
 
-</div>
+                            <?php
 
+                            if($row['status'] == "Menunggu"){
 
-<div class="table-card">
+                                echo '<span class="badge-menunggu">Menunggu</span>';
 
-<table>
+                            }elseif($row['status'] == "Dalam Perbaikan"){
 
-<thead>
+                                echo '<span class="badge-proses">Dalam Perbaikan</span>';
 
-<tr>
+                            }else{
 
-<th>Kode Aset</th>
-<th>Perangkat</th>
-<th>Kerusakan</th>
-<th>Keparahan</th>
-<th>Status</th>
-<th>Aksi</th>
+                                echo '<span class="badge-selesai">Selesai</span>';
 
-</tr>
+                            }
 
-</thead>
+                            ?>
 
-<tbody>
+                        </td>
 
-<?php while($row=mysqli_fetch_assoc($query)){ ?>
+                        <td>
 
-<tr>
+                            <a href="detail.php?id=<?= $row['id']; ?>" class="btn-detail">
+                                <i class="fa-solid fa-eye"></i>
+                                Detail
+                            </a>
 
-<td>
+                            <a href="edit.php?id=<?= $row['id']; ?>" class="btn-edit">
+                                <i class="fa-solid fa-pen"></i>
+                                Edit
+                            </a>
 
-<strong><?= $row['kode_aset']; ?></strong>
+                            <a
+                                href="hapus.php?id=<?= $row['id']; ?>"
+                                class="btn-hapus"
+                                onclick="return confirm('Yakin ingin menghapus data maintenance ini?')">
 
-</td>
+                                <i class="fa-solid fa-trash"></i>
 
-<td>
+                                Hapus
 
-<?= $row['nama_hardware']; ?>
+                            </a>
 
-<br>
+                        </td>
 
-<small><?= $row['merk']; ?></small>
+                    </tr>
 
-</td>
+                    <?php } ?>
 
-<td>
+                </tbody>
 
-<?= $row['kerusakan']; ?>
+            </table>
 
-</td>
+        </div>
 
-<td>
-
-<?= $row['keparahan']; ?>
-
-</td>
-
-<td>
-
-<?php
-
-if($row['status']=="Menunggu"){
-
-echo '<span class="badge-menunggu">Menunggu</span>';
-
-}elseif($row['status']=="Dalam Perbaikan"){
-
-echo '<span class="badge-proses">Dalam Perbaikan</span>';
-
-}else{
-
-echo '<span class="badge-selesai">Selesai</span>';
-
-}
-
-?>
-
-</td>
-
-<td>
-
-<a href="detail.php?id=<?= $row['id']; ?>" class="btn-detail">
-    <i class="fa-solid fa-eye"></i>
-    Detail
-</a>
-
-<a href="edit.php?id=<?= $row['id']; ?>" class="btn-edit">
-    <i class="fa-solid fa-pen"></i>
-    Edit
-</a>
-
-<a
-href="hapus.php?id=<?= $row['id']; ?>"
-class="btn-hapus"
-onclick="return confirm('Yakin ingin menghapus data maintenance ini?')">
-
-<i class="fa-solid fa-trash"></i>
-
-Hapus
-
-</a>
-
-</td>
-
-</tr>
-
-<?php } ?>
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
+    </div>
 
 </body>
 
