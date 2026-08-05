@@ -44,8 +44,9 @@ $total_ready = ($result) ? mysqli_num_rows($result) : 8;
     <title>Dashboard | DISPUSIPDA</title>
 
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/sidebar.css">
-    <link rel="stylesheet" href="assets/css/dashboard.css">
+<link rel="stylesheet" href="assets/css/sidebar.css">
+<link rel="stylesheet" href="assets/css/topbar.css">
+<link rel="stylesheet" href="assets/css/dashboard.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -61,48 +62,15 @@ $total_ready = ($result) ? mysqli_num_rows($result) : 8;
 
     <div class="main-content">
 
-        <div class="topbar">
+       <?php
 
-            <div>
+$page_title = "Dashboard";
 
-                <h2>Dashboard</h2>
+$page_subtitle = "Ringkasan status inventaris perangkat TI DISPUSIPDA Provinsi Jawa Barat";
 
-                <p>
-                    Ringkasan status inventaris perangkat TI
-                    DISPUSIPDA Provinsi Jawa Barat
-                </p>
+include 'includes/topbar.php';
 
-            </div>
-
-            <div class="top-right">
-
-                <div class="notification">
-
-                    <i class="fa-regular fa-bell"></i>
-
-                </div>
-
-                <div class="profile">
-
-                    <div class="profile-photo">
-
-                        <i class="fa-solid fa-user"></i>
-
-                    </div>
-
-                    <div>
-
-                        <h4><?= htmlspecialchars($_SESSION['nama']); ?></h4>
-
-                        <span>Admin DISPUSIPDA</span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
+?>
 
 
         <!-- ================= CARD ================= -->
