@@ -61,22 +61,10 @@
     font-size: 18px;
 }
 
-.stat-card .icon.blue {
-    background: #e8f0fe;
-    color: #2b3f9e;
-}
-.stat-card .icon.green {
-    background: #e7f7ee;
-    color: #1f9d55;
-}
-.stat-card .icon.yellow {
-    background: #fef3e2;
-    color: #d98b1f;
-}
-.stat-card .icon.red {
-    background: #fdecec;
-    color: #d64545;
-}
+.stat-card .icon.blue { background: #e8f0fe; color: #2b3f9e; }
+.stat-card .icon.green { background: #e7f7ee; color: #1f9d55; }
+.stat-card .icon.yellow { background: #fef3e2; color: #d98b1f; }
+.stat-card .icon.red { background: #fdecec; color: #d64545; }
 
 .stat-card .info h4 {
     margin: 0;
@@ -187,13 +175,13 @@
     border-radius: 14px;
     padding: 8px 0 0;
     box-shadow: 0 1px 3px rgba(20, 25, 60, 0.05);
-    overflow-x: auto;
+    overflow: hidden;
 }
 
+/* ---------- TABLE STYLING ---------- */
 .table-inventaris {
     width: 100%;
     border-collapse: collapse;
-    min-width: 860px;
 }
 
 .table-inventaris thead th {
@@ -208,7 +196,7 @@
 }
 
 .table-inventaris tbody td {
-    padding: 16px 20px;
+    padding: 14px 20px;
     font-size: 13.5px;
     border-bottom: 1px solid #edeef3;
     color: #1c1c2b;
@@ -268,22 +256,16 @@
     font-size: 7px;
 }
 
-.status-tersedia {
-    background: #e7f7ee;
-    color: #1f9d55;
-}
-
-.status-dipinjam {
-    background: #fef3e2;
-    color: #d98b1f;
-}
-
-.status-maintenance {
-    background: #fdecec;
-    color: #d64545;
-}
+.status-tersedia { background: #e7f7ee; color: #1f9d55; }
+.status-dipinjam { background: #fef3e2; color: #d98b1f; }
+.status-maintenance { background: #fdecec; color: #d64545; }
 
 /* ---------- ACTION BUTTONS ---------- */
+.action-buttons {
+    display: flex;
+    gap: 4px;
+}
+
 .btn-action {
     background: transparent;
     border: none;
@@ -305,11 +287,24 @@
     color: #d64545;
 }
 
-/* ---------- TABLE FOOTER ---------- */
+/* ---------- EMPTY STATE - TENGAH ---------- */
 .empty-state {
     text-align: center;
     color: #8a8fa3;
-    padding: 40px 20px !important;
+    padding: 60px 20px !important;
+}
+
+.empty-state i {
+    display: block;
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: #d0d3e0;
+}
+
+.empty-state span {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
 }
 
 .table-footer-info {
@@ -318,15 +313,23 @@
     color: #8a8fa3;
 }
 
-/* ---------- MODAL ---------- */
+/* ==========================
+   MODAL - OVERLAY & BOX
+   ========================== */
 .modal-overlay {
     display: none;
     position: fixed;
-    inset: 0;
-    background: rgba(15, 20, 45, 0.45);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 20, 45, 0.5);
     align-items: center;
     justify-content: center;
-    z-index: 100;
+    z-index: 9999;
+    padding: 20px;
+    box-sizing: border-box;
+    backdrop-filter: blur(2px);
 }
 
 .modal-overlay.is-open {
@@ -335,37 +338,101 @@
 
 .modal-box {
     background: #fff;
-    width: 420px;
-    max-width: 92vw;
-    border-radius: 14px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 20px 50px rgba(15, 20, 45, 0.25);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    animation: modalSlideIn 0.25s ease;
+    position: relative;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 18px;
 }
 
 .modal-header h3 {
     margin: 0;
-    font-size: 17px;
+    font-size: 18px;
     color: #16215c;
+    font-weight: 700;
 }
 
-.modal-close {
+.modal-header h3 i {
+    color: #1f9d55;
+    margin-right: 8px;
+}
+
+.modal-header .modal-close {
     background: none;
     border: none;
-    font-size: 22px;
+    font-size: 24px;
     line-height: 1;
     color: #8a8fa3;
     cursor: pointer;
+    padding: 0 4px;
+    transition: 0.2s;
+}
+
+.modal-header .modal-close:hover {
+    color: #1c1c2b;
 }
 
 .modal-form .form-group {
     margin-bottom: 16px;
+}
+
+.modal-form .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #5a5f7a;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.modal-form .form-group input,
+.modal-form .form-group select,
+.modal-form .form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #edeef3;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #1c1c2b;
+    background: #fff;
+    transition: 0.2s;
+    box-sizing: border-box;
+}
+
+.modal-form .form-group input:focus,
+.modal-form .form-group select:focus,
+.modal-form .form-group textarea:focus {
+    outline: none;
+    border-color: #2b3f9e;
+    box-shadow: 0 0 0 3px rgba(43, 63, 158, 0.1);
+}
+
+.modal-form .form-group textarea {
+    resize: vertical;
+    min-height: 60px;
 }
 
 .form-row {
@@ -377,55 +444,25 @@
     flex: 1;
 }
 
-.modal-form label {
-    display: block;
-    font-size: 12.5px;
-    font-weight: 600;
-    color: #1c1c2b;
-    margin-bottom: 6px;
-}
-
-.modal-form input,
-.modal-form select,
-.modal-form textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #edeef3;
-    border-radius: 8px;
-    font-size: 13.5px;
-    color: #1c1c2b;
-    background: #fff;
-    transition: 0.2s;
-}
-
-.modal-form input:focus,
-.modal-form select:focus,
-.modal-form textarea:focus {
-    outline: none;
-    border-color: #2b3f9e;
-}
-
-.modal-form textarea {
-    resize: vertical;
-    min-height: 60px;
-}
-
 .modal-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    margin-top: 6px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #edeef3;
 }
 
 .btn-batal {
     background: #fff;
     color: #1c1c2b;
     border: 1px solid #edeef3;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-size: 13.5px;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+    transition: 0.2s;
 }
 
 .btn-batal:hover {
@@ -436,47 +473,460 @@
     background: #16215c;
     color: #fff;
     border: none;
-    padding: 10px 22px;
-    border-radius: 8px;
-    font-size: 13.5px;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+    transition: 0.2s;
 }
 
 .btn-simpan:hover {
     background: #1c2a72;
 }
 
-/* ---------- RESPONSIVE ---------- */
-@media (max-width: 768px) {
+.modal-box-sm {
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-header-center {
+    justify-content: center;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.delete-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #fdecec;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.delete-icon-wrapper i {
+    font-size: 24px;
+    color: #d64545;
+}
+
+.modal-title-center {
+    font-size: 18px;
+    color: #1c1c2b;
+    margin: 0 0 6px;
+}
+
+.modal-text-center {
+    color: #8a8fa3;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.modal-actions-center {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-hapus-confirm {
+    background: #d64545;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-hapus-confirm:hover {
+    background: #b33a3a;
+}
+
+/* ==========================================
+   RESPONSIVE - TABLET
+   ========================================== */
+@media (max-width: 992px) {
     .main-content {
         margin-left: 0;
         padding: 20px;
         width: 100%;
     }
+
+    .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
     .inventaris-header {
         flex-direction: column;
         align-items: stretch;
     }
-    .stat-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+
     .filter-bar {
         flex-direction: column;
     }
+
     .filter-bar .search-wrapper {
         flex: 1 1 100%;
     }
+
     .filter-bar select {
         width: 100%;
     }
+}
+
+/* ==========================================
+   RESPONSIVE - HP
+   ========================================== */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 14px;
+    }
+
+    .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 14px;
+    }
+
+    .stat-card .icon {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    .stat-card .info h4 {
+        font-size: 17px;
+    }
+
+    .stat-card .info span {
+        font-size: 10px;
+    }
+
+    /* ===== TABLE MENJADI CARD ===== */
+    .table-inventaris thead {
+        display: none;
+    }
+
+    .table-inventaris tbody tr {
+        display: block;
+        border: 1px solid #edeef3;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        padding: 14px 16px;
+        background: #fff;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .table-inventaris tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #f5f6fa;
+        font-size: 13px;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .table-inventaris tbody td:last-child {
+        border-bottom: none;
+    }
+
+    .table-inventaris tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #5a5f7a;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        flex-shrink: 0;
+        min-width: 80px;
+    }
+
+    .table-inventaris tbody td[data-label="No"]::before { content: "No"; }
+    .table-inventaris tbody td[data-label="Kode Aset"]::before { content: "Kode"; }
+    .table-inventaris tbody td[data-label="Nama Hardware"]::before { content: "Perangkat"; }
+    .table-inventaris tbody td[data-label="Kategori"]::before { content: "Kategori"; }
+    .table-inventaris tbody td[data-label="Spesifikasi"]::before { content: "Spesifikasi"; }
+    .table-inventaris tbody td[data-label="Lokasi"]::before { content: "Lokasi"; }
+    .table-inventaris tbody td[data-label="Tahun"]::before { content: "Tahun"; }
+    .table-inventaris tbody td[data-label="Status"]::before { content: "Status"; }
+    .table-inventaris tbody td[data-label="Aksi"]::before { content: "Aksi"; }
+
+    /* ===== EMPTY STATE - TENGAH ===== */
+    .table-inventaris tbody tr.empty-row {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        min-height: 200px;
+        border: 1px dashed #d0d3e0;
+        background: #fafbfe;
+        padding: 30px 20px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        width: 100%;
+    }
+
+    .table-inventaris tbody tr.empty-row td {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        padding: 0 !important;
+        border: none !important;
+        width: 100% !important;
+    }
+
+    .table-inventaris tbody tr.empty-row td::before {
+        display: none !important;
+    }
+
+    .table-inventaris tbody tr.empty-row td i {
+        font-size: 48px;
+        color: #d0d3e0;
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    .table-inventaris tbody tr.empty-row td span {
+        font-size: 15px;
+        color: #8a8fa3;
+        font-weight: 500;
+        display: block;
+    }
+
+    .spesifikasi-text {
+        max-width: 100%;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 4px;
+        justify-content: flex-end;
+    }
+
+    .table-footer-info {
+        font-size: 12px;
+        padding: 12px 16px;
+    }
+
+    .filter-bar .search-wrapper input {
+        font-size: 13px;
+        padding: 10px 12px 10px 36px;
+    }
+
+    .filter-bar select {
+        font-size: 13px;
+        padding: 10px 12px;
+        width: 100%;
+    }
+
+    /* ===== MODAL RESPONSIVE ===== */
+    .modal-overlay {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 40px;
+    }
+
+    .modal-box {
+        max-width: 100%;
+        padding: 18px 16px;
+        border-radius: 14px;
+        margin: 0 8px;
+    }
+
     .form-row {
         flex-direction: column;
+        gap: 0;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn-batal,
+    .btn-simpan,
+    .btn-hapus-confirm {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        padding: 12px;
+    }
+
+    .modal-actions-center {
+        flex-direction: column;
+        gap: 8px;
     }
 }
 
-@media (max-width: 480px) {
+/* ==========================================
+   RESPONSIVE - HP KECIL
+   ========================================== */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 14px;
+    }
+
     .stat-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 14px;
+    }
+
+    .stat-card .icon {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    .stat-card .info h4 {
+        font-size: 17px;
+    }
+
+    .stat-card .info span {
+        font-size: 10px;
+    }
+
+    /* ===== PERBAIKAN WADAH TABEL ===== */
+    .card-inventaris {
+        overflow-x: auto; /* Memungkinkan scroll horizontal jika kolom terlalu lebar */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* ===== PERBAIKAN HEADER TABEL AGAR TAMPIL DI HP ===== */
+    .table-inventaris {
+        width: 100%;
+        min-width: 600px; /* Menjaga agar nama kolom tidak berjejal/berantakan */
+        display: table !important; /* Kembalikan ke display table standar */
+    }
+
+    .table-inventaris thead {
+        display: table-header-group !important; /* HEADER TAMPIL KEMBALI */
+    }
+
+    .table-inventaris thead th {
+        padding: 10px 12px;
+        font-size: 11px;
+        white-space: nowrap; /* Mencegah judul kolom patah menjadi 2 baris */
+        background: #f8f9fc;
+    }
+
+    .table-inventaris tbody tr {
+        display: table-row !important; /* Balikkan baris ke bentuk tabel */
+        border: none;
+        box-shadow: none;
+        background: transparent;
+    }
+
+    .table-inventaris tbody td {
+        display: table-cell !important; /* Balikkan sel ke bentuk tabel */
+        padding: 10px 12px;
+        font-size: 12.5px;
+        white-space: nowrap;
+        border-bottom: 1px solid #edeef3;
+    }
+
+    /* Sembunyikan psuedo-element attr(data-label) karena header asli sudah tampil */
+    .table-inventaris tbody td::before {
+        display: none !important;
+    }
+
+    /* ===== EMPTY STATE RESPONSIF ===== */
+    .table-inventaris tbody tr.empty-row {
+        display: table-row !important;
+    }
+
+    .table-inventaris tbody tr.empty-row td {
+        display: table-cell !important;
+        text-align: center !important;
+        padding: 40px 16px !important;
+    }
+
+    .table-inventaris tbody tr.empty-row td i {
+        font-size: 40px;
+        color: #d0d3e0;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .table-inventaris tbody tr.empty-row td span {
+        font-size: 14px;
+        color: #8a8fa3;
+        font-weight: 500;
+        display: block;
+    }
+
+    .spesifikasi-text {
+        max-width: 140px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 4px;
+    }
+
+    .table-footer-info {
+        font-size: 12px;
+        padding: 12px 16px;
+    }
+
+    .filter-bar .search-wrapper input {
+        font-size: 13px;
+        padding: 10px 12px 10px 36px;
+    }
+
+    .filter-bar select {
+        font-size: 13px;
+        padding: 10px 12px;
+        width: 100%;
+    }
+
+    /* ===== MODAL RESPONSIVE ===== */
+    .modal-overlay {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 40px;
+    }
+
+    .modal-box {
+        max-width: 100%;
+        padding: 18px 16px;
+        border-radius: 14px;
+        margin: 0 8px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .modal-actions,
+    .modal-actions-center {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn-batal,
+    .btn-simpan,
+    .btn-hapus-confirm {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        padding: 12px;
     }
 }

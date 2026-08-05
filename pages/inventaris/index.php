@@ -39,8 +39,9 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
 
     <!-- CSS -->
     <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/topbar.css">
     <link rel="stylesheet" href="../../assets/css/sidebar.css">
-    <link rel="stylesheet" href="../../assets/css/inventaris.css">
+    <link rel="stylesheet" href="../../assets/css/inventaris.css?v=<?= time(); ?>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -82,60 +83,66 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
         </select>
     </div>
 
-    <!-- TABLE -->
+    <!-- TABLE / CARD CONTAINER -->
     <div class="card-inventaris">
-        <table class="table-inventaris" id="inventarisTable">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Kode Aset</th>
-                    <th>Nama Hardware</th>
-                    <th>Kategori</th>
-                    <th>Spesifikasi</th>
-                    <th>Lokasi</th>
-                    <th>Tahun</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if ($total_aset === 0): ?>
-                    <tr><td colspan="9" class="empty-state">
-                        <i class="fa-solid fa-inbox fa-2x d-block mb-2" style="color:#d0d3e0;"></i>
-                        Belum ada data inventaris.
-                    </td></tr>
-                <?php else: ?>
-                    <?php $no = 1; foreach ($assets as $asset): ?>
+        <div class="table-responsive">
+            <table class="table-inventaris" id="inventarisTable">
+                <thead>
                     <tr>
-                        <td><?= $no++ ?></td>
-                        <td><span class="cell-kode"><?= htmlspecialchars($asset['kode_aset']) ?></span></td>
-                        <td class="cell-nama"><?= htmlspecialchars($asset['nama_hardware']) ?></td>
-                        <td><span class="badge-kategori"><?= htmlspecialchars($asset['kategori']) ?></span></td>
-                        <td><span class="spesifikasi-text"><?= htmlspecialchars($asset['spesifikasi'] ?? '-') ?></span></td>
-                        <td><?= htmlspecialchars($asset['lokasi'] ?? '-') ?></td>
-                        <td><?= htmlspecialchars($asset['tahun'] ?? '-') ?></td>
-                        <td>
-                            <?php
-                            $status = $asset['status'] ?? 'Tersedia';
-                            $class = 'status-tersedia';
-                            if ($status === 'Dipinjam') $class = 'status-dipinjam';
-                            elseif ($status === 'Maintenance') $class = 'status-maintenance';
-                            ?>
-                            <span class="status-badge <?= $class ?>">
-                                <i class="fa-solid fa-circle"></i> <?= htmlspecialchars($status) ?>
-                            </span>
-                        </td>
-                        <td>
-                            <button class="btn-action" title="Detail"><i class="fa-solid fa-eye"></i></button>
-                            <button class="btn-action danger" title="Hapus" onclick="confirmDelete(<?= (int)$asset['id'] ?>)">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </td>
+                        <th>No</th>
+                        <th>Kode Aset</th>
+                        <th>Nama Hardware</th>
+                        <th>Kategori</th>
+                        <th>Spesifikasi</th>
+                        <th>Lokasi</th>
+                        <th>Tahun</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
                     </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php if ($total_aset === 0): ?>
+                        <tr class="empty-row">
+                            <td colspan="9" class="empty-state">
+                                <i class="fa-solid fa-inbox"></i>
+                                <span>Belum ada data inventaris.</span>
+                            </td>
+                        </tr>
+                    <?php else: ?>
+                        <?php $no = 1; foreach ($assets as $asset): ?>
+                        <tr>
+                            <td data-label="No"><?= $no++ ?></td>
+                            <td data-label="Kode Aset"><span class="cell-kode"><?= htmlspecialchars($asset['kode_aset']) ?></span></td>
+                            <td data-label="Nama Hardware" class="cell-nama"><?= htmlspecialchars($asset['nama_hardware']) ?></td>
+                            <td data-label="Kategori"><span class="badge-kategori"><?= htmlspecialchars($asset['kategori']) ?></span></td>
+                            <td data-label="Spesifikasi"><span class="spesifikasi-text"><?= htmlspecialchars($asset['spesifikasi'] ?? '-') ?></span></td>
+                            <td data-label="Lokasi"><?= htmlspecialchars($asset['lokasi'] ?? '-') ?></td>
+                            <td data-label="Tahun"><?= htmlspecialchars($asset['tahun'] ?? '-') ?></td>
+                            <td data-label="Status">
+                                <?php
+                                $status = $asset['status'] ?? 'Tersedia';
+                                $class = 'status-tersedia';
+                                if ($status === 'Dipinjam') $class = 'status-dipinjam';
+                                elseif ($status === 'Maintenance') $class = 'status-maintenance';
+                                ?>
+                                <span class="status-badge <?= $class ?>">
+                                    <i class="fa-solid fa-circle"></i> <?= htmlspecialchars($status) ?>
+                                </span>
+                            </td>
+                            <td data-label="Aksi">
+                                <div class="action-buttons">
+                                    <button class="btn-action" title="Detail"><i class="fa-solid fa-eye"></i></button>
+                                    <button class="btn-action danger" title="Hapus" onclick="confirmDelete(<?= (int)$asset['id'] ?>)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
         <div class="table-footer-info">Total <?= $total_aset ?> data aset</div>
     </div>
 
@@ -196,19 +203,19 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
 
 <!-- ================= MODAL HAPUS ================= -->
 <div class="modal-overlay" id="modalHapus">
-    <div class="modal-box" style="max-width:400px; text-align:center;">
-        <div class="modal-header" style="justify-content:center; border-bottom:none; padding-bottom:0;">
-            <div style="width:56px; height:56px; border-radius:50%; background:#fdecec; display:flex; align-items:center; justify-content:center; margin-bottom:8px;">
-                <i class="fa-solid fa-trash-can" style="font-size:24px; color:#d64545;"></i>
+    <div class="modal-box modal-box-sm">
+        <div class="modal-header modal-header-center">
+            <div class="delete-icon-wrapper">
+                <i class="fa-solid fa-trash-can"></i>
             </div>
         </div>
-        <h3 style="margin:0 0 6px; font-size:18px; color:#1c1c2b;">Konfirmasi Hapus</h3>
-        <p style="color:#8a8fa3; font-size:14px; margin-bottom:20px;">Apakah Anda yakin ingin menghapus data ini?</p>
+        <h3 class="modal-title-center">Konfirmasi Hapus</h3>
+        <p class="modal-text-center">Apakah Anda yakin ingin menghapus data ini?</p>
         <form id="formHapus" action="proses/hapus.php" method="POST">
             <input type="hidden" name="id" id="hapusId">
-            <div style="display:flex; justify-content:center; gap:10px;">
+            <div class="modal-actions-center">
                 <button type="button" class="btn-batal" onclick="document.getElementById('modalHapus').classList.remove('is-open')">Batal</button>
-                <button type="submit" style="background:#d64545; color:#fff; border:none; padding:10px 24px; border-radius:8px; font-size:13.5px; font-weight:600; cursor:pointer;">Ya, Hapus</button>
+                <button type="submit" class="btn-hapus-confirm">Ya, Hapus</button>
             </div>
         </form>
     </div>
