@@ -23,6 +23,7 @@ $result = mysqli_query($conn, "
     JOIN inventaris i ON p.inventaris_id = i.id
     ORDER BY p.tanggal_pinjam DESC
 ");
+
 $daftar_peminjaman = [];
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
@@ -34,7 +35,7 @@ $total_transaksi = count($daftar_peminjaman);
 $result_aset = mysqli_query($conn, "
     SELECT id, kode_aset, nama_hardware
     FROM inventaris
-    WHERE status = 'Aktif'
+    WHERE status = 'Tersedia'
     ORDER BY nama_hardware
 ");
 $aset_tersedia = [];
@@ -119,7 +120,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
                 <?php else: ?>
                     <?php foreach ($daftar_peminjaman as $row): ?>
                         <tr>
-                            <td class="cell-nama"><?= htmlspecialchars($row['nama_pegawai']) ?></td>
+                            <td class="cell-nama"><?= htmlspecialchars($row['nama_peminjam']) ?></td>
                             <td><?= htmlspecialchars($row['divisi']) ?></td>
                             <td><?= htmlspecialchars($row['nama_hardware']) ?></td>
                             <td><span class="badge-kode"><?= htmlspecialchars($row['kode_aset']) ?></span></td>
@@ -165,8 +166,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         <!-- action cukup nama file, karena proses_tambah.php ada di folder yang SAMA -->
         <form action="proses_tambah.php" method="POST" class="modal-form">
             <div class="form-group">
-                <label for="nama_pegawai">Nama Pegawai</label>
-                <input type="text" name="nama_pegawai" id="nama_pegawai" placeholder="Contoh: Drs. Ahmad Yusuf, M.M." required>
+                <label for="nama_peminjam">Nama Pegawai</label>
+                <input type="text" name="nama_peminjam" id="nama_peminjam" placeholder="Contoh: Drs. Ahmad Yusuf, M.M." required>
             </div>
 
             <div class="form-group">
