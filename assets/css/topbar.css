@@ -130,7 +130,7 @@
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-    padding: 12px 0;
+    padding: 8px 0;
     z-index: 999;
 }
 
@@ -138,11 +138,18 @@
     display: block;
 }
 
+/* Profile Info di Dalam Dropdown */
 .dropdown-user {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 0 16px 8px;
+    padding: 8px 16px;
+    text-decoration: none; /* Menghilangkan garis bawah tautan */
+    transition: background 0.15s;
+}
+
+.dropdown-user:hover {
+    background: #f8fafc;
 }
 
 .avatar-small {
@@ -156,33 +163,40 @@
     justify-content: center;
     font-weight: 600;
     font-size: 14px;
-    text-transform: uppercase;
     flex-shrink: 0;
 }
 
-.dropdown-user .user-info {
+.user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     overflow: hidden;
+    min-width: 0;
 }
 
-.dropdown-user strong {
+.user-info strong {
     display: block;
     font-size: 14px;
+    font-weight: 600;
     color: #1c1c2b;
+    line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.dropdown-user small {
+.user-info small {
+    display: block;
     font-size: 12px;
     color: #8a8fa3;
-    display: block;
+    line-height: 1.2;
+    margin-top: 2px;
 }
 
 .dropdown-logout hr {
     border: none;
     border-top: 1px solid #edeef3;
-    margin: 6px 12px;
+    margin: 6px 0;
 }
 
 .btn-logout {
@@ -201,9 +215,8 @@
     background: #fdecec;
 }
 
-/* ===== TAMPILAN HP (TETAP SEJAJAR HORIZONTAL) ===== */
+/* ===== TAMPILAN HP ===== */
 @media (max-width: 768px) {
-    /* Menampilkan tombol garis 3 di HP */
     .btn-hamburger {
         display: block;
     }
@@ -217,7 +230,6 @@
         font-size: 18px;
     }
 
-    /* Menyembunyikan subtitle di HP agar hemat ruang */
     .topbar p {
         display: none;
     }
