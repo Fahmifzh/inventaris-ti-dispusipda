@@ -145,8 +145,7 @@
     cursor: pointer;
 }
 
-@media (max-width: 768px) {
-    .peminjaman-header { flex-direction: column; align-items: stretch; }
+@media (max-width: 992px) {
     .form-row { flex-direction: column; }
 }
 
@@ -155,4 +154,13 @@
     width:calc(100% - 260px);
     min-height:100vh;
     padding:30px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 992px) {
+    .peminjaman-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 16px;
+    }
 }

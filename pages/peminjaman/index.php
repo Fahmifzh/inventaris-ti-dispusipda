@@ -8,6 +8,14 @@ if (!isset($_SESSION['login'])) {
 
 include '../../config/database.php';
 
+// ===== SET VARIABEL TOPBAR =====
+$page_title = "Peminjaman Perangkat";
+$page_subtitle = "Sirkulasi dan manajemen peminjaman aset TI pegawai DISPUSIPDA";
+$show_add_button = true;
+$add_button_text = "Tambah";
+$add_button_icon = "fa-solid fa-plus";
+$add_button_target = "#modalTambah";
+
 
 $result = mysqli_query($conn, "
     SELECT p.*, i.kode_aset, i.nama_hardware
@@ -59,6 +67,7 @@ function formatTglID($tanggal) {
 <!-- path dari pages/peminjaman/ ke assets/ butuh naik 2 folder -->
 <link rel="stylesheet" href="../../assets/css/style.css">
 <link rel="stylesheet" href="../../assets/css/sidebar.css">
+  <link rel="stylesheet" href="../../assets/css/topbar.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -79,15 +88,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
 <div class="main-content peminjaman-content">
 
-    <div class="peminjaman-header">
-        <div>
-            <h2>Peminjaman Perangkat</h2>
-            <p>Sirkulasi dan manajemen peminjaman aset TI pegawai DISPUSIPDA</p>
-        </div>
-        <button type="button" class="btn-tambah-peminjaman" onclick="document.getElementById('modalTambah').classList.add('is-open')">
-            <i class="fa-solid fa-plus"></i> Input Peminjaman Baru
-        </button>
-    </div>
+    <?php include '../../includes/topbar.php'; ?>
 
     <?php if (isset($_SESSION['flash_success'])): ?>
         <div class="alert-box alert-success"><?= htmlspecialchars($_SESSION['flash_success']); unset($_SESSION['flash_success']); ?></div>
