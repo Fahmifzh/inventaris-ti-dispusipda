@@ -43,6 +43,7 @@ if ($result) {
 $total_aset = count($assets);
 
 $success = isset($_GET['success']) ? $_GET['success'] : '';
+$error = isset($_GET['error']) ? $_GET['error'] : '';
 
 // ============================================================
 // AMBIL DATA LOKASI UNTUK DROPDOWN DI MODAL TAMBAH
@@ -66,6 +67,11 @@ if ($resultLokasi) {
         $listLokasi[] = $row;
     }
 }
+
+// ============================================================
+// DAFTAR KATEGORI (UNTUK FILTER DAN FORM)
+// ============================================================
+$kategoriList = ['PC', 'Printer', 'Proyektor', 'Monitor', 'CPU', 'Laptop', 'Scanner', 'Access Point', 'Switch', 'Smart TV'];
 ?>
 
 <!DOCTYPE html>
@@ -101,6 +107,19 @@ if ($resultLokasi) {
         </div>
     <?php endif; ?>
 
+    <?php if ($success === '2'): ?>
+        <div class="alert-box alert-success">
+            <i class="fa-solid fa-check-circle"></i> Data berhasil dihapus!
+        </div>
+    <?php endif; ?>
+
+    <!-- NOTIFIKASI ERROR -->
+    <?php if (!empty($error)): ?>
+        <div class="alert-box alert-error">
+            <i class="fa-solid fa-circle-exclamation"></i> <?= htmlspecialchars($error) ?>
+        </div>
+    <?php endif; ?>
+
     <!-- FILTER BAR -->
     <div class="filter-bar">
         <div class="search-wrapper">
@@ -109,7 +128,7 @@ if ($resultLokasi) {
         </div>
         <select id="filterKategori">
             <option value="">Semua Kategori</option>
-            <?php foreach (['Laptop', 'Desktop', 'Printer', 'Networking', 'Server', 'UPS', 'Monitor', 'Lainnya'] as $kat): ?>
+            <?php foreach ($kategoriList as $kat): ?>
                 <option value="<?= htmlspecialchars($kat) ?>"><?= htmlspecialchars($kat) ?></option>
             <?php endforeach; ?>
         </select>
@@ -212,14 +231,9 @@ if ($resultLokasi) {
                 <div class="form-group">
                     <label for="kategori">Kategori</label>
                     <select name="kategori" id="kategori" required>
-                        <option value="Laptop">Laptop</option>
-                        <option value="Desktop">Desktop</option>
-                        <option value="Printer">Printer</option>
-                        <option value="Networking">Networking</option>
-                        <option value="Server">Server</option>
-                        <option value="UPS">UPS</option>
-                        <option value="Monitor">Monitor</option>
-                        <option value="Lainnya">Lainnya</option>
+                        <?php foreach ($kategoriList as $kat): ?>
+                            <option value="<?= htmlspecialchars($kat) ?>"><?= htmlspecialchars($kat) ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
