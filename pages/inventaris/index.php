@@ -10,7 +10,7 @@ if (!isset($_SESSION['login'])) {
 $page_title = "Data Inventaris";
 $page_subtitle = "Daftar seluruh aset perangkat TI DISPUSIPDA Provinsi Jawa Barat";
 $show_add_button = true;
-$add_button_text = "Tambah Inventaris Baru";
+$add_button_text = "Tambah";
 $add_button_icon = "fa-solid fa-plus";
 $add_button_target = "#modalTambah";
 // ================================
