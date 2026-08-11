@@ -17,8 +17,23 @@ $add_button_target = "#modalTambah";
 
 include '../../config/database.php';
 
-// Ambil data inventaris
-$result = mysqli_query($conn, "SELECT * FROM inventaris ORDER BY id ASC");
+// ============================================================
+// AMBIL DATA INVENTARIS DENGAN JOIN KE RUANGAN, LANTAI, GEDUNG
+// ============================================================
+$query = "
+    SELECT 
+        i.*,
+        r.nama_ruangan,
+        r.kode_ruangan,
+        l.nama_lantai,
+        g.nama_gedung
+    FROM inventaris i
+    LEFT JOIN ruangan r ON i.ruangan_id = r.id
+    LEFT JOIN lantai l ON r.lantai_id = l.id
+    LEFT JOIN gedung g ON l.gedung_id = g.id
+    ORDER BY i.id ASC
+";
+$result = mysqli_query($conn, $query);
 $assets = [];
 if ($result) {
     while ($row = mysqli_fetch_assoc($result)) {
@@ -28,6 +43,29 @@ if ($result) {
 $total_aset = count($assets);
 
 $success = isset($_GET['success']) ? $_GET['success'] : '';
+
+// ============================================================
+// AMBIL DATA LOKASI UNTUK DROPDOWN DI MODAL TAMBAH
+// ============================================================
+$queryLokasi = "
+    SELECT 
+        g.nama_gedung,
+        l.nama_lantai,
+        r.kode_ruangan,
+        r.nama_ruangan,
+        r.id as ruangan_id
+    FROM ruangan r
+    JOIN lantai l ON r.lantai_id = l.id
+    JOIN gedung g ON l.gedung_id = g.id
+    ORDER BY g.nama_gedung, l.nama_lantai, r.nama_ruangan
+";
+$resultLokasi = mysqli_query($conn, $queryLokasi);
+$listLokasi = [];
+if ($resultLokasi) {
+    while ($row = mysqli_fetch_assoc($resultLokasi)) {
+        $listLokasi[] = $row;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -116,8 +154,18 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                             <td data-label="Nama Hardware" class="cell-nama"><?= htmlspecialchars($asset['nama_hardware']) ?></td>
                             <td data-label="Kategori"><span class="badge-kategori"><?= htmlspecialchars($asset['kategori']) ?></span></td>
                             <td data-label="Spesifikasi"><span class="spesifikasi-text"><?= htmlspecialchars($asset['spesifikasi'] ?? '-') ?></span></td>
-                            <td data-label="Lokasi"><?= htmlspecialchars($asset['lokasi'] ?? '-') ?></td>
-                            <td data-label="Tahun"><?= htmlspecialchars($asset['tahun'] ?? '-') ?></td>
+                            <td data-label="Lokasi">
+                                <?php 
+                                if (!empty($asset['nama_gedung'])) {
+                                    echo htmlspecialchars($asset['nama_gedung']) . ' - ' . 
+                                         htmlspecialchars($asset['nama_lantai']) . ' - ' . 
+                                         htmlspecialchars($asset['nama_ruangan']);
+                                } else {
+                                    echo '-';
+                                }
+                                ?>
+                            </td>
+                            <td data-label="Tahun"><?= htmlspecialchars($asset['tahun_pengadaan'] ?? '-') ?></td>
                             <td data-label="Status">
                                 <?php
                                 $status = $asset['status'] ?? 'Tersedia';
@@ -186,7 +234,17 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
             <div class="form-row">
                 <div class="form-group">
                     <label for="lokasi">Lokasi</label>
-                    <input type="text" name="lokasi" id="lokasi" placeholder="Lt. 2 – Bidang TI">
+                    <select name="lokasi" id="lokasi" required>
+                        <option value="">-- Pilih Lokasi --</option>
+                        <?php foreach ($listLokasi as $lok): ?>
+                            <option value="<?= htmlspecialchars($lok['ruangan_id']) ?>">
+                                <?= htmlspecialchars($lok['nama_gedung']) ?> - 
+                                <?= htmlspecialchars($lok['nama_lantai']) ?> - 
+                                <?= htmlspecialchars($lok['nama_ruangan']) ?> 
+                                (<?= htmlspecialchars($lok['kode_ruangan']) ?>)
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="tahun">Tahun</label>
