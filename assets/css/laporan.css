@@ -1,105 +1,146 @@
 /* =====================================================================
    laporan.css
-   Grid 2x2 card laporan, mengikuti gaya card project (putih, rounded,
-   shadow tipis) — konsisten dengan dashboard.css & inventaris.css.
+   Grid 2x2 card laporan — minimalis, aksen tipis, whitespace lega.
+   Konsisten dengan dashboard.css & inventaris.css.
    ===================================================================== */
 
 .laporan-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
     margin-top: 8px;
 }
 
 .laporan-card {
+    position: relative;
     background: #fff;
+    border: 1px solid #edeef3;
     border-radius: 14px;
-    padding: 22px;
-    box-shadow: 0 1px 3px rgba(20, 25, 60, 0.06);
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    transition: box-shadow 0.15s ease, transform 0.15s ease;
+    padding: 18px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+/* aksen garis tipis di kiri, warna sesuai kategori — satu-satunya "warna kuat" di card */
+.laporan-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
 .laporan-card:hover {
-    box-shadow: 0 6px 18px rgba(20, 25, 60, 0.10);
+    border-color: #e3e5ee;
+    box-shadow: 0 8px 24px rgba(20, 25, 60, 0.06);
     transform: translateY(-2px);
 }
 
+.laporan-card:hover::before {
+    opacity: 1;
+}
+
+/* panah kecil pojok kanan atas, muncul halus saat hover — penanda "bisa diklik" */
+.laporan-card::after {
+    content: "\f061"; /* fa-arrow-right */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 11px;
+    color: #c7cad9;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.laporan-card:hover::after {
+    opacity: 1;
+    transform: translateX(0);
+}
+
 .laporan-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
-    margin-bottom: 14px;
+    font-size: 12px;
+    margin-bottom: 12px;
 }
 
-.laporan-icon.blue   { background: #e7ecfc; color: #2b3f9e; }
-.laporan-icon.orange { background: #fef3e2; color: #d98b1f; }
-.laporan-icon.green  { background: #e7f7ee; color: #1f9d55; }
-.laporan-icon.red    { background: #fdecec; color: #d64545; }
+.laporan-icon.blue   { background: #eef1fb; color: #2b3f9e; }
+.laporan-icon.orange { background: #fdf5e9; color: #d98b1f; }
+.laporan-icon.green  { background: #ecf8f1; color: #1f9d55; }
+.laporan-icon.red    { background: #fdedec; color: #d64545; }
+
+/* aksen garis kiri & panah mengikuti warna kategori icon */
+.laporan-card:has(.laporan-icon.blue)   { color: #2b3f9e; }
+.laporan-card:has(.laporan-icon.orange) { color: #d98b1f; }
+.laporan-card:has(.laporan-icon.green)  { color: #1f9d55; }
+.laporan-card:has(.laporan-icon.red)    { color: #d64545; }
 
 .laporan-card h3 {
-    font-size: 15.5px;
+    font-size: 13.5px;
     font-weight: 600;
     color: #1c1c2b;
     margin: 0 0 6px;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
 }
 
 .laporan-card p {
-    font-size: 13px;
-    color: #8a8fa3;
-    margin: 0 0 20px;
+    font-size: 12px;
+    color: #9498a8;
+    margin: 0 0 16px;
     line-height: 1.5;
-    min-height: 38px;
 }
 
 .laporan-footer {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    border-top: 1px solid #edeef3;
-    padding-top: 14px;
+    border-top: 1px solid #f2f3f8;
+    padding-top: 12px;
 }
 
 .laporan-footer .label {
     display: block;
-    font-size: 10.5px;
-    letter-spacing: 0.04em;
+    font-size: 10px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #a7abbd;
-    margin-bottom: 4px;
+    color: #b3b6c4;
+    margin-bottom: 5px;
+    font-weight: 600;
 }
 
 .laporan-footer strong {
-    font-size: 13.5px;
-    color: #1c1c2b;
+    font-size: 13px;
+    color: #4a4e5f;
     font-weight: 600;
 }
 
 .laporan-footer .value {
     font-size: 14px;
     font-weight: 700;
+    color: #1c1c2b;
 }
-
-.laporan-footer .value.blue   { color: #2b3f9e; }
-.laporan-footer .value.orange { color: #d98b1f; }
-.laporan-footer .value.green  { color: #1f9d55; }
-.laporan-footer .value.red    { color: #d64545; }
 
 .text-right { text-align: right; }
 
-@media (max-width: 900px) {
-    .laporan-grid { grid-template-columns: 1fr; }
+@media (max-width: 1200px) {
+    .laporan-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* ---------- Card jadi clickable div (bukan <a> lagi) ---------- */
-.laporan-card {
-    cursor: pointer;
+@media (max-width: 560px) {
+    .laporan-grid { grid-template-columns: 1fr; }
 }
 
 /* ---------- Modal overlay dasar ---------- */
@@ -111,6 +152,7 @@
     align-items: center;
     justify-content: center;
     z-index: 100;
+    padding: 16px;
 }
 .modal-overlay.is-open { display: flex; }
 
@@ -194,3 +236,8 @@
     width: 100%;
 }
 .btn-batal:hover { background: #f7f8fb; }
+
+@media (max-width: 576px) {
+    .modal-export { width: 100%; }
+    .export-options { flex-direction: column; }
+}

@@ -8,6 +8,12 @@ if (!isset($_SESSION['login'])) {
 
 include '../../config/database.php';
 
+// ===== SET VARIABEL TOPBAR =====
+$page_title = "Laporan & Statistik";
+$page_subtitle = "Rekapitulasi dan analisis data inventaris perangkat TI DISPUSIPDA";
+$show_add_button = false;
+// ================================
+
 // =====================================================================
 // ⚠️ Query di bawah pakai status 'Tersedia' (bukan 'Aktif') mengikuti
 // modul Inventaris. Kalau kamu belum benerin Bug 1 di peminjaman,
@@ -97,6 +103,7 @@ $periode_kuartal = $nama_bulan[str_pad($bulan_awal_kuartal, 2, '0', STR_PAD_LEFT
 
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/sidebar.css">
+    <link rel="stylesheet" href="../../assets/css/topbar.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
     <link rel="stylesheet" href="../../assets/css/laporan.css">
 
@@ -114,33 +121,8 @@ $periode_kuartal = $nama_bulan[str_pad($bulan_awal_kuartal, 2, '0', STR_PAD_LEFT
 
     <div class="main-content">
 
-        <div class="topbar">
-            <div>
-                <h2>Laporan & Statistik</h2>
-                <p>Rekapitulasi dan analisis data inventaris perangkat TI DISPUSIPDA</p>
-            </div>
-
-            <div class="top-right">
-
-                <div class="notification">
-                    <i class="fa-regular fa-bell"></i>
-                </div>
-
-                <div class="profile">
-
-                    <div class="profile-photo">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-
-                    <div>
-                        <h4><?= htmlspecialchars($_SESSION['nama']); ?></h4>
-                        <span>Admin DISPUSIPDA</span>
-                    </div>
-
-                </div>
-
-            </div>
-        </div>
+        <!-- ===== TOPBAR ===== -->
+        <?php include '../../includes/topbar.php'; ?>
 
         <div class="laporan-grid">
 
@@ -162,11 +144,13 @@ $periode_kuartal = $nama_bulan[str_pad($bulan_awal_kuartal, 2, '0', STR_PAD_LEFT
             </div>
 
             <!-- Card 2: Laporan Maintenance Kuartal -->
-            <div class="laporan-card" onclick="pilihExport('maintenance', 'Laporan Maintenance <?= $kuartal ?> <?= date('Y') ?>')">
+            <div class="laporan-card"
+                onclick="pilihExport('maintenance', 'Laporan Maintenance <?= $kuartal ?> <?= date('Y') ?>')">
                 <div class="laporan-icon orange"><i class="fa-solid fa-chart-column"></i></div>
                 <h3>Laporan Maintenance <?= $kuartal ?> <?= date('Y') ?></h3>
                 <p>Rekap insiden kerusakan dan perbaikan triwulan
-                    <?= $kuartal === 'Q1' ? 'I' : ($kuartal === 'Q2' ? 'II' : ($kuartal === 'Q3' ? 'III' : 'IV')) ?></p>
+                    <?= $kuartal === 'Q1' ? 'I' : ($kuartal === 'Q2' ? 'II' : ($kuartal === 'Q3' ? 'III' : 'IV')) ?>
+                </p>
                 <div class="laporan-footer">
                     <div>
                         <span class="label">PERIODE</span>
