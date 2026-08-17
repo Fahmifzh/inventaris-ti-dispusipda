@@ -8,183 +8,124 @@ if (!isset($_SESSION['login'])) {
 
 include '../../config/database.php';
 
-$id = $_GET['id'];
+// Pastikan ID ada di URL
+if (!isset($_GET['id'])) {
+    header("Location: index.php");
+    exit;
+}
 
-$query = mysqli_query($conn,"
-SELECT
-m.*,
-i.kode_aset,
-i.nama_hardware,
-i.merk,
-i.kategori,
-i.spesifikasi
-FROM maintenance m
-JOIN inventaris i
-ON m.inventaris_id=i.id
-WHERE m.id='$id'
+$id = (int)$_GET['id'];
+
+// Ambil data detail maintenance beserta data inventaris
+$query = mysqli_query($conn, "
+    SELECT 
+        m.*,
+        i.kode_aset,
+        i.nama_hardware,
+        i.merk
+    FROM maintenance m
+    LEFT JOIN inventaris i ON m.inventaris_id = i.id
+    WHERE m.id = '$id'
 ");
 
 $data = mysqli_fetch_assoc($query);
+
+// Jika data tidak ditemukan
+if (!$data) {
+    header("Location: index.php");
+    exit;
+}
+
+// Set Judul Halaman untuk Topbar Bawaan Sistem (Sama seperti Tambah Maintenance)
+$page_title = "Detail Maintenance";
+$page_subtitle = "Informasi detail laporan kerusakan perangkat TI DISPUSIPDA";
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Maintenance TI</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="../../assets/css/style.css?v=2.0">
+    <link rel="stylesheet" href="../../assets/css/sidebar.css?v=2.0">
+    <link rel="stylesheet" href="../../assets/css/topbar.css?v=2.0">
+    <link rel="stylesheet" href="../../assets/css/maintenance.css?v=2.0">
 
-<title>Detail Maintenance</title>
-
-<link rel="stylesheet" href="../../assets/css/style.css">
-<link rel="stylesheet" href="../../assets/css/sidebar.css">
-<link rel="stylesheet" href="../../assets/css/dashboard.css">
-<link rel="stylesheet" href="../../assets/css/Maintenance.css">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
 </head>
 
 <body>
 
-<?php include '../../includes/sidebar.php'; ?>
+    <!-- INCLUDE SIDEBAR -->
+    <?php include '../../includes/sidebar.php'; ?>
 
-<div class="main-content">
+    <div class="main-content">
 
-<div class="topbar">
+        <!-- INCLUDE TOPBAR RESMI (Pakai Topbar Bawaan Sistem) -->
+        <?php include '../../includes/topbar.php'; ?>
 
-<div>
+        <!-- FORM / DETAIL CARD -->
+        <div class="form-card" style="margin-top: 25px;">
+            <h3 style="margin-bottom: 20px; color: #1e293b; font-weight: 600;">Data Maintenance</h3>
 
-<h2>Detail Maintenance</h2>
+            <div class="form-group">
+                <label>Kode Aset</label>
+                <input type="text" value="<?= htmlspecialchars($data['kode_aset']); ?>" readonly style="background-color: #f8fafc;">
+            </div>
 
-<p>Informasi lengkap laporan maintenance perangkat TI</p>
+            <div class="form-group">
+                <label>Nama Perangkat</label>
+                <input type="text" value="<?= htmlspecialchars($data['nama_hardware']); ?><?= !empty($data['merk']) ? ' ('.$data['merk'].')' : ''; ?>" readonly style="background-color: #f8fafc;">
+            </div>
 
-</div>
+            <div class="form-group">
+                <label>Tanggal Lapor</label>
+                <input type="text" value="<?= date('d F Y', strtotime($data['tanggal_lapor'])); ?>" readonly style="background-color: #f8fafc;">
+            </div>
 
-<div class="top-right">
+            <div class="form-group">
+                <label>Kerusakan</label>
+                <textarea readonly style="background-color: #f8fafc;"><?= htmlspecialchars($data['kerusakan']); ?></textarea>
+            </div>
 
-<div class="notification">
+            <div class="form-group">
+                <label>Keparahan</label>
+                <input type="text" value="<?= htmlspecialchars($data['keparahan']); ?>" readonly style="background-color: #f8fafc;">
+            </div>
 
-<i class="fa-regular fa-bell"></i>
+            <div class="form-group">
+                <label>Status</label>
+                <input type="text" value="<?= htmlspecialchars($data['status']); ?>" readonly style="background-color: #f8fafc;">
+            </div>
 
-</div>
+            <div class="form-group">
+                <label>Teknisi</label>
+                <input type="text" value="<?= htmlspecialchars($data['teknisi'] ?? '-'); ?>" readonly style="background-color: #f8fafc;">
+            </div>
 
-<div class="profile">
+            <div class="form-group">
+                <label>Tindakan</label>
+                <textarea readonly style="background-color: #f8fafc;"><?= htmlspecialchars($data['tindakan'] ?? '-'); ?></textarea>
+            </div>
 
-<div class="profile-photo">
+            <div class="btn-group" style="margin-top: 25px;">
+                <a href="edit.php?id=<?= $data['id']; ?>" class="btn-simpan" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-pen"></i> Edit Data
+                </a>
+                <a href="index.php" class="btn-batal">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali
+                </a>
+            </div>
 
-<i class="fa-solid fa-user"></i>
+        </div>
 
-</div>
-
-<div>
-
-<h4><?= htmlspecialchars($_SESSION['nama']); ?></h4>
-
-<span>Admin DISPUSIPDA</span>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="form-card">
-
-<h2>Data Maintenance</h2>
-
-<div class="form-group">
-<label>Kode Aset</label>
-<input type="text" value="<?= $data['kode_aset']; ?>" readonly>
-</div>
-
-<div class="form-group">
-<label>Nama Perangkat</label>
-<input type="text" value="<?= $data['nama_hardware']; ?>" readonly>
-</div>
-
-<div class="form-group">
-<label>Merk</label>
-<input type="text" value="<?= $data['merk']; ?>" readonly>
-</div>
-
-<div class="form-group">
-<label>Kategori</label>
-<input type="text" value="<?= $data['kategori']; ?>" readonly>
-</div>
-
-<div class="form-group">
-<label>Spesifikasi</label>
-<textarea readonly><?= $data['spesifikasi']; ?></textarea>
-</div>
-
-<div class="form-group">
-<label>Tanggal Lapor</label>
-<input type="date" value="<?= $data['tanggal_lapor']; ?>" readonly>
-</div>
-
-<div class="form-group">
-<label>Kerusakan</label>
-<textarea readonly><?= $data['kerusakan']; ?></textarea>
-</div>
-
-<div class="form-group">
-<label>Keparahan</label>
-<input type="text" value="<?= $data['keparahan']; ?>" readonly>
-</div>
-
-<div class="form-group">
-<label>Teknisi</label>
-<input type="text" value="<?= $data['teknisi']; ?>" readonly>
-</div>
-
-<div class="form-group">
-<label>Tindakan</label>
-<textarea readonly><?= $data['tindakan']; ?></textarea>
-</div>
-
-<div class="form-group">
-<label>Status</label>
-<input type="text" value="<?= $data['status']; ?>" readonly>
-</div>
-
-<div class="form-group">
-<label>Tanggal Selesai</label>
-<input type="date" value="<?= $data['tanggal_selesai']; ?>" readonly>
-</div>
-
-<div class="btn-group">
-
-<a href="index.php" class="btn-batal">
-
-<i class="fa-solid fa-arrow-left"></i>
-
-Kembali
-
-</a>
-
-<a href="edit.php?id=<?= $data['id']; ?>" class="btn-simpan">
-
-<i class="fa-solid fa-pen"></i>
-
-Edit
-
-</a>
-
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </body>
-
 </html>
