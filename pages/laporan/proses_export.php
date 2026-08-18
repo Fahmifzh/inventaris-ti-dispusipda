@@ -43,8 +43,6 @@ switch ($jenis) {
         break;
 
     case 'peminjaman':
-        // ⚠️ Pakai kolom nama_peminjam mengikuti proses_tambah.php.
-        // Kalau di database kamu kolomnya ternyata nama_pegawai, ganti di query ini.
         $kolom = ['Nama Peminjam', 'Divisi', 'Perangkat', 'Kode', 'Tgl Pinjam', 'Est. Kembali', 'Status'];
         $res = mysqli_query($conn, "
             SELECT p.nama_peminjam, p.divisi, i.nama_hardware, i.kode_aset, p.tanggal_pinjam, p.est_kembali, p.status
