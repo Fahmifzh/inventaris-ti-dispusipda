@@ -23,7 +23,7 @@ if (!isset($judul_map[$jenis])) {
 }
 $judul = $judul_map[$jenis];
 
-// ---------- Ambil data sesuai jenis ----------
+// mengambil data sesuai jenis laporan
 switch ($jenis) {
     case 'inventaris':
         $kolom = ['Kode Aset', 'Nama Hardware', 'Kategori', 'Ruangan ID', 'Tahun', 'Status'];
@@ -73,40 +73,161 @@ if ($res) {
     }
 }
 
-// =====================================================================
-// FORMAT EXCEL → di-export sebagai CSV (bisa langsung dibuka Excel,
-// tidak butuh library tambahan)
-// =====================================================================
+// format excel
 if ($format === 'excel') {
-    $filename = 'laporan_' . $jenis . '_' . date('Y-m-d') . '.csv';
-    header('Content-Type: text/csv; charset=utf-8');
+    $filename = 'Laporan_' . ucfirst($jenis) . '_' . date('Y-m-d_His') . '.xls';
+    header('Content-Type: application/vnd.ms-excel; charset=utf-8');
     header('Content-Disposition: attachment; filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
 
-    $output = fopen('php://output', 'w');
-    fputcsv($output, $kolom);
+    $navy = '#16215C';
+    $navyDark = '#0F1740';
+    $grayLight = '#F5F6FA';
+    $borderColor = '#C9CDE0';
+    $totalKolom = count($kolom) + 1; // +1 untuk kolom "No"
+    ?>
+    <!DOCTYPE html>
+    <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"
+        xmlns="http://www.w3.org/TR/REC-html40">
 
-    foreach ($data as $row) {
-        $baris = [];
-        foreach ($baris_key as $key) {
-            if ($key === null) {
-                // kolom "Umur (tahun)" dihitung manual untuk laporan kritis
-                $baris[] = date('Y') - (int) $row['tahun_pengadaan'];
-            } else {
-                $baris[] = $row[$key] ?? '-';
+    <head>
+        <meta charset="UTF-8">
+        <!--[if gte mso 9]>
+<xml>
+<x:ExcelWorkbook>
+<x:ExcelWorksheets>
+<x:ExcelWorksheet>
+<x:Name><?= htmlspecialchars(substr($judul, 0, 30)) ?></x:Name>
+<x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+</x:ExcelWorksheet>
+</x:ExcelWorksheets>
+</x:ExcelWorkbook>
+</xml>
+<![endif]-->
+        <style>
+            table {
+                border-collapse: collapse;
+                font-family: Calibri, Arial, sans-serif;
             }
-        }
-        fputcsv($output, $baris);
-    }
 
-    fclose($output);
+            td,
+            th {
+                border: 1px solid
+                    <?= $borderColor ?>
+                ;
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <table>
+            <!-- ===== KOP SURAT ===== -->
+            <tr>
+                <td colspan="<?= $totalKolom ?>" style="border:none; text-align:center; padding:4px;">
+                    <span style="font-size:13px; font-weight:bold; color:#333;">PEMERINTAH PROVINSI JAWA BARAT</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="<?= $totalKolom ?>" style="border:none; text-align:center; padding:2px;">
+                    <span
+                        style="font-size:18px; font-weight:bold; color:<?= $navy ?>; letter-spacing:1px;">DISPUSIPDA</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="<?= $totalKolom ?>" style="border:none; text-align:center; padding:2px 4px 10px;">
+                    <span style="font-size:11px; color:#666;">Dinas Perpustakaan dan Kearsipan Daerah — Sistem Inventaris
+                        Perangkat TI</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="<?= $totalKolom ?>"
+                    style="border:none; border-bottom:3px solid <?= $navy ?>; padding:0; line-height:2px;">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="<?= $totalKolom ?>" style="border:none; padding:4px;">&nbsp;</td>
+            </tr>
+
+            <!-- ===== JUDUL LAPORAN (dinamis sesuai jenis) ===== -->
+            <tr>
+                <td colspan="<?= $totalKolom ?>" style="border:none; text-align:center; padding:2px;">
+                    <span
+                        style="font-size:15px; font-weight:bold; color:#1c1c2b;"><?= htmlspecialchars(mb_strtoupper($judul)) ?></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="<?= $totalKolom ?>"
+                    style="border:none; text-align:center; padding:2px 2px 14px; color:#888; font-size:10.5px;">
+                    Dicetak pada <?= date('d-m-Y H:i') ?> WIB
+                </td>
+            </tr>
+
+            <!-- ===== HEADER TABEL ===== -->
+            <tr>
+                <th
+                    style="background:<?= $navy ?>; color:#ffffff; font-weight:bold; text-align:center; padding:8px 10px; border:1px solid <?= $navyDark ?>;">
+                    No</th>
+                <?php foreach ($kolom as $k): ?>
+                    <th
+                        style="background:<?= $navy ?>; color:#ffffff; font-weight:bold; text-align:center; padding:8px 10px; border:1px solid <?= $navyDark ?>;">
+                        <?= htmlspecialchars($k) ?>
+                    </th>
+                <?php endforeach; ?>
+            </tr>
+
+            <!-- ===== DATA ===== -->
+            <?php if (empty($data)): ?>
+                <tr>
+                    <td colspan="<?= $totalKolom ?>" style="text-align:center; padding:16px; color:#888;">Tidak ada data.</td>
+                </tr>
+            <?php else: ?>
+                <?php $no = 1;
+                foreach ($data as $row): ?>
+                    <tr style="background:<?= ($no % 2 === 0) ? $grayLight : '#ffffff' ?>;">
+                        <td style="text-align:center;"><?= $no++ ?></td>
+                        <?php foreach ($baris_key as $i => $key): ?>
+                            <?php
+                            $isKode = ($kolom[$i] ?? '') === 'Kode' || ($kolom[$i] ?? '') === 'Kode Aset';
+                            $isStatus = ($kolom[$i] ?? '') === 'Status';
+                            $nilai = $key === null
+                                ? (date('Y') - (int) $row['tahun_pengadaan'])
+                                : ($row[$key] ?? '-');
+                            $warna = '';
+                            if ($isKode)
+                                $warna = "font-weight:bold; color:{$navy};";
+                            if ($isStatus) {
+                                $warna = 'font-weight:bold;';
+                                if (in_array($nilai, ['Dipinjam', 'Proses', 'Menunggu']))
+                                    $warna .= 'color:#B8770F;';
+                                elseif (in_array($nilai, ['Dikembalikan', 'Selesai', 'Tersedia', 'Aktif']))
+                                    $warna .= 'color:#1F9D55;';
+                                elseif ($nilai === 'Maintenance')
+                                    $warna .= 'color:#D64545;';
+                            }
+                            ?>
+                            <td style="<?= ($isKode || $isStatus) ? 'text-align:center;' : '' ?> <?= $warna ?>">
+                                <?= htmlspecialchars((string) $nilai) ?>
+                            </td>
+                        <?php endforeach; ?>
+                    </tr>
+                <?php endforeach; ?>
+                <tr>
+                    <td colspan="<?= $totalKolom ?>" style="border:none; padding:10px 4px 2px; font-size:10.5px; color:#888;">
+                        Total <?= count($data) ?> data
+                    </td>
+                </tr>
+            <?php endif; ?>
+        </table>
+
+    </body>
+
+    </html>
+    <?php
     exit;
 }
 
-// =====================================================================
-// FORMAT PDF → belum ada library PDF di project ini (TCPDF/mPDF/dst).
-// Solusi sementara: tampilkan halaman siap-cetak, browser otomatis buka
-// dialog Print — user tinggal pilih "Save as PDF" di situ.
-// =====================================================================
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -281,7 +402,6 @@ if ($format === 'excel') {
     </table>
 
     <script>
-        // Otomatis buka dialog print begitu halaman selesai dimuat
         window.onload = function () { window.print(); };
     </script>
 
