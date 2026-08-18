@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     exit;
 }
 
-$nama_peminjam  = mysqli_real_escape_string($conn, $_POST['nama_pegawai']);
+$nama_peminjam  = mysqli_real_escape_string($conn, $_POST['nama_peminjam']);
 $divisi         = mysqli_real_escape_string($conn, $_POST['divisi']);
 $inventaris_id  = (int)$_POST['inventaris_id'];
 $tanggal_pinjam = mysqli_real_escape_string($conn, $_POST['tanggal_pinjam']);

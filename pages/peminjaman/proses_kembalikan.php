@@ -48,7 +48,7 @@ $update = mysqli_query($conn, "
 
 if ($update) {
     // Aset balik jadi Aktif / tersedia dipinjam lagi
-    mysqli_query($conn, "UPDATE inventaris SET status = 'Aktif' WHERE id = $inventaris_id");
+    mysqli_query($conn, "UPDATE inventaris SET status = 'Tersedia' WHERE id = $inventaris_id");
     $_SESSION['flash_success'] = "Perangkat berhasil dikembalikan.";
 } else {
     $_SESSION['flash_error'] = "Gagal memproses pengembalian: " . mysqli_error($conn);
