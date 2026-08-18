@@ -121,23 +121,30 @@ $kategoriList = ['PC', 'Printer', 'Proyektor', 'Monitor', 'CPU', 'Laptop', 'Scan
     <?php endif; ?>
 
     <!-- FILTER BAR -->
-    <div class="filter-bar">
-        <div class="search-wrapper">
-            <span class="search-icon"><i class="fa-solid fa-search"></i></span>
-            <input type="text" id="searchInput" placeholder="Cari kode aset atau nama perangkat…">
+    <div class="filter-bar" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+        <div style="display: flex; gap: 12px; flex: 1; min-width: 280px;">
+            <div class="search-wrapper" style="flex: 1;">
+                <span class="search-icon"><i class="fa-solid fa-search"></i></span>
+                <input type="text" id="searchInput" placeholder="Cari kode aset atau nama perangkat…">
+            </div>
+            <select id="filterKategori">
+                <option value="">Semua Kategori</option>
+                <?php foreach ($kategoriList as $kat): ?>
+                    <option value="<?= htmlspecialchars($kat) ?>"><?= htmlspecialchars($kat) ?></option>
+                <?php endforeach; ?>
+            </select>
+            <select id="filterStatus">
+                <option value="">Semua Status</option>
+                <option value="Tersedia">Tersedia</option>
+                <option value="Dipinjam">Dipinjam</option>
+                <option value="Maintenance">Maintenance</option>
+            </select>
         </div>
-        <select id="filterKategori">
-            <option value="">Semua Kategori</option>
-            <?php foreach ($kategoriList as $kat): ?>
-                <option value="<?= htmlspecialchars($kat) ?>"><?= htmlspecialchars($kat) ?></option>
-            <?php endforeach; ?>
-        </select>
-        <select id="filterStatus">
-            <option value="">Semua Status</option>
-            <option value="Tersedia">Tersedia</option>
-            <option value="Dipinjam">Dipinjam</option>
-            <option value="Maintenance">Maintenance</option>
-        </select>
+        <div>
+            <button type="button" class="btn-import-excel" onclick="document.getElementById('modalImport').classList.add('is-open')" title="Import Excel">
+                <i class="fa-solid fa-file-excel"></i>
+            </button>
+        </div>
     </div>
 
     <!-- TABLE / CARD CONTAINER -->
@@ -213,6 +220,29 @@ $kategoriList = ['PC', 'Printer', 'Proyektor', 'Monitor', 'CPU', 'Laptop', 'Scan
         <div class="table-footer-info">Total <?= $total_aset ?> data aset</div>
     </div>
 
+</div>
+
+<!-- ================= MODAL IMPORT EXCEL ================= -->
+<div class="modal-overlay" id="modalImport">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3><i class="fa-solid fa-file-excel" style="color:#107c41;"></i> Import Data Excel</h3>
+            <button type="button" class="modal-close" onclick="document.getElementById('modalImport').classList.remove('is-open')">&times;</button>
+        </div>
+        <form action="proses/process_import.php" method="POST" enctype="multipart/form-data" class="modal-form">
+            <div class="form-group">
+                <label for="file_excel">Pilih File Excel (.xlsx)</label>
+                <input type="file" name="file_excel" id="file_excel" accept=".xlsx, .xls" required style="padding: 8px;">
+                <small style="color: #666; font-size: 12px; margin-top: 6px; display: block;">
+                    * Pastikan file yang diunggah sesuai format sheet inventaris DISPUSIPDA.
+                </small>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-batal" onclick="document.getElementById('modalImport').classList.remove('is-open')">Batal</button>
+                <button type="submit" name="import" class="btn-simpan" style="background-color: #107c41;">Upload & Import</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <!-- ================= MODAL TAMBAH ================= -->

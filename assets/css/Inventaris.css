@@ -103,6 +103,7 @@
     flex-wrap: wrap;
     gap: 12px;
     margin-bottom: 20px;
+    align-items: center;
 }
 
 .filter-bar .search-wrapper {
@@ -156,6 +157,32 @@
     border-color: #2b3f9e;
 }
 
+/* ---------- TOMBOL IMPORT EXCEL ---------- */
+.btn-import-excel {
+    background: #107c41;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    transition: 0.2s;
+}
+
+.btn-import-excel:hover {
+    background: #0d6634;
+}
+
+.btn-import-excel i {
+    font-size: 15px;
+}
+
 /* ---------- ALERT ---------- */
 .alert-box {
     padding: 12px 16px;
@@ -167,6 +194,16 @@
 .alert-success {
     background: #e7f7ee;
     color: #1f9d55;
+}
+
+.alert-error {
+    background: #fdecec;
+    color: #d64545;
+    border: 1px solid #f8d7da;
+}
+
+.alert-error i {
+    margin-right: 8px;
 }
 
 /* ---------- TABLE CARD ---------- */
@@ -567,20 +604,27 @@
     }
 
     .filter-bar {
-        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 10px;
     }
 
     .filter-bar .search-wrapper {
-        flex: 1 1 100%;
+        flex: 1 1 200px;
     }
 
     .filter-bar select {
-        width: 100%;
+        flex: 1 1 120px;
+        min-width: 100px;
+        width: auto;
+    }
+
+    .btn-import-excel {
+        flex: 0 1 auto;
     }
 }
 
 /* ==========================================
-   RESPONSIVE - HP
+   RESPONSIVE - HP (TABEL BISA DI-SCROLL!)
    ========================================== */
 @media (max-width: 768px) {
     .main-content {
@@ -610,126 +654,190 @@
         font-size: 10px;
     }
 
-    /* ===== TABLE MENJADI CARD ===== */
-    .table-inventaris thead {
-        display: none;
-    }
-
-    .table-inventaris tbody tr {
-        display: block;
-        border: 1px solid #edeef3;
-        border-radius: 12px;
-        margin-bottom: 12px;
-        padding: 14px 16px;
-        background: #fff;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-    }
-
-    .table-inventaris tbody td {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 0;
-        border-bottom: 1px solid #f5f6fa;
-        font-size: 13px;
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-
-    .table-inventaris tbody td:last-child {
-        border-bottom: none;
-    }
-
-    .table-inventaris tbody td::before {
-        content: attr(data-label);
-        font-weight: 600;
-        color: #5a5f7a;
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        flex-shrink: 0;
-        min-width: 80px;
-    }
-
-    .table-inventaris tbody td[data-label="No"]::before { content: "No"; }
-    .table-inventaris tbody td[data-label="Kode Aset"]::before { content: "Kode"; }
-    .table-inventaris tbody td[data-label="Nama Hardware"]::before { content: "Perangkat"; }
-    .table-inventaris tbody td[data-label="Kategori"]::before { content: "Kategori"; }
-    .table-inventaris tbody td[data-label="Spesifikasi"]::before { content: "Spesifikasi"; }
-    .table-inventaris tbody td[data-label="Lokasi"]::before { content: "Lokasi"; }
-    .table-inventaris tbody td[data-label="Tahun"]::before { content: "Tahun"; }
-    .table-inventaris tbody td[data-label="Status"]::before { content: "Status"; }
-    .table-inventaris tbody td[data-label="Aksi"]::before { content: "Aksi"; }
-
-    /* ===== EMPTY STATE - TENGAH ===== */
-    .table-inventaris tbody tr.empty-row {
+    /* ===== FILTER BAR - TETAP SEJAJAR DI HP! ===== */
+    .filter-bar {
         display: flex !important;
-        justify-content: center !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        gap: 6px !important;
         align-items: center !important;
-        min-height: 200px;
-        border: 1px dashed #d0d3e0;
-        background: #fafbfe;
-        padding: 30px 20px;
-        border-radius: 12px;
-        margin-bottom: 12px;
-        width: 100%;
+        justify-content: flex-start !important;
+        padding-bottom: 4px !important;
+        flex-direction: row !important;
+        margin-bottom: 16px !important;
     }
 
-    .table-inventaris tbody tr.empty-row td {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-        text-align: center !important;
-        padding: 0 !important;
+    .filter-bar .search-wrapper {
+        flex: 1 0 120px !important;
+        min-width: 100px !important;
+    }
+
+    .filter-bar .search-wrapper input {
+        font-size: 12px !important;
+        padding: 8px 10px 8px 30px !important;
+        min-width: 80px !important;
+        height: 36px !important;
+    }
+
+    .filter-bar .search-wrapper .search-icon {
+        left: 10px !important;
+        font-size: 12px !important;
+    }
+
+    .filter-bar select {
+        flex: 0 0 auto !important;
+        min-width: 70px !important;
+        width: auto !important;
+        padding: 6px 10px !important;
+        padding-right: 24px !important;
+        font-size: 11px !important;
+        height: 36px !important;
+        background-position: right 8px center !important;
+        background-size: 8px 5px !important;
+    }
+
+    /* ===== TOMBOL IMPORT - LOGO EXCEL DI HP ===== */
+    .btn-import-excel {
+        padding: 6px 8px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        font-size: 0 !important;
+        border-radius: 6px !important;
+        background: #107c41 !important;
         border: none !important;
-        width: 100% !important;
+        color: #fff !important;
+        cursor: pointer !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+        transition: 0.2s !important;
+        gap: 0 !important;
+        height: 36px !important;
+        width: 36px !important;
     }
 
-    .table-inventaris tbody tr.empty-row td::before {
+    .btn-import-excel i {
+        font-size: 16px !important;
+        margin: 0 !important;
+    }
+
+    .btn-import-excel span {
         display: none !important;
     }
 
+    .btn-import-excel:hover {
+        background: #0d6634 !important;
+    }
+
+    /* ===== WADAH TABEL - BISA DI-SCROLL! ===== */
+    .card-inventaris {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding: 0 !important;
+        border-radius: 12px !important;
+    }
+
+    /* ===== TABEL TETAP TABEL - BISA DI-SCROLL! ===== */
+    .table-inventaris {
+        width: 100% !important;
+        min-width: 750px !important;
+        display: table !important;
+        border-collapse: collapse !important;
+    }
+
+    .table-inventaris thead {
+        display: table-header-group !important;
+    }
+
+    .table-inventaris thead th {
+        padding: 10px 14px !important;
+        font-size: 10px !important;
+        white-space: nowrap !important;
+        background: #f8f9fc !important;
+        text-align: left !important;
+        border-bottom: 2px solid #edeef3 !important;
+    }
+
+    .table-inventaris tbody tr {
+        display: table-row !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        background: transparent !important;
+        margin: 0 !important;
+    }
+
+    .table-inventaris tbody td {
+        display: table-cell !important;
+        padding: 10px 14px !important;
+        font-size: 12px !important;
+        white-space: nowrap !important;
+        border-bottom: 1px solid #edeef3 !important;
+        flex: none !important;
+        justify-content: none !important;
+        align-items: none !important;
+        gap: 0 !important;
+        flex-wrap: none !important;
+    }
+
+    .table-inventaris tbody td::before {
+        display: none !important;
+    }
+
+    .table-inventaris tbody td:last-child {
+        border-bottom: 1px solid #edeef3 !important;
+    }
+
+    .table-inventaris tbody tr:last-child td {
+        border-bottom: none !important;
+    }
+
+    .table-inventaris tbody tr:hover {
+        background: #fafbfe !important;
+    }
+
+    /* ===== EMPTY STATE ===== */
+    .table-inventaris tbody tr.empty-row {
+        display: table-row !important;
+    }
+
+    .table-inventaris tbody tr.empty-row td {
+        display: table-cell !important;
+        text-align: center !important;
+        padding: 40px 16px !important;
+        white-space: normal !important;
+    }
+
     .table-inventaris tbody tr.empty-row td i {
-        font-size: 48px;
+        font-size: 40px;
         color: #d0d3e0;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
         display: block;
+        text-align: center;
     }
 
     .table-inventaris tbody tr.empty-row td span {
-        font-size: 15px;
+        font-size: 14px;
         color: #8a8fa3;
         font-weight: 500;
         display: block;
+        text-align: center;
     }
 
+    /* ===== CELL LAIN ===== */
     .spesifikasi-text {
-        max-width: 100%;
-        white-space: normal;
-        word-break: break-word;
+        max-width: 120px !important;
     }
 
     .action-buttons {
         display: flex;
         gap: 4px;
-        justify-content: flex-end;
     }
 
     .table-footer-info {
         font-size: 12px;
         padding: 12px 16px;
-    }
-
-    .filter-bar .search-wrapper input {
-        font-size: 13px;
-        padding: 10px 12px 10px 36px;
-    }
-
-    .filter-bar select {
-        font-size: 13px;
-        padding: 10px 12px;
-        width: 100%;
     }
 
     /* ===== MODAL RESPONSIVE ===== */
@@ -771,179 +879,101 @@
     }
 }
 
-/* ==========================
-   ALERT BOX - ERROR
-   ========================== */
-.alert-error {
-    background: #fdecec;
-    color: #d64545;
-    border: 1px solid #f8d7da;
-    padding: 12px 16px;
-    border-radius: 8px;
-    font-size: 13.5px;
-    margin-bottom: 18px;
-}
-
-.alert-error i {
-    margin-right: 8px;
-}
-
 /* ==========================================
-   RESPONSIVE - HP KECIL
+   RESPONSIVE - HP KECIL (480px)
    ========================================== */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .main-content {
-        padding: 14px;
+        padding: 10px;
     }
 
     .stat-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-
-    .stat-card {
-        padding: 14px;
-    }
-
-    .stat-card .icon {
-        width: 36px;
-        height: 36px;
-        font-size: 14px;
-    }
-
-    .stat-card .info h4 {
-        font-size: 17px;
-    }
-
-    .stat-card .info span {
-        font-size: 10px;
-    }
-
-    /* ===== PERBAIKAN WADAH TABEL ===== */
-    .card-inventaris {
-        overflow-x: auto; /* Memungkinkan scroll horizontal jika kolom terlalu lebar */
-        -webkit-overflow-scrolling: touch;
-    }
-
-    /* ===== PERBAIKAN HEADER TABEL AGAR TAMPIL DI HP ===== */
-    .table-inventaris {
-        width: 100%;
-        min-width: 600px; /* Menjaga agar nama kolom tidak berjejal/berantakan */
-        display: table !important; /* Kembalikan ke display table standar */
-    }
-
-    .table-inventaris thead {
-        display: table-header-group !important; /* HEADER TAMPIL KEMBALI */
-    }
-
-    .table-inventaris thead th {
-        padding: 10px 12px;
-        font-size: 11px;
-        white-space: nowrap; /* Mencegah judul kolom patah menjadi 2 baris */
-        background: #f8f9fc;
-    }
-
-    .table-inventaris tbody tr {
-        display: table-row !important; /* Balikkan baris ke bentuk tabel */
-        border: none;
-        box-shadow: none;
-        background: transparent;
-    }
-
-    .table-inventaris tbody td {
-        display: table-cell !important; /* Balikkan sel ke bentuk tabel */
-        padding: 10px 12px;
-        font-size: 12.5px;
-        white-space: nowrap;
-        border-bottom: 1px solid #edeef3;
-    }
-
-    /* Sembunyikan psuedo-element attr(data-label) karena header asli sudah tampil */
-    .table-inventaris tbody td::before {
-        display: none !important;
-    }
-
-    /* ===== EMPTY STATE RESPONSIF ===== */
-    .table-inventaris tbody tr.empty-row {
-        display: table-row !important;
-    }
-
-    .table-inventaris tbody tr.empty-row td {
-        display: table-cell !important;
-        text-align: center !important;
-        padding: 40px 16px !important;
-    }
-
-    .table-inventaris tbody tr.empty-row td i {
-        font-size: 40px;
-        color: #d0d3e0;
-        margin-bottom: 10px;
-        display: block;
-    }
-
-    .table-inventaris tbody tr.empty-row td span {
-        font-size: 14px;
-        color: #8a8fa3;
-        font-weight: 500;
-        display: block;
-    }
-
-    .spesifikasi-text {
-        max-width: 140px;
-    }
-
-    .action-buttons {
-        display: flex;
-        gap: 4px;
-    }
-
-    .table-footer-info {
-        font-size: 12px;
-        padding: 12px 16px;
-    }
-
-    .filter-bar .search-wrapper input {
-        font-size: 13px;
-        padding: 10px 12px 10px 36px;
-    }
-
-    .filter-bar select {
-        font-size: 13px;
-        padding: 10px 12px;
-        width: 100%;
-    }
-
-    /* ===== MODAL RESPONSIVE ===== */
-    .modal-overlay {
-        padding: 10px;
-        align-items: flex-start;
-        padding-top: 40px;
-    }
-
-    .modal-box {
-        max-width: 100%;
-        padding: 18px 16px;
-        border-radius: 14px;
-        margin: 0 8px;
-    }
-
-    .form-row {
-        flex-direction: column;
-        gap: 0;
-    }
-
-    .modal-actions,
-    .modal-actions-center {
-        flex-direction: column;
+        grid-template-columns: 1fr 1fr;
         gap: 8px;
     }
 
-    .btn-batal,
-    .btn-simpan,
-    .btn-hapus-confirm {
-        width: 100%;
-        justify-content: center;
-        text-align: center;
-        padding: 12px;
+    .stat-card {
+        padding: 10px 12px;
+    }
+
+    .stat-card .icon {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+    }
+
+    .stat-card .info h4 {
+        font-size: 15px;
+    }
+
+    .stat-card .info span {
+        font-size: 9px;
+    }
+
+    .filter-bar {
+        gap: 4px !important;
+    }
+
+    .filter-bar .search-wrapper {
+        flex: 1 0 80px !important;
+        min-width: 70px !important;
+    }
+
+    .filter-bar .search-wrapper input {
+        font-size: 10px !important;
+        padding: 6px 8px 6px 24px !important;
+        min-width: 60px !important;
+        height: 30px !important;
+    }
+
+    .filter-bar .search-wrapper .search-icon {
+        left: 8px !important;
+        font-size: 10px !important;
+    }
+
+    .filter-bar select {
+        min-width: 55px !important;
+        font-size: 10px !important;
+        padding: 4px 8px !important;
+        padding-right: 18px !important;
+        height: 30px !important;
+        background-position: right 6px center !important;
+        background-size: 6px 4px !important;
+    }
+
+    .btn-import-excel {
+        min-width: 28px !important;
+        min-height: 28px !important;
+        height: 30px !important;
+        width: 30px !important;
+        padding: 4px 6px !important;
+        border-radius: 4px !important;
+    }
+
+    .btn-import-excel i {
+        font-size: 13px !important;
+    }
+
+    .table-inventaris {
+        min-width: 600px !important;
+    }
+
+    .table-inventaris thead th {
+        padding: 6px 10px !important;
+        font-size: 9px !important;
+    }
+
+    .table-inventaris tbody td {
+        padding: 6px 10px !important;
+        font-size: 10px !important;
+    }
+
+    .spesifikasi-text {
+        max-width: 70px !important;
+    }
+
+    .table-footer-info {
+        font-size: 10px;
+        padding: 8px 12px;
     }
 }

@@ -9,15 +9,15 @@ if (!isset($_SESSION['login'])) {
 include '../../config/database.php';
 
 $query = mysqli_query($conn, "
-SELECT
-    m.*,
-    i.kode_aset,
-    i.nama_hardware,
-    i.merk
-FROM maintenance m
-LEFT JOIN inventaris i
-ON m.inventaris_id = i.id
-ORDER BY m.id DESC
+    SELECT
+        m.*,
+        i.kode_aset,
+        i.nama_hardware,
+        i.merk
+    FROM maintenance m
+    LEFT JOIN inventaris i
+        ON m.inventaris_id = i.id
+    ORDER BY m.id DESC
 ");
 
 $page_title = "Maintenance TI";
@@ -28,32 +28,91 @@ $page_subtitle = "Kelola laporan kerusakan dan perbaikan perangkat TI DISPUSIPDA
 <html lang="id">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Maintenance TI</title>
 
+    <!-- CSS UTAMA -->
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/sidebar.css">
     <link rel="stylesheet" href="../../assets/css/topbar.css">
-<link rel="stylesheet" href="../../assets/css/maintenance.css?v=1.0">
+    <link rel="stylesheet" href="../../assets/css/maintenance.css?v=<?php echo time(); ?>">
 
+    <!-- GOOGLE FONT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+    <!-- STYLE PAKSA AGAR TOMBOL SUSUN KE BAWAH -->
+    <style>
+        .action-buttons {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            width: 100% !important;
+        }
 
+        .action-buttons a,
+        .btn-detail,
+        .btn-edit,
+        .btn-hapus {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 6px !important;
+            width: 100px !important;
+            height: 34px !important;
+            padding: 0 10px !important;
+            border-radius: 8px !important;
+            color: #ffffff !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            text-decoration: none !important;
+            white-space: nowrap !important;
+            box-sizing: border-box !important;
+        }
+
+        .btn-detail { background-color: #3b82f6 !important; }
+        .btn-edit { background-color: #f59e0b !important; }
+        .btn-hapus { background-color: #ef4444 !important; }
+
+        .th-aksi, .td-aksi {
+            width: 130px !important;
+            min-width: 130px !important;
+            text-align: center !important;
+        }
+    </style>
 </head>
 
 <body>
 
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
     <?php include '../../includes/sidebar.php'; ?>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
 
     <div class="main-content">
 
+
+        <!-- =========================
+             TOPBAR
+        ========================== -->
+
         <?php include '../../includes/topbar.php'; ?>
+
+
+        <!-- =========================
+             PAGE HEADER
+        ========================== -->
 
         <div class="page-header">
 
@@ -63,119 +122,251 @@ $page_subtitle = "Kelola laporan kerusakan dan perbaikan perangkat TI DISPUSIPDA
 
                 <i class="fa-solid fa-plus"></i>
 
-                Laporkan Kerusakan
+                <span>Laporkan Kerusakan</span>
 
             </a>
 
         </div>
 
+
+        <!-- =========================
+             TABLE CARD
+        ========================== -->
+
         <div class="table-card">
-    <div class="table-responsive">
-        <table>
-</div>
-                <thead>
 
-                    <tr>
+            <div class="table-responsive">
 
-                        <th>Kode Aset</th>
-                        <th>Perangkat</th>
-                        <th>Kerusakan</th>
-                        <th>Keparahan</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
+                <table>
 
-                    </tr>
+                    <!-- =========================
+                         TABLE HEADER
+                    ========================== -->
 
-                </thead>
+                    <thead>
 
-                <tbody>
+                        <tr>
 
-                    <?php while($row = mysqli_fetch_assoc($query)){ ?>
+                            <th>Kode Aset</th>
 
-                    <tr>
+                            <th>Perangkat</th>
 
-                        <td>
+                            <th>Kerusakan</th>
 
-                            <strong><?= htmlspecialchars($row['kode_aset']); ?></strong>
+                            <th>Keparahan</th>
 
-                        </td>
+                            <th>Status</th>
 
-                        <td>
+                            <th style="width: 140px; text-align: center;">Aksi</th>
 
-                            <?= htmlspecialchars($row['nama_hardware']); ?>
+                        </tr>
 
-                            <br>
+                    </thead>
 
-                            <small><?= htmlspecialchars($row['merk']); ?></small>
 
-                        </td>
+                    <!-- =========================
+                         TABLE BODY
+                    ========================== -->
 
-                        <td>
+                    <tbody>
 
-                            <?= htmlspecialchars($row['kerusakan']); ?>
+                        <?php if (mysqli_num_rows($query) > 0): ?>
 
-                        </td>
+                            <?php while ($row = mysqli_fetch_assoc($query)): ?>
 
-                        <td>
+                                <tr>
 
-                            <?= htmlspecialchars($row['keparahan']); ?>
 
-                        </td>
+                                    <!-- =====================
+                                         KODE ASET
+                                    ====================== -->
 
-                        <td>
+                                    <td data-label="Kode Aset">
 
-                            <?php
+                                        <strong>
+                                            <?= htmlspecialchars($row['kode_aset']); ?>
+                                        </strong>
 
-                            if($row['status'] == "Menunggu"){
+                                    </td>
 
-                                echo '<span class="badge-menunggu">Menunggu</span>';
 
-                            }elseif($row['status'] == "Dalam Perbaikan"){
+                                    <!-- =====================
+                                         PERANGKAT
+                                    ====================== -->
 
-                                echo '<span class="badge-proses">Dalam Perbaikan</span>';
+                                    <td data-label="Perangkat">
 
-                            }else{
+                                        <?= htmlspecialchars($row['nama_hardware']); ?>
 
-                                echo '<span class="badge-selesai">Selesai</span>';
+                                        <?php if (!empty($row['merk'])): ?>
 
-                            }
+                                            <small style="display: block; color: #64748b;">
+                                                <?= htmlspecialchars($row['merk']); ?>
+                                            </small>
 
-                            ?>
+                                        <?php endif; ?>
 
-                        </td>
+                                    </td>
 
-                        <td>
 
-                            <a href="detail.php?id=<?= $row['id']; ?>" class="btn-detail">
-                                <i class="fa-solid fa-eye"></i>
-                                Detail
-                            </a>
+                                    <!-- =====================
+                                         KERUSAKAN
+                                    ====================== -->
 
-                            <a href="edit.php?id=<?= $row['id']; ?>" class="btn-edit">
-                                <i class="fa-solid fa-pen"></i>
-                                Edit
-                            </a>
+                                    <td data-label="Kerusakan">
 
-                            <a
-                                href="hapus.php?id=<?= $row['id']; ?>"
-                                class="btn-hapus"
-                                onclick="return confirm('Yakin ingin menghapus data maintenance ini?')">
+                                        <?= htmlspecialchars($row['kerusakan']); ?>
 
-                                <i class="fa-solid fa-trash"></i>
+                                    </td>
 
-                                Hapus
 
-                            </a>
+                                    <!-- =====================
+                                         KEPARAHAN
+                                    ====================== -->
 
-                        </td>
+                                    <td data-label="Keparahan">
 
-                    </tr>
+                                        <?= htmlspecialchars($row['keparahan']); ?>
 
-                    <?php } ?>
+                                    </td>
 
-                </tbody>
 
-            </table>
+                                    <!-- =====================
+                                         STATUS
+                                    ====================== -->
+
+                                    <td data-label="Status">
+
+                                        <?php if ($row['status'] == "Menunggu"): ?>
+
+                                            <span class="badge-menunggu">
+                                                Menunggu
+                                            </span>
+
+                                        <?php elseif ($row['status'] == "Dalam Perbaikan"): ?>
+
+                                            <span class="badge-proses">
+                                                Dalam Perbaikan
+                                            </span>
+
+                                        <?php else: ?>
+
+                                            <span class="badge-selesai">
+                                                Selesai
+                                            </span>
+
+                                        <?php endif; ?>
+
+                                    </td>
+
+
+                                    <!-- =====================
+                                         AKSI
+                                    ====================== -->
+
+                                    <td data-label="Aksi" style="text-align: center;">
+
+                                        <div class="action-buttons">
+
+
+                                            <!-- DETAIL -->
+
+                                            <a
+                                                href="detail.php?id=<?= (int)$row['id']; ?>"
+                                                class="btn-detail"
+                                                title="Lihat Detail"
+                                            >
+
+                                                <i class="fa-solid fa-eye"></i>
+
+                                                <span>Detail</span>
+
+                                            </a>
+
+
+                                            <!-- EDIT -->
+
+                                            <a
+                                                href="edit.php?id=<?= (int)$row['id']; ?>"
+                                                class="btn-edit"
+                                                title="Edit Data"
+                                            >
+
+                                                <i class="fa-solid fa-pen"></i>
+
+                                                <span>Edit</span>
+
+                                            </a>
+
+
+                                            <!-- HAPUS -->
+
+                                            <a
+                                                href="hapus.php?id=<?= (int)$row['id']; ?>"
+                                                class="btn-hapus"
+                                                title="Hapus Data"
+                                                onclick="return confirm('Yakin ingin menghapus data maintenance ini?')"
+                                            >
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                                <span>Hapus</span>
+
+                                            </a>
+
+
+                                        </div>
+
+                                    </td>
+
+
+                                </tr>
+
+                            <?php endwhile; ?>
+
+
+                        <?php else: ?>
+
+
+                            <!-- =====================
+                                 DATA KOSONG
+                            ====================== -->
+
+                            <tr>
+
+                                <td
+                                    colspan="6"
+                                    style="
+                                        text-align:center;
+                                        padding:40px;
+                                    "
+                                >
+
+                                    <i
+                                        class="fa-solid fa-inbox"
+                                        style="
+                                            font-size:32px;
+                                            color:#94a3b8;
+                                            margin-bottom:10px;
+                                        "
+                                    ></i>
+
+                                    <div>
+                                        Belum ada data maintenance.
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+
+                        <?php endif; ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
 
         </div>
 
