@@ -7,30 +7,48 @@ if (!isset($_SESSION['login'])) {
 }
 
 include 'config/database.php';
+require_once 'config/activity_log.php';
 
 // ===============================
 // Total Inventaris
 // ===============================
 $result = mysqli_query($conn, "SELECT * FROM inventaris");
-$total_aset = ($result) ? mysqli_num_rows($result) : 10;
+$total_aset = ($result) ? mysqli_num_rows($result) : 0;
 
 // ===============================
 // Maintenance
 // ===============================
+// Status maintenance yang masih dalam proses:
+// Menunggu dan Dalam Perbaikan
 $result = mysqli_query($conn, "
 SELECT * FROM maintenance
-WHERE status='Proses'
+WHERE status IN ('Menunggu', 'Dalam Perbaikan')
 ");
-$total_maintenance = ($result) ? mysqli_num_rows($result) : 1;
+$total_maintenance = ($result) ? mysqli_num_rows($result) : 0;
 
 // ===============================
 // Aset Aktif
 // ===============================
 $result = mysqli_query($conn, "
 SELECT * FROM inventaris
-WHERE status='tersedia'
+WHERE status = 'Tersedia'
 ");
-$total_ready = ($result) ? mysqli_num_rows($result) : 8;
+$total_ready = ($result) ? mysqli_num_rows($result) : 0;
+
+// ===============================
+// Log Aktivitas Terbaru
+// ===============================
+$result_aktivitas = mysqli_query($conn, "
+SELECT
+    id,
+    aktivitas,
+    deskripsi,
+    tanggal
+FROM log_aktivitas
+ORDER BY tanggal DESC, id DESC
+LIMIT 5
+");
+
 ?>
 
 <!DOCTYPE html>
@@ -44,9 +62,9 @@ $total_ready = ($result) ? mysqli_num_rows($result) : 8;
     <title>Dashboard | DISPUSIPDA</title>
 
     <link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/sidebar.css">
-<link rel="stylesheet" href="assets/css/topbar.css">
-<link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/sidebar.css">
+    <link rel="stylesheet" href="assets/css/topbar.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -62,15 +80,15 @@ $total_ready = ($result) ? mysqli_num_rows($result) : 8;
 
     <div class="main-content">
 
-       <?php
+        <?php
 
-$page_title = "Dashboard";
+        $page_title = "Dashboard";
 
-$page_subtitle = "Ringkasan status inventaris perangkat TI DISPUSIPDA Provinsi Jawa Barat";
+        $page_subtitle = "Ringkasan status inventaris perangkat TI DISPUSIPDA Provinsi Jawa Barat";
 
-include 'includes/topbar.php';
+        include 'includes/topbar.php';
 
-?>
+        ?>
 
 
         <!-- ================= CARD ================= -->
@@ -165,7 +183,7 @@ include 'includes/topbar.php';
 
                 </h3>
 
-                <span>15 Juli 2026</span>
+                <span><?= date('d F Y'); ?></span>
 
             </div>
 
@@ -173,116 +191,78 @@ include 'includes/topbar.php';
 
             <div class="activity-list">
 
-                <div class="activity-item">
+                <?php if ($result_aktivitas && mysqli_num_rows($result_aktivitas) > 0): ?>
 
-                    <div class="dot yellow"></div>
+                    <?php while ($aktivitas = mysqli_fetch_assoc($result_aktivitas)): ?>
 
-                    <div class="activity-text">
+                        <?php
+                        // Menentukan warna titik berdasarkan jenis aktivitas
+                        $dot_class = 'blue';
 
-                        <h4>Laporan kerusakan baru</h4>
+                        if (
+                            stripos($aktivitas['aktivitas'], 'Maintenance') !== false ||
+                            stripos($aktivitas['aktivitas'], 'Rusak') !== false
+                        ) {
+                            $dot_class = 'yellow';
+                        } elseif (
+                            stripos($aktivitas['aktivitas'], 'selesai') !== false ||
+                            stripos($aktivitas['aktivitas'], 'dikembalikan') !== false
+                        ) {
+                            $dot_class = 'green';
+                        } elseif (
+                            stripos($aktivitas['aktivitas'], 'dipinjam') !== false
+                        ) {
+                            $dot_class = 'blue';
+                        }
+                        ?>
 
-                        <p>
-                            Monitor LG 24MK430H dilaporkan rusak -
-                            garis horizontal pada layar
-                        </p>
+                        <div class="activity-item">
 
-                    </div>
+                            <div class="dot <?= $dot_class; ?>"></div>
 
-                    <span>12 Jul 2026</span>
+                            <div class="activity-text">
 
-                </div>
+                                <h4>
+                                    <?= htmlspecialchars($aktivitas['aktivitas']); ?>
+                                </h4>
 
+                                <p>
+                                    <?= htmlspecialchars($aktivitas['deskripsi']); ?>
+                                </p>
 
+                            </div>
 
-                <div class="activity-item">
+                            <span>
+                                <?= date('d M Y', strtotime($aktivitas['tanggal'])); ?>
+                            </span>
 
-                    <div class="dot blue"></div>
+                        </div>
 
-                    <div class="activity-text">
+                    <?php endwhile; ?>
 
-                        <h4>Perangkat dipinjam</h4>
+                <?php else: ?>
 
-                        <p>
+                    <div class="activity-item">
 
-                            Laptop Dell Latitude dipinjam
-                            oleh Bapak Ahmad Yusuf
+                        <div class="dot blue"></div>
 
-                        </p>
+                        <div class="activity-text">
 
-                    </div>
+                            <h4>Belum ada aktivitas</h4>
 
-                    <span>10 Jul 2026</span>
+                            <p>
+                                Belum terdapat aktivitas terbaru dalam sistem.
+                            </p>
 
-                </div>
+                        </div>
 
-
-
-                <div class="activity-item">
-
-                    <div class="dot green"></div>
-
-                    <div class="activity-text">
-
-                        <h4>Maintenance selesai</h4>
-
-                        <p>
-
-                            Printer HP LaserJet selesai
-                            diperbaiki oleh Teknisi
-
-                        </p>
-
-                    </div>
-
-                    <span>08 Jul 2026</span>
-
-                </div>
-
-
-
-                <div class="activity-item">
-
-                    <div class="dot yellow"></div>
-
-                    <div class="activity-text">
-
-                        <h4>Laporan kerusakan baru</h4>
-
-                        <p>
-
-                            Switch Cisco Catalyst
-                            port 12 tidak aktif
-
-                        </p>
+                        <span>
+                            <?= date('d M Y'); ?>
+                        </span>
 
                     </div>
 
-                    <span>08 Jul 2026</span>
-
-                </div>
-
-
-
-                <div class="activity-item">
-
-                    <div class="dot green"></div>
-
-                    <div class="activity-text">
-
-                        <h4>Perangkat dikembalikan</h4>
-
-                        <p>
-
-                            Laptop Dell Latitude telah
-                            dikembalikan ke ruang arsip
-
-                        </p>
-
-                    </div>
-
-                    <span>05 Jul 2026</span>
-
-                </div>
+                <?php endif; ?>
 
             </div>
 

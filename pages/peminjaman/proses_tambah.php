@@ -7,6 +7,7 @@ if (!isset($_SESSION['login'])) {
 }
 
 include '../../config/database.php';
+require_once '../../config/activity_log.php';
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     header("Location: index.php");
@@ -19,6 +20,10 @@ $inventaris_id  = (int)$_POST['inventaris_id'];
 $tanggal_pinjam = mysqli_real_escape_string($conn, $_POST['tanggal_pinjam']);
 $est_kembali    = mysqli_real_escape_string($conn, $_POST['est_kembali']);
 
+
+// ========================================
+// Validasi data
+// ========================================
 if (
     empty($nama_peminjam) ||
     empty($divisi) ||
@@ -31,7 +36,39 @@ if (
     exit;
 }
 
+
+// ========================================
+// Ambil data perangkat
+// ========================================
+$query_perangkat = mysqli_query($conn, "
+    SELECT
+        kode_aset,
+        nama_hardware
+    FROM inventaris
+    WHERE id='$inventaris_id'
+");
+
+
+// ========================================
+// Cek perangkat
+// ========================================
+if (!$query_perangkat || mysqli_num_rows($query_perangkat) === 0) {
+
+    $_SESSION['flash_error'] = "Perangkat tidak ditemukan.";
+    header("Location: index.php");
+    exit;
+}
+
+
+$data_perangkat = mysqli_fetch_assoc($query_perangkat);
+
+$kode_aset = $data_perangkat['kode_aset'];
+$nama_hardware = $data_perangkat['nama_hardware'];
+
+
+// ========================================
 // Simpan data peminjaman
+// ========================================
 $query = mysqli_query($conn, "
 INSERT INTO peminjaman
 (
@@ -53,22 +90,47 @@ VALUES
 )
 ");
 
+
 if ($query) {
 
-    // ubah status inventaris
-    mysqli_query($conn,"
+    // ========================================
+    // Ubah status inventaris
+    // ========================================
+    $update_inventaris = mysqli_query($conn,"
         UPDATE inventaris
         SET status='Dipinjam'
         WHERE id='$inventaris_id'
     ");
 
-    $_SESSION['flash_success']="Peminjaman berhasil ditambahkan.";
+
+    // ========================================
+    // Catat Log Aktivitas
+    // ========================================
+    logAktivitas(
+        $conn,
+        "Perangkat dipinjam",
+        "Perangkat " . $nama_hardware .
+        " dengan kode aset " . $kode_aset .
+        " dipinjam oleh " . $nama_peminjam .
+        " dari divisi " . $divisi . "."
+    );
+
+
+    // ========================================
+    // Pesan sukses
+    // ========================================
+    $_SESSION['flash_success'] = "Peminjaman berhasil ditambahkan.";
 
 } else {
 
-    $_SESSION['flash_error']="Gagal menyimpan data.";
+    // ========================================
+    // Pesan gagal
+    // ========================================
+    $_SESSION['flash_error'] = "Gagal menyimpan data.";
 
 }
 
+
 header("Location: index.php");
 exit;
+?>
